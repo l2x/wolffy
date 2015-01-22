@@ -5,23 +5,58 @@
 package git
 
 import (
-	"path/filepath"
+	"errors"
+	"strings"
+
+	"github.com/Unknwon/com"
 )
 
 // Repository represents a Git repository.
 type Repository struct {
-	Path        string
-	RemotePath  string
-	commitCache map[sha1]*Commit
-	tagCache    map[sha1]*Tag
+	Path       string
+	RemotePath string
+	Name       string
 }
 
-// OpenRepository opens the repository at the given path.
-func OpenRepository(repoPath string) (*Repository, error) {
-	repoPath, err := filepath.Abs(repoPath)
+func NewRepository(path, remotePath string) *Repository {
+	repo := &Repository{
+		Path:       path,
+		RemotePath: remotePath,
+	}
+	repo.Name = repo.GetName()
+
+	return repo
+}
+
+func (repo *Repository) Clone() (string, error) {
+	stdout, stderr, err := com.ExecCmdDir(repo.Path, "git", "clone", repo.RemotePath, repo.Name)
 	if err != nil {
-		return nil, err
+		return "", errors.New(stderr)
+	}
+	return strings.Split(stdout, " ")[0], nil
+}
+
+func (repo *Repository) GetBranches() ([]string, error) {
+	stdout, stderr, err := com.ExecCmdDir(repo.Path, "git", "ls-remote", "--heads", "origin")
+
+	if err != nil {
+		return nil, errors.New(stderr)
 	}
 
-	return &Repository{Path: repoPath}, nil
+	var branchs []string
+	infos := strings.Split(stdout, "\n")
+	for _, v := range infos {
+		v = strings.Replace(v, "\t", " ", -1)
+		parts := strings.Split(v, " ")
+		if len(parts) != 2 {
+			continue
+		}
+		branchs = append(branchs, strings.TrimPrefix(parts[1], "refs/heads/"))
+	}
+	return branchs, nil
+}
+
+func (repo *Repository) GetName() string {
+	parts := strings.Split(repo.RemotePath, "/")
+	return strings.TrimRight(parts[len(parts)-1], ".git")
 }
