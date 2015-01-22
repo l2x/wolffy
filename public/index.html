@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html ng-app>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>apidoc</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="js/libs/html5-boilerplate/css/normalize.css">
+    <link rel="stylesheet" href="js/libs/html5-boilerplate/css/main.css">
+
+  <link rel="stylesheet" href="js/libs/bootstrap/dist/css/bootstrap.min.css">
+
+  <link rel="stylesheet" href="js/libs/angular-loading-bar/build/loading-bar.min.css">
+    <link rel="stylesheet" href="js/libs/angular-material/angular-material.css">
+  <link rel="stylesheet" href="css/app.css">
+
+</head>
+
+<body layout="row">
+      <md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$media('gt-sm')">
+          <md-toolbar class="md-theme-indigo">
+              <h1 class="md-toolbar-tools">User</h1>
+          </md-toolbar>
+          <md-content class="md-padding" ng-controller="sidebarCtrl">
+              <md-button ng-click="close()" class="md-primary" hide-gt-sm>Close Sidenav Left</md-button>
+              <p ng-repeat="m in menu">
+                  <a href="">{{m.name}}</a>
+              </p>
+          </md-content>
+      </md-sidenav>
+
+      <md-content flex class="md-padding" ng-view></md-content>
+
+  <script data-main="js/main" src="js/libs/requirejs/require.js"></script>
+</body>
+</html>

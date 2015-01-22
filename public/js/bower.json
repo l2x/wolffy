@@ -1,0 +1,36 @@
+{
+  "name": "apidoc",
+  "version": "0.0.1",
+  "homepage": "",
+  "authors": [
+    "leiyonglin <leiyonglin@gmail.com>"
+  ],
+  "description": "",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+	"requirejs": "latest",
+	"requirejs-domready": "latest",
+	"requirejs-plugins":"latest",
+	"angularAMD": "latest",
+    "hammerjs": "latest",
+	"angular": "angular#1.3.8",
+	"angular-aria": "angular-aria#1.3.8",
+	"angular-route": "angular-route#1.3.8",
+	"angular-animate": "angular-animate#1.3.8",
+	"angular-mocks": "angular-mocks#1.3.8",
+	"angular-resource": "angular-resource#1.3.8",
+	"angular-loading-bar": "~0.6.0",
+	"angular-bootstrap": "~0.12.0",
+    "angular-material": "latest",
+    "bootstrap": "~3.3.1"
+  }
+}
