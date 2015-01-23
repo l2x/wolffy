@@ -61,5 +61,12 @@ func (repo *Repository) GetName() string {
 	return strings.TrimRight(parts[len(parts)-1], ".git")
 }
 
-func (repo *Repository) GetTags() []string {
+func (repo *Repository) GetTags() ([]string, error) {
+	stdout, stderr, err := com.ExecCmdDir(repo.Path, "git", "tag", "-l")
+	if err != nil {
+		return nil, errors.New(stderr)
+	}
+
+	tags := strings.Split(stdout, "\n")
+	return tags, nil
 }
