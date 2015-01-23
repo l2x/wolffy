@@ -60,3 +60,6 @@ func (repo *Repository) GetName() string {
 	parts := strings.Split(repo.RemotePath, "/")
 	return strings.TrimRight(parts[len(parts)-1], ".git")
 }
+
+func (repo *Repository) GetTags() []string {
+}
