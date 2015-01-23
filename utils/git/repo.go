@@ -6,9 +6,12 @@ package git
 
 import (
 	"errors"
+	"fmt"
+	"sort"
 	"strings"
 
 	"github.com/Unknwon/com"
+	"github.com/l2x/wolffy/utils"
 )
 
 // Repository represents a Git repository.
@@ -28,6 +31,13 @@ func NewRepository(path, remotePath string) *Repository {
 	return repo
 }
 
+// get repository name
+func (repo *Repository) GetName() string {
+	parts := strings.Split(repo.RemotePath, "/")
+	return strings.TrimRight(parts[len(parts)-1], ".git")
+}
+
+// clone repository
 func (repo *Repository) Clone() (string, error) {
 	stdout, stderr, err := com.ExecCmdDir(repo.Path, "git", "clone", repo.RemotePath, repo.Name)
 	if err != nil {
@@ -36,6 +46,7 @@ func (repo *Repository) Clone() (string, error) {
 	return strings.Split(stdout, " ")[0], nil
 }
 
+// list all branchs
 func (repo *Repository) GetBranches() ([]string, error) {
 	stdout, stderr, err := com.ExecCmdDir(repo.Path, "git", "ls-remote", "--heads", "origin")
 
@@ -56,11 +67,7 @@ func (repo *Repository) GetBranches() ([]string, error) {
 	return branchs, nil
 }
 
-func (repo *Repository) GetName() string {
-	parts := strings.Split(repo.RemotePath, "/")
-	return strings.TrimRight(parts[len(parts)-1], ".git")
-}
-
+// list all tags
 func (repo *Repository) GetTags() ([]string, error) {
 	stdout, stderr, err := com.ExecCmdDir(repo.Path, "git", "tag", "-l")
 	if err != nil {
@@ -68,5 +75,27 @@ func (repo *Repository) GetTags() ([]string, error) {
 	}
 
 	tags := strings.Split(stdout, "\n")
+	tags = utils.DelEmptySlice(tags)
+	sort.Sort(utils.StringReverse(tags))
+
 	return tags, nil
+}
+
+func (repo *Repository) PullTags() error {
+	_, stderr, err := com.ExecCmdDir(repo.Path, "git", "pull", "--tags")
+	if err != nil {
+		return errors.New(stderr)
+	}
+	return nil
+}
+
+func (repo *Repository) Diff(commit1, commit2 string) (string, error) {
+	fmt.Println(commit1, commit2)
+
+	stdout, stderr, err := com.ExecCmdDir(repo.Path, "git", "diff", commit1, commit2)
+	if err != nil {
+		return "", errors.New(stderr)
+	}
+
+	return stdout, nil
 }
