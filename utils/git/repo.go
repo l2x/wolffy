@@ -16,17 +16,20 @@ import (
 
 // Repository represents a Git repository.
 type Repository struct {
+	BasePath   string
 	Path       string
 	RemotePath string
 	Name       string
 }
 
-func NewRepository(path, remotePath string) *Repository {
+func NewRepository(basePath, remotePath string) *Repository {
 	repo := &Repository{
-		Path:       path,
+		BasePath:   basePath,
 		RemotePath: remotePath,
 	}
 	repo.Name = repo.GetName()
+	repo.Path = fmt.Sprintf("%s/%s", strings.TrimRight(repo.BasePath, "/"), repo.Name)
+	fmt.Println(repo)
 
 	return repo
 }
@@ -39,7 +42,7 @@ func (repo *Repository) GetName() string {
 
 // clone repository
 func (repo *Repository) Clone() (string, error) {
-	stdout, stderr, err := com.ExecCmdDir(repo.Path, "git", "clone", repo.RemotePath, repo.Name)
+	stdout, stderr, err := com.ExecCmdDir(repo.BasePath, "git", "clone", repo.RemotePath, repo.Name)
 	if err != nil {
 		return "", errors.New(stderr)
 	}
@@ -81,6 +84,7 @@ func (repo *Repository) GetTags() ([]string, error) {
 	return tags, nil
 }
 
+// pull tags
 func (repo *Repository) PullTags() error {
 	_, stderr, err := com.ExecCmdDir(repo.Path, "git", "pull", "--tags")
 	if err != nil {
@@ -89,6 +93,16 @@ func (repo *Repository) PullTags() error {
 	return nil
 }
 
+//archive
+func (repo *Repository) Archive(commit, spath string) error {
+	_, stderr, err := com.ExecCmdDir(repo.Path, "git", "archive", "--format", "zip", "--output", spath, commit, "-9")
+	if err != nil {
+		return errors.New(stderr)
+	}
+	return nil
+}
+
+// diff
 func (repo *Repository) Diff(commit1, commit2 string) (string, error) {
 	fmt.Println(commit1, commit2)
 
