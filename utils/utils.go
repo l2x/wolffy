@@ -25,3 +25,8 @@ func (s StringReverse) Swap(i, j int) {
 func (s StringReverse) Less(i, j int) bool {
 	return s[i] > s[j]
 }
+
+func Compress(path string, spath string) error {
+
+	return nil
+}
