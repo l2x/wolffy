@@ -2,6 +2,10 @@ package models
 
 import "time"
 
+var (
+	DeployModel = &Deploy{}
+)
+
 type Deploy struct {
 	Id      int
 	Pid     int

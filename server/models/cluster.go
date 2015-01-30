@@ -2,6 +2,10 @@ package models
 
 import "time"
 
+var (
+	ClusterModel = &Cluster{}
+)
+
 type Cluster struct {
 	Id      int
 	Name    string

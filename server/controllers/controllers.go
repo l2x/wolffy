@@ -1,5 +1,9 @@
 package controllers
 
+import (
+	"github.com/l2x/wolffy/server/config"
+)
+
 type Res struct {
 	Errno  int         `json:"errno"`
 	Errmsg string      `json:"errmsg"`
@@ -12,4 +16,8 @@ func NewRes() Res {
 		Errmsg: "",
 		Data:   []int{},
 	}
+}
+
+func init() {
+	config.InitConfig("")
 }

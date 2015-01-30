@@ -2,6 +2,10 @@ package models
 
 import "time"
 
+var (
+	ProductModel = &Product{}
+)
+
 type Product struct {
 	Id      int
 	Name    string

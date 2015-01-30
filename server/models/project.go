@@ -2,6 +2,10 @@ package models
 
 import "time"
 
+var (
+	ProjectModel = &Project{}
+)
+
 type Project struct {
 	Id      int
 	Pid     int
