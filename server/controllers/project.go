@@ -13,6 +13,31 @@ import (
 
 type Project struct{}
 
+func (c Project) Diff(r render.Render, req *http.Request) {
+	res := NewRes()
+
+	id := req.URL.Query().Get("id")
+	commita := req.URL.Query().Get("commita")
+	commitb := req.URL.Query().Get("commitb")
+	idint, err := strconv.Atoi(id)
+	if err = RenderError(r, res, err); err != nil {
+		return
+	}
+
+	project, err := models.ProjectModel.GetOne(idint)
+	if err = RenderError(r, res, err); err != nil {
+		return
+	}
+
+	repo := git.NewRepository(config.BasePath, project.Path)
+	diff, err := repo.Diff(commita, commitb)
+	if err = RenderError(r, res, err); err != nil {
+		return
+	}
+
+	RenderRes(r, res, diff)
+}
+
 func (c Project) GetTags(r render.Render, req *http.Request) {
 	res := NewRes()
 	id := req.URL.Query().Get("id")

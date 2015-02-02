@@ -123,10 +123,10 @@ func (repo *Repository) Archive(commit, spath string) error {
 }
 
 // diff
-func (repo *Repository) Diff(commit1, commit2 string) (string, error) {
-	fmt.Println(commit1, commit2)
+func (repo *Repository) Diff(commita, commitb string) (string, error) {
+	fmt.Println(commita, commitb)
 
-	stdout, stderr, err := com.ExecCmdDir(repo.Path, "git", "diff", commit1, commit2)
+	stdout, stderr, err := com.ExecCmdDir(repo.Path, "git", "diff", commita, commitb)
 	if err != nil {
 		return "", errors.New(stderr)
 	}
