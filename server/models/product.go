@@ -25,8 +25,7 @@ func (m Product) TableIndex() [][]string {
 
 func (m Product) GetAll() ([]*Product, error) {
 	var products []*Product
-	_, err := DB.QueryTable(m.TableName()).All(&products)
-	if err != nil {
+	if _, err := DB.QueryTable(m.TableName()).All(&products); err != nil {
 		return nil, err
 	}
 
@@ -34,27 +33,56 @@ func (m Product) GetAll() ([]*Product, error) {
 }
 
 func (m Product) GetOne(id int) (*Product, error) {
-	var product *Product = &Product{
+	product := &Product{
 		Id: id,
 	}
-	err := DB.Read(&product)
-	if err != nil {
+	if err := DB.Read(&product); err != nil {
 		return nil, err
 	}
 
 	return product, nil
 }
 
-func (m Product) Add(name, note string) (int, error) {
-	var product *Product = &Product{
+func (m Product) Add(name, note string) (*Product, error) {
+	product := &Product{
 		Name:    name,
 		Note:    note,
 		Created: time.Now(),
 	}
 	id, err := DB.Insert(product)
 	if err != nil {
-		return 0, err
+		return nil, err
 	}
 
-	return int(id), nil
+	if product, err = m.GetOne(int(id)); err != nil {
+		return nil, err
+	}
+
+	return product, nil
+}
+
+func (m Product) Update(id int, name, note string) error {
+	product := &Product{
+		Id:      id,
+		Name:    name,
+		Note:    note,
+		Created: time.Now(),
+	}
+
+	if _, err := DB.Update(product); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m Product) Del(id int) error {
+	product := &Product{
+		Id: id,
+	}
+	if _, err := DB.Delete(product); err != nil {
+		return err
+	}
+
+	return nil
 }
