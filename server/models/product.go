@@ -17,14 +17,14 @@ func (m Product) TableName() string {
 	return "product"
 }
 
-func (m Product) TableIndex() [][]string {
+func (m Product) TableUnique() [][]string {
 	return [][]string{
 		[]string{"Name"},
 	}
 }
 
 func (m Product) GetAll() ([]*Product, error) {
-	var products []*Product
+	products := []*Product{}
 	if _, err := DB.QueryTable(m.TableName()).All(&products); err != nil {
 		return nil, err
 	}
@@ -36,7 +36,7 @@ func (m Product) GetOne(id int) (*Product, error) {
 	product := &Product{
 		Id: id,
 	}
-	if err := DB.Read(&product); err != nil {
+	if err := DB.Read(product); err != nil {
 		return nil, err
 	}
 
