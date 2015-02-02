@@ -35,7 +35,11 @@ func router() {
 	m.Get("/product/update/", product.Update)
 
 	cluster := controllers.Cluster{}
-	m.Get("/cluster/", cluster.GetAll)
+	m.Get("/cluster/add/", cluster.Add)
+	m.Get("/cluster/del/", cluster.Del)
+	m.Get("/cluster/get/", cluster.Get)
+	m.Get("/cluster/getall/", cluster.GetAll)
+	m.Get("/cluster/update/", cluster.Update)
 
 	m.RunOnAddr(":8000")
 }

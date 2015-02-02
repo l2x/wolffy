@@ -9,7 +9,7 @@ var (
 type Cluster struct {
 	Id      int
 	Name    string
-	Room    string
+	Tags    string
 	Machine string
 	Note    string
 	Created time.Time
@@ -36,10 +36,41 @@ func (m Cluster) Search(name string) ([]*Cluster, error) {
 	return clusters, nil
 }
 
-func (m Cluster) Get(id int) (*Cluster, error) {
-	var cluster *Cluster
+func (m Cluster) GetAll() ([]*Cluster, error) {
+	cluster := []*Cluster{}
+	if _, err := DB.QueryTable(m.TableName()).All(&cluster); err != nil {
+		return nil, err
+	}
 
-	_, err := DB.QueryTable(m.TableName()).Filter("id", id).All(&cluster)
+	return cluster, nil
+}
+
+func (m Cluster) GetOne(id int) (*Cluster, error) {
+	cluster := &Cluster{
+		Id: id,
+	}
+
+	if err := DB.Read(cluster); err != nil {
+		return nil, err
+	}
+
+	return cluster, nil
+}
+
+func (m Cluster) Add(name, tags, machine, note string) (*Cluster, error) {
+	cluster := &Cluster{
+		Name:    name,
+		Tags:    tags,
+		Machine: machine,
+		Note:    note,
+		Created: time.Now(),
+	}
+	id, err := DB.Insert(cluster)
+	if err != nil {
+		return nil, err
+	}
+
+	cluster, err = m.GetOne(int(id))
 	if err != nil {
 		return nil, err
 	}
@@ -47,18 +78,30 @@ func (m Cluster) Get(id int) (*Cluster, error) {
 	return cluster, nil
 }
 
-func (m Cluster) Add(name, room, machine, note string) (int, error) {
+func (m Cluster) Update(id int, name, tags, machine, note string) error {
 	cluster := &Cluster{
+		Id:      id,
 		Name:    name,
-		Room:    room,
+		Tags:    tags,
 		Machine: machine,
 		Note:    note,
 		Created: time.Now(),
 	}
-	id, err := DB.Insert(&cluster)
+	_, err := DB.Update(cluster)
 	if err != nil {
-		return 0, err
+		return err
 	}
 
-	return int(id), nil
+	return nil
+}
+
+func (m Cluster) Del(id int) error {
+	cluster := &Cluster{
+		Id: id,
+	}
+	if _, err := DB.Delete(cluster); err != nil {
+		return err
+	}
+
+	return nil
 }
