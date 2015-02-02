@@ -1,9 +1,11 @@
 package controllers
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
 
+	"github.com/go-martini/martini"
 	"github.com/l2x/wolffy/utils/git"
 	"github.com/martini-contrib/render"
 
@@ -13,8 +15,9 @@ import (
 
 type Project struct{}
 
-func (c Project) Add(r render.Render, req *http.Request) {
+func (c Project) Add(r render.Render, req *http.Request, q martini.Context) {
 	res := NewRes()
+	fmt.Println(q)
 
 	//remotePath := "git@123.57.75.209:leiyonglin/wolffy.git"
 	remotePath := req.URL.Query().Get("remotepath")

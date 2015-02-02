@@ -18,6 +18,7 @@ func init() {
 
 	orm.RegisterDriver("sqlite3", orm.DR_Sqlite)
 	orm.RegisterDataBase("default", "sqlite3", dbPath)
+
 	orm.RegisterModel(ProjectModel)
 	orm.RegisterModel(ClusterModel)
 	orm.RegisterModel(DeployModel)
