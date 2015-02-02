@@ -92,9 +92,23 @@ func (repo *Repository) GetTags() ([]string, error) {
 
 // pull tags
 func (repo *Repository) PullTags() error {
+	tags, _ := repo.GetTags()
+	for _, v := range tags {
+		repo.DelTags(v)
+	}
+
 	_, stderr, err := com.ExecCmdDir(repo.Path, "git", "fetch", "--tags")
 	if err != nil {
 		return errors.New(stderr)
+	}
+	return nil
+}
+
+//delete local tags
+func (repo *Repository) DelTags(commit string) error {
+	_, stderr, err := com.ExecCmdDir(repo.Path, "git", "tag", "-d", commit)
+	if err != nil {
+		return errors.New(err.Error() + "\n" + stderr)
 	}
 	return nil
 }
