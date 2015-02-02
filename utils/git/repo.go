@@ -30,15 +30,15 @@ func NewRepository(basePath, remotePath string) *Repository {
 	}
 	repo.Name = repo.GetName()
 	repo.Path = fmt.Sprintf("%s/%s", strings.TrimRight(repo.BasePath, "/"), repo.Name)
-	fmt.Println(repo)
 
 	return repo
 }
 
 // get repository name
 func (repo *Repository) GetName() string {
-	parts := strings.Split(repo.RemotePath, "/")
-	return strings.TrimRight(parts[len(parts)-1], ".git")
+	return repo.RemotePath
+	//parts := strings.Split(repo.RemotePath, "/")
+	//return strings.TrimRight(parts[len(parts)-1], ".git")
 }
 
 // clone repository

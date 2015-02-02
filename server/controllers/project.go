@@ -17,60 +17,43 @@ func (c Project) GetTags(r render.Render, req *http.Request) {
 	res := NewRes()
 	id := req.URL.Query().Get("id")
 	idint, err := strconv.Atoi(id)
-	if err != nil {
-		res.Errmsg = err.Error()
-		r.JSON(200, res)
+	if err = RenderError(r, res, err); err != nil {
 		return
 	}
 
 	project, err := models.ProjectModel.GetOne(idint)
-	if err != nil {
-		res.Errmsg = err.Error()
-		r.JSON(200, res)
+	if err = RenderError(r, res, err); err != nil {
 		return
 	}
 
 	repo := git.NewRepository(config.BasePath, project.Path)
 	err = repo.PullTags()
-	if err != nil {
-		res.Errmsg = err.Error()
-		r.JSON(200, res)
+	if err = RenderError(r, res, err); err != nil {
 		return
 	}
 
 	tags, err := repo.GetTags()
-	if err != nil {
-		res.Errmsg = err.Error()
-		r.JSON(200, res)
+	if err = RenderError(r, res, err); err != nil {
 		return
 	}
-	res.Errno = 0
-	res.Data = tags
-	r.JSON(200, res)
+
+	RenderRes(r, res, tags)
 }
 
 func (c Project) Get(r render.Render, req *http.Request) {
 	res := NewRes()
 	id := req.URL.Query().Get("id")
 	idint, err := strconv.Atoi(id)
-	if err != nil {
-		res.Errmsg = err.Error()
-		r.JSON(200, res)
+	if err = RenderError(r, res, err); err != nil {
 		return
 	}
 
 	project, err := models.ProjectModel.GetOne(idint)
-	if err != nil {
-		res.Errmsg = err.Error()
-		r.JSON(200, res)
+	if err = RenderError(r, res, err); err != nil {
 		return
 	}
 
-	res.Errno = 0
-	res.Data = project
-
-	r.JSON(200, res)
-	return
+	RenderRes(r, res, project)
 }
 
 func (c Project) Add(r render.Render, req *http.Request) {
@@ -83,48 +66,39 @@ func (c Project) Add(r render.Render, req *http.Request) {
 	note := req.URL.Query().Get("note")
 
 	pidint, err := strconv.Atoi(pid)
-	if err != nil {
-		res.Errmsg = err.Error()
-		r.JSON(200, res)
+	if err = RenderError(r, res, err); err != nil {
 		return
 	}
 
 	project, err := models.ProjectModel.Add(pidint, name, path, note)
-	if err != nil {
-		res.Errmsg = err.Error()
-		r.JSON(200, res)
+	if err = RenderError(r, res, err); err != nil {
 		return
 	}
 
 	repo := git.NewRepository(config.BasePath, path)
-	if _, err = repo.Clone(); err != nil {
-		res.Errmsg = err.Error()
+	_, err = repo.Clone()
+	if err = RenderError(r, res, err); err != nil {
 		models.ProjectModel.Del(project.Id)
+		return
 	}
 
-	res.Errno = 0
-	res.Data = project
-	r.JSON(200, res)
+	RenderRes(r, res, project)
 }
 
 func (c Project) Del(r render.Render, req *http.Request) {
 	res := NewRes()
 	id := req.URL.Query().Get("id")
 	idint, err := strconv.Atoi(id)
-	if err != nil {
-		res.Errmsg = err.Error()
-		r.JSON(200, res)
+	if err = RenderError(r, res, err); err != nil {
 		return
 	}
 
-	if err = models.ProjectModel.Del(idint); err != nil {
-		res.Errmsg = err.Error()
-		r.JSON(200, res)
+	err = models.ProjectModel.Del(idint)
+	if err = RenderError(r, res, err); err != nil {
 		return
 	}
 
-	res.Errno = 0
-	r.JSON(200, res)
+	RenderRes(r, res, map[string]string{})
 }
 
 func (c Project) Update(r render.Render, req *http.Request) {
@@ -136,25 +110,19 @@ func (c Project) Update(r render.Render, req *http.Request) {
 	note := req.URL.Query().Get("note")
 
 	idint, err := strconv.Atoi(id)
-	if err != nil {
-		res.Errmsg = err.Error()
-		r.JSON(200, res)
+	if err = RenderError(r, res, err); err != nil {
 		return
 	}
 
 	pidint, err := strconv.Atoi(pid)
-	if err != nil {
-		res.Errmsg = err.Error()
-		r.JSON(200, res)
+	if err = RenderError(r, res, err); err != nil {
 		return
 	}
 
-	if err := models.ProjectModel.Update(idint, pidint, name, path, note); err != nil {
-		res.Errmsg = err.Error()
-		r.JSON(200, res)
+	err = models.ProjectModel.Update(idint, pidint, name, path, note)
+	if err = RenderError(r, res, err); err != nil {
 		return
 	}
 
-	res.Errno = 0
-	r.JSON(200, res)
+	RenderRes(r, res, map[string]string{})
 }

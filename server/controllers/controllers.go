@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"github.com/l2x/wolffy/server/config"
+	"github.com/martini-contrib/render"
 )
 
 type Res struct {
@@ -20,4 +21,18 @@ func NewRes() Res {
 
 func init() {
 	config.InitConfig("")
+}
+
+func RenderError(r render.Render, res Res, err error) error {
+	if err != nil {
+		res.Errmsg = err.Error()
+		r.JSON(200, res)
+	}
+	return err
+}
+
+func RenderRes(r render.Render, res Res, data interface{}) {
+	res.Errno = 0
+	res.Data = data
+	r.JSON(200, res)
 }
