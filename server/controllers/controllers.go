@@ -1,9 +1,11 @@
 package controllers
 
-import (
-	"github.com/l2x/wolffy/server/config"
-	"github.com/martini-contrib/render"
-)
+import "github.com/martini-contrib/render"
+
+func InitControllers() error {
+
+	return nil
+}
 
 type Res struct {
 	Errno  int         `json:"errno"`
@@ -17,10 +19,6 @@ func NewRes() Res {
 		Errmsg: "",
 		Data:   []int{},
 	}
-}
-
-func init() {
-	config.InitConfig("")
 }
 
 func RenderError(r render.Render, res Res, err error) error {

@@ -7,7 +7,6 @@ package git
 import (
 	"errors"
 	"fmt"
-	"os"
 	"sort"
 	"strings"
 
@@ -43,11 +42,6 @@ func (repo *Repository) GetName() string {
 
 // clone repository
 func (repo *Repository) Clone() (string, error) {
-	err := os.MkdirAll(repo.BasePath, 0755)
-	if err != nil {
-		return "", nil
-	}
-
 	stdout, stderr, err := com.ExecCmdDir(repo.BasePath, "git", "clone", repo.RemotePath, repo.Name)
 	if err != nil {
 		return "", errors.New(stderr)

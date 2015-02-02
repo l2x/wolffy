@@ -30,12 +30,12 @@ func (c Product) Get(r render.Render, req *http.Request) {
 func (c Product) GetAll(r render.Render, req *http.Request) {
 	res := NewRes()
 
-	product, err := models.ProductModel.GetAll()
+	products, err := models.ProductModel.GetAll()
 	if err = RenderError(r, res, err); err != nil {
 		return
 	}
 
-	RenderRes(r, res, product)
+	RenderRes(r, res, products)
 }
 
 func (c Product) Add(r render.Render, req *http.Request) {

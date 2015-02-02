@@ -14,12 +14,12 @@ type Cluster struct{}
 func (c Cluster) GetAll(r render.Render, req *http.Request) {
 	res := NewRes()
 
-	cluster, err := models.ClusterModel.GetAll()
+	clusters, err := models.ClusterModel.GetAll()
 	if err = RenderError(r, res, err); err != nil {
 		return
 	}
 
-	RenderRes(r, res, cluster)
+	RenderRes(r, res, clusters)
 }
 
 func (c Cluster) Get(r render.Render, req *http.Request) {

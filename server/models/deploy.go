@@ -23,7 +23,7 @@ func (m Deploy) TableIndex() [][]string {
 	}
 }
 
-func (m Deploy) Get(pid int) ([]*Deploy, error) {
+func (m Deploy) GetAll(pid int) ([]*Deploy, error) {
 	var deploys []*Deploy
 
 	_, err := DB.QueryTable(m.TableName()).Filter("pid", pid).All(&deploys)
@@ -33,16 +33,30 @@ func (m Deploy) Get(pid int) ([]*Deploy, error) {
 	return deploys, nil
 }
 
-func (m Deploy) Add(pid int, commit string) (int, error) {
+func (m Deploy) GetOne(id int) (*Deploy, error) {
+	deploy := &Deploy{}
+	err := DB.QueryTable(m.TableName()).Filter("Id", id).One(&deploy)
+	if err != nil {
+		return nil, err
+	}
+	return deploy, nil
+}
+
+func (m Deploy) Add(pid int, commit string) (*Deploy, error) {
 	deploy := &Deploy{
 		Pid:     pid,
 		Commit:  commit,
 		Created: time.Now(),
 	}
-	id, err := DB.Insert(&deploy)
+	id, err := DB.Insert(deploy)
 	if err != nil {
-		return 0, err
+		return nil, err
 	}
 
-	return int(id), nil
+	deploy, err = m.GetOne(int(id))
+	if err != nil {
+		return nil, err
+	}
+
+	return deploy, nil
 }

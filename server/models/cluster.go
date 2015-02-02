@@ -37,12 +37,12 @@ func (m Cluster) Search(name string) ([]*Cluster, error) {
 }
 
 func (m Cluster) GetAll() ([]*Cluster, error) {
-	cluster := []*Cluster{}
-	if _, err := DB.QueryTable(m.TableName()).All(&cluster); err != nil {
+	clusters := []*Cluster{}
+	if _, err := DB.QueryTable(m.TableName()).All(&clusters); err != nil {
 		return nil, err
 	}
 
-	return cluster, nil
+	return clusters, nil
 }
 
 func (m Cluster) GetOne(id int) (*Cluster, error) {

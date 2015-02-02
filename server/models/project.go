@@ -26,12 +26,12 @@ func (m Project) TableUnique() [][]string {
 }
 
 func (m Project) GetAll() ([]*Project, error) {
-	project := []*Project{}
-	if _, err := DB.QueryTable(m.TableName()).All(&project); err != nil {
+	projects := []*Project{}
+	if _, err := DB.QueryTable(m.TableName()).All(&projects); err != nil {
 		return nil, err
 	}
 
-	return project, nil
+	return projects, nil
 }
 
 func (m Project) GetOne(id int) (*Project, error) {

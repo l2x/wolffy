@@ -13,7 +13,7 @@ var (
 	DB orm.Ormer
 )
 
-func init() {
+func InitModels() error {
 	dbPath := fmt.Sprintf("%s/%s", strings.TrimRight(config.DBPath, "/"), "data.db")
 
 	orm.RegisterDriver("sqlite3", orm.DR_Sqlite)
@@ -26,8 +26,10 @@ func init() {
 
 	err := orm.RunSyncdb("default", false, true)
 	if err != nil {
-		panic(err)
+		return err
 	}
 
 	DB = orm.NewOrm()
+
+	return nil
 }
