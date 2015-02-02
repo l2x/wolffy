@@ -13,11 +13,70 @@ import (
 
 type Project struct{}
 
+func (c Project) GetTags(r render.Render, req *http.Request) {
+	res := NewRes()
+	id := req.URL.Query().Get("id")
+	idint, err := strconv.Atoi(id)
+	if err != nil {
+		res.Errmsg = err.Error()
+		r.JSON(200, res)
+		return
+	}
+
+	project, err := models.ProjectModel.GetOne(idint)
+	if err != nil {
+		res.Errmsg = err.Error()
+		r.JSON(200, res)
+		return
+	}
+
+	repo := git.NewRepository(config.BasePath, project.Path)
+	err = repo.PullTags()
+	if err != nil {
+		res.Errmsg = err.Error()
+		r.JSON(200, res)
+		return
+	}
+
+	tags, err := repo.GetTags()
+	if err != nil {
+		res.Errmsg = err.Error()
+		r.JSON(200, res)
+		return
+	}
+	res.Errno = 0
+	res.Data = tags
+	r.JSON(200, res)
+}
+
+func (c Project) Get(r render.Render, req *http.Request) {
+	res := NewRes()
+	id := req.URL.Query().Get("id")
+	idint, err := strconv.Atoi(id)
+	if err != nil {
+		res.Errmsg = err.Error()
+		r.JSON(200, res)
+		return
+	}
+
+	project, err := models.ProjectModel.GetOne(idint)
+	if err != nil {
+		res.Errmsg = err.Error()
+		r.JSON(200, res)
+		return
+	}
+
+	res.Errno = 0
+	res.Data = project
+
+	r.JSON(200, res)
+	return
+}
+
 func (c Project) Add(r render.Render, req *http.Request) {
 	res := NewRes()
 
-	//remotePath := "git@123.57.75.209:leiyonglin/wolffy.git"
-	remotePath := req.URL.Query().Get("remotepath")
+	//path := "git@123.57.75.209:leiyonglin/wolffy.git"
 	pid := req.URL.Query().Get("pid")
 	name := req.URL.Query().Get("name")
 	path := req.URL.Query().Get("path")
@@ -37,7 +96,7 @@ func (c Project) Add(r render.Render, req *http.Request) {
 		return
 	}
 
-	repo := git.NewRepository(config.BasePath, remotePath)
+	repo := git.NewRepository(config.BasePath, path)
 	if _, err = repo.Clone(); err != nil {
 		res.Errmsg = err.Error()
 		models.ProjectModel.Del(project.Id)

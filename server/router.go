@@ -24,6 +24,10 @@ func router() {
 
 	m.Get("/cluster/", cluster.GetAll)
 	m.Get("/project/add/", project.Add)
+	m.Get("/project/get/", project.Get)
+	m.Get("/project/del/", project.Del)
+	m.Get("/project/update/", project.Update)
+	m.Get("/project/gettags/", project.GetTags)
 
 	m.RunOnAddr(":8000")
 }

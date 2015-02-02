@@ -38,7 +38,7 @@ func (m Project) GetOne(id int) (*Project, error) {
 	project := &Project{
 		Id: id,
 	}
-	if err := DB.Read(&project); err != nil {
+	if err := DB.QueryTable(m.TableName()).Filter("Id", id).One(project); err != nil {
 		return nil, err
 	}
 

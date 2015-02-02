@@ -92,7 +92,7 @@ func (repo *Repository) GetTags() ([]string, error) {
 
 // pull tags
 func (repo *Repository) PullTags() error {
-	_, stderr, err := com.ExecCmdDir(repo.Path, "git", "pull", "--tags")
+	_, stderr, err := com.ExecCmdDir(repo.Path, "git", "fetch", "--tags")
 	if err != nil {
 		return errors.New(stderr)
 	}
