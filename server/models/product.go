@@ -17,6 +17,12 @@ func (m Product) TableName() string {
 	return "product"
 }
 
+func (m Product) TableIndex() [][]string {
+	return [][]string{
+		[]string{"Name"},
+	}
+}
+
 func (m Product) GetAll() ([]*Product, error) {
 	var products []*Product
 	_, err := DB.QueryTable(m.TableName()).All(&products)

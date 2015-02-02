@@ -12,7 +12,7 @@ type Res struct {
 
 func NewRes() Res {
 	return Res{
-		Errno:  0,
+		Errno:  1,
 		Errmsg: "",
 		Data:   []int{},
 	}

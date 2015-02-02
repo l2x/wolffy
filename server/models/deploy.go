@@ -17,6 +17,12 @@ func (m Deploy) TableName() string {
 	return "deploy"
 }
 
+func (m Deploy) TableIndex() [][]string {
+	return [][]string{
+		[]string{"Pid"},
+	}
+}
+
 func (m Deploy) Get(pid int) ([]*Deploy, error) {
 	var deploys []*Deploy
 

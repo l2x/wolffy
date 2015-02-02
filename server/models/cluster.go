@@ -19,6 +19,12 @@ func (m Cluster) TableName() string {
 	return "cluster"
 }
 
+func (m Cluster) TableUnique() [][]string {
+	return [][]string{
+		[]string{"Name"},
+	}
+}
+
 func (m Cluster) Search(name string) ([]*Cluster, error) {
 	var clusters []*Cluster
 

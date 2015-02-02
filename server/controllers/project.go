@@ -1,11 +1,9 @@
 package controllers
 
 import (
-	"fmt"
 	"net/http"
 	"strconv"
 
-	"github.com/go-martini/martini"
 	"github.com/l2x/wolffy/utils/git"
 	"github.com/martini-contrib/render"
 
@@ -15,9 +13,8 @@ import (
 
 type Project struct{}
 
-func (c Project) Add(r render.Render, req *http.Request, q martini.Context) {
+func (c Project) Add(r render.Render, req *http.Request) {
 	res := NewRes()
-	fmt.Println(q)
 
 	//remotePath := "git@123.57.75.209:leiyonglin/wolffy.git"
 	remotePath := req.URL.Query().Get("remotepath")
@@ -33,7 +30,7 @@ func (c Project) Add(r render.Render, req *http.Request, q martini.Context) {
 		return
 	}
 
-	_, err = models.ProjectModel.Add(pidint, name, path, note)
+	project, err := models.ProjectModel.Add(pidint, name, path, note)
 	if err != nil {
 		res.Errmsg = err.Error()
 		r.JSON(200, res)
@@ -41,10 +38,64 @@ func (c Project) Add(r render.Render, req *http.Request, q martini.Context) {
 	}
 
 	repo := git.NewRepository(config.BasePath, remotePath)
-	_, err = repo.Clone()
-	if err != nil {
+	if _, err = repo.Clone(); err != nil {
 		res.Errmsg = err.Error()
+		models.ProjectModel.Del(project.Id)
 	}
 
+	res.Errno = 0
+	res.Data = project
+	r.JSON(200, res)
+}
+
+func (c Project) Del(r render.Render, req *http.Request) {
+	res := NewRes()
+	id := req.URL.Query().Get("id")
+	idint, err := strconv.Atoi(id)
+	if err != nil {
+		res.Errmsg = err.Error()
+		r.JSON(200, res)
+		return
+	}
+
+	if err = models.ProjectModel.Del(idint); err != nil {
+		res.Errmsg = err.Error()
+		r.JSON(200, res)
+		return
+	}
+
+	res.Errno = 0
+	r.JSON(200, res)
+}
+
+func (c Project) Update(r render.Render, req *http.Request) {
+	res := NewRes()
+	id := req.URL.Query().Get("id")
+	pid := req.URL.Query().Get("pid")
+	name := req.URL.Query().Get("name")
+	path := req.URL.Query().Get("path")
+	note := req.URL.Query().Get("note")
+
+	idint, err := strconv.Atoi(id)
+	if err != nil {
+		res.Errmsg = err.Error()
+		r.JSON(200, res)
+		return
+	}
+
+	pidint, err := strconv.Atoi(pid)
+	if err != nil {
+		res.Errmsg = err.Error()
+		r.JSON(200, res)
+		return
+	}
+
+	if err := models.ProjectModel.Update(idint, pidint, name, path, note); err != nil {
+		res.Errmsg = err.Error()
+		r.JSON(200, res)
+		return
+	}
+
+	res.Errno = 0
 	r.JSON(200, res)
 }

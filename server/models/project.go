@@ -19,10 +19,15 @@ func (m Project) TableName() string {
 	return "project"
 }
 
+func (m Project) TableUnique() [][]string {
+	return [][]string{
+		[]string{"Pid", "Name"},
+	}
+}
+
 func (m Project) GetAll() ([]*Project, error) {
-	var project []*Project
-	_, err := DB.QueryTable(m.TableName()).All(&project)
-	if err != nil {
+	project := []*Project{}
+	if _, err := DB.QueryTable(m.TableName()).All(&project); err != nil {
 		return nil, err
 	}
 
@@ -30,19 +35,18 @@ func (m Project) GetAll() ([]*Project, error) {
 }
 
 func (m Project) GetOne(id int) (*Project, error) {
-	var project *Project = &Project{
+	project := &Project{
 		Id: id,
 	}
-	err := DB.Read(&project)
-	if err != nil {
+	if err := DB.Read(&project); err != nil {
 		return nil, err
 	}
 
 	return project, nil
 }
 
-func (m Project) Add(pid int, name, path, note string) (int, error) {
-	var project *Project = &Project{
+func (m Project) Add(pid int, name, path, note string) (*Project, error) {
+	project := &Project{
 		Pid:     pid,
 		Name:    name,
 		Path:    path,
@@ -51,8 +55,40 @@ func (m Project) Add(pid int, name, path, note string) (int, error) {
 	}
 	id, err := DB.Insert(project)
 	if err != nil {
-		return 0, err
+		return nil, err
 	}
 
-	return int(id), nil
+	project, err = m.GetOne(int(id))
+	if err != nil {
+		return nil, err
+	}
+
+	return project, nil
+}
+
+func (m Project) Del(id int) error {
+	project := &Project{
+		Id: id,
+	}
+	if _, err := DB.Delete(project); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m Project) Update(id, pid int, name, path, note string) error {
+	project := &Project{
+		Id:      id,
+		Pid:     pid,
+		Name:    name,
+		Path:    path,
+		Note:    note,
+		Created: time.Now(),
+	}
+	if _, err := DB.Update(project); err != nil {
+		return err
+	}
+
+	return nil
 }
