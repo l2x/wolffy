@@ -64,12 +64,12 @@ func (c Product) Update(r render.Render, req *http.Request) {
 		return
 	}
 
-	err = models.ProductModel.Update(idint, name, note)
+	product, err := models.ProductModel.Update(idint, name, note)
 	if err = RenderError(r, res, err); err != nil {
 		return
 	}
 
-	RenderRes(r, res, map[string]string{})
+	RenderRes(r, res, product)
 }
 
 func (c Product) Del(r render.Render, req *http.Request) {

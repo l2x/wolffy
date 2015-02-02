@@ -84,10 +84,10 @@ func (c Cluster) Update(r render.Render, req *http.Request) {
 		return
 	}
 
-	err = models.ClusterModel.Update(idint, name, tags, machine, note)
+	cluster, err := models.ClusterModel.Update(idint, name, tags, machine, note)
 	if err = RenderError(r, res, err); err != nil {
 		return
 	}
 
-	RenderRes(r, res, map[string]string{})
+	RenderRes(r, res, cluster)
 }

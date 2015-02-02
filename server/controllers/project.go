@@ -144,10 +144,10 @@ func (c Project) Update(r render.Render, req *http.Request) {
 		return
 	}
 
-	err = models.ProjectModel.Update(idint, pidint, name, path, note)
+	project, err := models.ProjectModel.Update(idint, pidint, name, path, note)
 	if err = RenderError(r, res, err); err != nil {
 		return
 	}
 
-	RenderRes(r, res, map[string]string{})
+	RenderRes(r, res, project)
 }

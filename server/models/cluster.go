@@ -78,7 +78,7 @@ func (m Cluster) Add(name, tags, machine, note string) (*Cluster, error) {
 	return cluster, nil
 }
 
-func (m Cluster) Update(id int, name, tags, machine, note string) error {
+func (m Cluster) Update(id int, name, tags, machine, note string) (*Cluster, error) {
 	cluster := &Cluster{
 		Id:      id,
 		Name:    name,
@@ -89,10 +89,10 @@ func (m Cluster) Update(id int, name, tags, machine, note string) error {
 	}
 	_, err := DB.Update(cluster)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
-	return nil
+	return cluster, nil
 }
 
 func (m Cluster) Del(id int) error {

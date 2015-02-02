@@ -77,7 +77,7 @@ func (m Project) Del(id int) error {
 	return nil
 }
 
-func (m Project) Update(id, pid int, name, path, note string) error {
+func (m Project) Update(id, pid int, name, path, note string) (*Project, error) {
 	project := &Project{
 		Id:      id,
 		Pid:     pid,
@@ -87,8 +87,8 @@ func (m Project) Update(id, pid int, name, path, note string) error {
 		Created: time.Now(),
 	}
 	if _, err := DB.Update(project); err != nil {
-		return err
+		return nil, err
 	}
 
-	return nil
+	return project, nil
 }

@@ -61,7 +61,7 @@ func (m Product) Add(name, note string) (*Product, error) {
 	return product, nil
 }
 
-func (m Product) Update(id int, name, note string) error {
+func (m Product) Update(id int, name, note string) (*Product, error) {
 	product := &Product{
 		Id:      id,
 		Name:    name,
@@ -70,10 +70,10 @@ func (m Product) Update(id int, name, note string) error {
 	}
 
 	if _, err := DB.Update(product); err != nil {
-		return err
+		return nil, err
 	}
 
-	return nil
+	return product, nil
 }
 
 func (m Product) Del(id int) error {
