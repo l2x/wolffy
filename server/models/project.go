@@ -1,6 +1,10 @@
 package models
 
-import "time"
+import (
+	"time"
+
+	"github.com/astaxie/beego/orm"
+)
 
 var (
 	ProjectModel = &Project{}
@@ -26,6 +30,20 @@ func (m Project) TableUnique() [][]string {
 	return [][]string{
 		[]string{"Name"},
 	}
+}
+
+func (m Project) Search(key string) ([]*Project, error) {
+	projects := []*Project{}
+
+	cond := orm.NewCondition()
+	cond1 := cond.Or("Name__icontains", key).Or("Tags__icontains", key)
+
+	_, err := DB.QueryTable(m.TableName()).SetCond(cond1).All(&projects)
+	if err != nil {
+		return nil, err
+	}
+
+	return projects, nil
 }
 
 func (m Project) GetAll() ([]*Project, error) {

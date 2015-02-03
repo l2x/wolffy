@@ -26,6 +26,7 @@ func router() {
 	m.Get("/project/update/", project.Update)
 	m.Get("/project/gettags/", project.GetTags)
 	m.Get("/project/diff/", project.Diff)
+	m.Get("/project/search/", project.Search)
 
 	cluster := controllers.Cluster{}
 	m.Get("/cluster/add/", cluster.Add)
