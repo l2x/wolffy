@@ -15,10 +15,6 @@ define(['angularAMD'], function (angularAMD) {
 
         $scope.menu = menu
 
-        $scope.gotoAnchor = function (x) {
-
-
-        }
     }])
 
 

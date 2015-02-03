@@ -26,3 +26,29 @@
 sidebar{
     padding-right: 10px;
 }
+
+.docs-menu .md-button {
+border-radius: 0;
+color: inherit;
+cursor: pointer;
+font-weight: 400;
+line-height: 40px;
+margin: 0;
+max-height: 40px;
+overflow: hidden;
+padding: 0px 16px;
+text-align: left;
+text-decoration: none;
+white-space: normal;
+width: 100%;
+}
+
+.docs-menu, .docs-menu ul {
+list-style: none;
+padding: 0;
+}
+.docs-menu .menu-toggle-list a.md-button {
+display: block;
+padding: 0 16px 0 32px;
+text-transform: none;
+}
