@@ -22,7 +22,8 @@ func InitModels() error {
 	orm.RegisterModel(ProjectModel)
 	orm.RegisterModel(ClusterModel)
 	orm.RegisterModel(DeployModel)
-	orm.RegisterModel(ProductModel)
+	orm.RegisterModel(ProjectClusterModel)
+	orm.RegisterModel(MachineModel)
 
 	err := orm.RunSyncdb("default", false, true)
 	if err != nil {

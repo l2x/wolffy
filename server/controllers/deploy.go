@@ -41,7 +41,7 @@ func (c Deploy) Push(r render.Render, req *http.Request) {
 	//TODO push code to agent
 
 	//finish
-	err = models.Deploy.UpdateStatus(deploy.Id, 2)
+	err = models.DeployModel.UpdateStatus(deploy.Id, 2)
 	if err = RenderError(r, res, err); err != nil {
 		return
 	}

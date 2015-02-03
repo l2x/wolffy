@@ -14,6 +14,8 @@ type Project struct {
 	Tags     string
 	Note     string
 	Created  time.Time
+
+	ProjectClusters []*ProjectCluster `orm:"-"`
 }
 
 func (m Project) TableName() string {
@@ -22,7 +24,7 @@ func (m Project) TableName() string {
 
 func (m Project) TableUnique() [][]string {
 	return [][]string{
-		[]string{"Pid", "Name"},
+		[]string{"Name"},
 	}
 }
 
@@ -42,6 +44,8 @@ func (m Project) GetOne(id int) (*Project, error) {
 	if err := DB.QueryTable(m.TableName()).Filter("Id", id).One(project); err != nil {
 		return nil, err
 	}
+
+	project.ProjectClusters, _ = ProjectClusterModel.GetAll(project.Id)
 
 	return project, nil
 }
