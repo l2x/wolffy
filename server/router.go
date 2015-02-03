@@ -27,13 +27,6 @@ func router() {
 	m.Get("/project/gettags/", project.GetTags)
 	m.Get("/project/diff/", project.Diff)
 
-	product := controllers.Product{}
-	m.Get("/product/add/", product.Add)
-	m.Get("/product/get/", product.Get)
-	m.Get("/product/getall/", product.GetAll)
-	m.Get("/product/del/", product.Del)
-	m.Get("/product/update/", product.Update)
-
 	cluster := controllers.Cluster{}
 	m.Get("/cluster/add/", cluster.Add)
 	m.Get("/cluster/del/", cluster.Del)

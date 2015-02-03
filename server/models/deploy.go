@@ -1,6 +1,10 @@
 package models
 
-import "time"
+import (
+	"time"
+
+	"github.com/astaxie/beego/orm"
+)
 
 var (
 	DeployModel = &Deploy{}
@@ -10,6 +14,7 @@ type Deploy struct {
 	Id      int
 	Pid     int
 	Commit  string
+	Status  int
 	Created time.Time
 }
 
@@ -46,6 +51,7 @@ func (m Deploy) Add(pid int, commit string) (*Deploy, error) {
 	deploy := &Deploy{
 		Pid:     pid,
 		Commit:  commit,
+		Status:  0,
 		Created: time.Now(),
 	}
 	id, err := DB.Insert(deploy)
@@ -59,4 +65,13 @@ func (m Deploy) Add(pid int, commit string) (*Deploy, error) {
 	}
 
 	return deploy, nil
+}
+
+func (m Deploy) UpdateStatus(id, status int) error {
+	_, err := DB.QueryTable(m.TableName()).Filter("Id", id).Update(orm.Params{"Status": status})
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

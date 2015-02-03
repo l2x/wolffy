@@ -28,7 +28,7 @@ func (m Cluster) TableUnique() [][]string {
 func (m Cluster) Search(name string) ([]*Cluster, error) {
 	var clusters []*Cluster
 
-	_, err := DB.QueryTable(m.TableName()).Filter("name__contains", name).All(&clusters)
+	_, err := DB.QueryTable(m.TableName()).Filter("Name__icontains", name).All(&clusters)
 	if err != nil {
 		return nil, err
 	}

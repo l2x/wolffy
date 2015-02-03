@@ -27,14 +27,21 @@ func (c Deploy) Push(r render.Render, req *http.Request) {
 		return
 	}
 
-	//TODO push code to agent
 	project, err := models.ProjectModel.GetOne(pidint)
 	if err = RenderError(r, res, err); err != nil {
 		return
 	}
 
-	repo := git.NewRepository(config.BasePath, project.Path)
+	repo := git.NewRepository(config.RepoPath, project.Path)
 	err = repo.Archive(commit, repo.Path)
+	if err = RenderError(r, res, err); err != nil {
+		return
+	}
+
+	//TODO push code to agent
+
+	//finish
+	err = models.Deploy.UpdateStatus(deploy.Id, 2)
 	if err = RenderError(r, res, err); err != nil {
 		return
 	}

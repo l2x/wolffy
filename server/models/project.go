@@ -7,12 +7,13 @@ var (
 )
 
 type Project struct {
-	Id      int
-	Pid     int
-	Name    string
-	Path    string
-	Note    string
-	Created time.Time
+	Id       int
+	Name     string
+	Path     string
+	PushPath string
+	Tags     string
+	Note     string
+	Created  time.Time
 }
 
 func (m Project) TableName() string {
@@ -45,13 +46,14 @@ func (m Project) GetOne(id int) (*Project, error) {
 	return project, nil
 }
 
-func (m Project) Add(pid int, name, path, note string) (*Project, error) {
+func (m Project) Add(name, path, pushpath, tags, note string) (*Project, error) {
 	project := &Project{
-		Pid:     pid,
-		Name:    name,
-		Path:    path,
-		Note:    note,
-		Created: time.Now(),
+		Name:     name,
+		Path:     path,
+		PushPath: pushpath,
+		Tags:     tags,
+		Note:     note,
+		Created:  time.Now(),
 	}
 	id, err := DB.Insert(project)
 	if err != nil {
@@ -77,14 +79,15 @@ func (m Project) Del(id int) error {
 	return nil
 }
 
-func (m Project) Update(id, pid int, name, path, note string) (*Project, error) {
+func (m Project) Update(id int, name, path, pushpath, tags, note string) (*Project, error) {
 	project := &Project{
-		Id:      id,
-		Pid:     pid,
-		Name:    name,
-		Path:    path,
-		Note:    note,
-		Created: time.Now(),
+		Id:       id,
+		Name:     name,
+		Path:     path,
+		PushPath: pushpath,
+		Tags:     tags,
+		Note:     note,
+		Created:  time.Now(),
 	}
 	if _, err := DB.Update(project); err != nil {
 		return nil, err

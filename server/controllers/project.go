@@ -29,7 +29,7 @@ func (c Project) Diff(r render.Render, req *http.Request) {
 		return
 	}
 
-	repo := git.NewRepository(config.BasePath, project.Path)
+	repo := git.NewRepository(config.RepoPath, project.Path)
 	diff, err := repo.Diff(commita, commitb)
 	if err = RenderError(r, res, err); err != nil {
 		return
@@ -51,7 +51,7 @@ func (c Project) GetTags(r render.Render, req *http.Request) {
 		return
 	}
 
-	repo := git.NewRepository(config.BasePath, project.Path)
+	repo := git.NewRepository(config.RepoPath, project.Path)
 	err = repo.PullTags()
 	if err = RenderError(r, res, err); err != nil {
 		return
@@ -85,22 +85,18 @@ func (c Project) Add(r render.Render, req *http.Request) {
 	res := NewRes()
 
 	//path := "git@123.57.75.209:leiyonglin/wolffy.git"
-	pid := req.URL.Query().Get("pid")
 	name := req.URL.Query().Get("name")
 	path := req.URL.Query().Get("path")
+	pushpath := req.URL.Query().Get("pushpath")
+	tags := req.URL.Query().Get("tags")
 	note := req.URL.Query().Get("note")
 
-	pidint, err := strconv.Atoi(pid)
+	project, err := models.ProjectModel.Add(name, path, pushpath, tags, note)
 	if err = RenderError(r, res, err); err != nil {
 		return
 	}
 
-	project, err := models.ProjectModel.Add(pidint, name, path, note)
-	if err = RenderError(r, res, err); err != nil {
-		return
-	}
-
-	repo := git.NewRepository(config.BasePath, path)
+	repo := git.NewRepository(config.RepoPath, project.Path)
 	_, err = repo.Clone()
 	if err = RenderError(r, res, err); err != nil {
 		models.ProjectModel.Del(project.Id)
@@ -129,9 +125,10 @@ func (c Project) Del(r render.Render, req *http.Request) {
 func (c Project) Update(r render.Render, req *http.Request) {
 	res := NewRes()
 	id := req.URL.Query().Get("id")
-	pid := req.URL.Query().Get("pid")
 	name := req.URL.Query().Get("name")
 	path := req.URL.Query().Get("path")
+	pushpath := req.URL.Query().Get("pushpath")
+	tags := req.URL.Query().Get("tags")
 	note := req.URL.Query().Get("note")
 
 	idint, err := strconv.Atoi(id)
@@ -139,12 +136,7 @@ func (c Project) Update(r render.Render, req *http.Request) {
 		return
 	}
 
-	pidint, err := strconv.Atoi(pid)
-	if err = RenderError(r, res, err); err != nil {
-		return
-	}
-
-	project, err := models.ProjectModel.Update(idint, pidint, name, path, note)
+	project, err := models.ProjectModel.Update(idint, name, path, pushpath, tags, note)
 	if err = RenderError(r, res, err); err != nil {
 		return
 	}
