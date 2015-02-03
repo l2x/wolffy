@@ -16,9 +16,8 @@ require.config({
         ngAria: 'libs/angular-aria/angular-aria.min',
         ngAnimate: 'libs/angular-animate/angular-animate.min',
         angularLoadingBar: 'libs/angular-loading-bar/build/loading-bar.min',
-        ngMaterial: 'libs/angular-material/angular-material.min',
-        ngStrap: 'libs/angular-strap/angular-strap.min',
-        ngStrapTpl: 'libs/angular-strap/angular-strap.tpl.min'
+        ngMaterial: 'libs/angular-material/angular-material.min'
+
     },
     shim: {
         angular: {
@@ -34,9 +33,7 @@ require.config({
         angularLoadingBar: ['ngAnimate'],
         ngload: ['angularAMD'],
         hammerProxy: ['hammer'],
-        ngMaterial: ['angular', 'hammerProxy', 'ngAnimate', 'ngAria'],
-        ngStrap: ['angular'],
-        ngStrapTpl: ['angular', 'ngStrap']
+        ngMaterial: ['angular', 'hammerProxy', 'ngAnimate', 'ngAria']
     },
     deps:['app'],
     baseUrl: 'js/',

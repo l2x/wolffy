@@ -10,9 +10,7 @@ define([
     'ngAnimate',
     'ngAria',
     'ngMaterial',
-    'angularLoadingBar',
-    'ngStrap',
-    'ngStrapTpl'
+    'angularLoadingBar'
 
 ], function (angularAMD, sidebar) {
     var app = angular.module("myApp", [
@@ -21,21 +19,26 @@ define([
         'ngAnimate',
         'ngResource',
         'angular-loading-bar',
-        'ngMaterial',
-        'mgcrea.ngStrap'
+        'ngMaterial'
     ]);
 
-    app.config(['$routeProvider', '$locationProvider', 'cfpLoadingBarProvider', function($routeProvider, $locationProvider, cfpLoadingBarProvider) {
+    app.config(['$routeProvider', '$locationProvider', 'cfpLoadingBarProvider',
+        function($routeProvider, $locationProvider, cfpLoadingBarProvider) {
         $routeProvider
+            .when("/", angularAMD.route({
+                templateUrl: './views/latest/index.html',
+                controllerUrl: '../views/latest/ctrl'
+            }))
             .when("/view1", angularAMD.route({
                 templateUrl: './views/view1/index.html',
                 controllerUrl: '../views/view1/ctrl'
             }))
-            .otherwise({redirectTo: '/view1'});
+            .otherwise({redirectTo: '/'});
 
         //$locationProvider.html5Mode(true);
         cfpLoadingBarProvider.includeSpinner = false;
     }]);
+
 
 
     return angularAMD.bootstrap(app);
