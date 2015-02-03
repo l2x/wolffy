@@ -41,5 +41,9 @@ func router() {
 	m.Get("/cluster/getall/", cluster.GetAll)
 	m.Get("/cluster/update/", cluster.Update)
 
+	deploy := controllers.Deploy{}
+	m.Get("/deploy/push/", deploy.Push)
+	m.Get("/deploy/history/", deploy.History)
+
 	m.RunOnAddr(":8000")
 }

@@ -28,21 +28,20 @@ func NewRepository(basePath, remotePath string) *Repository {
 		RemotePath: remotePath,
 	}
 	repo.Name = repo.GetName()
-	repo.Path = fmt.Sprintf("%s/%s", strings.TrimRight(repo.BasePath, "/"), repo.Name)
+	repo.Path = fmt.Sprintf("%s/%s", strings.TrimRight(repo.BasePath, "/"), repo.RemotePath)
 
 	return repo
 }
 
 // get repository name
 func (repo *Repository) GetName() string {
-	return repo.RemotePath
-	//parts := strings.Split(repo.RemotePath, "/")
-	//return strings.TrimRight(parts[len(parts)-1], ".git")
+	parts := strings.Split(repo.RemotePath, "/")
+	return strings.TrimRight(parts[len(parts)-1], ".git")
 }
 
 // clone repository
 func (repo *Repository) Clone() (string, error) {
-	stdout, stderr, err := com.ExecCmdDir(repo.BasePath, "git", "clone", repo.RemotePath, repo.Name)
+	stdout, stderr, err := com.ExecCmdDir(repo.BasePath, "git", "clone", repo.RemotePath, repo.RemotePath)
 	if err != nil {
 		return "", errors.New(stderr)
 	}
@@ -108,10 +107,15 @@ func (repo *Repository) DelTags(commit string) error {
 }
 
 //archive
+//git archive --format=tar.gz --prefix=wolffy-0.1.3/ 0.1.3 --output /tmp/wolffy-0.1.3.tag.gz
 func (repo *Repository) Archive(commit, spath string) error {
-	_, stderr, err := com.ExecCmdDir(repo.Path, "git", "archive", "--format", "zip", "--output", spath, commit, "-9")
+	prefix := fmt.Sprintf("%s-%s/", repo.Name, commit)
+	spath = fmt.Sprintf("%s-%s%s", spath, commit, ".tar.gz")
+
+	_, stderr, err := com.ExecCmdDir(repo.Path, "git", "archive", "--format", "tar.gz", "--prefix", prefix, commit, "--output", spath)
+
 	if err != nil {
-		return errors.New(stderr)
+		return errors.New(err.Error() + "\n" + stderr)
 	}
 	return nil
 }

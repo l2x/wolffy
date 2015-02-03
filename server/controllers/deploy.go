@@ -4,7 +4,9 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/l2x/wolffy/server/config"
 	"github.com/l2x/wolffy/server/models"
+	"github.com/l2x/wolffy/utils/git"
 	"github.com/martini-contrib/render"
 )
 
@@ -26,6 +28,16 @@ func (c Deploy) Push(r render.Render, req *http.Request) {
 	}
 
 	//TODO push code to agent
+	project, err := models.ProjectModel.GetOne(pidint)
+	if err = RenderError(r, res, err); err != nil {
+		return
+	}
+
+	repo := git.NewRepository(config.BasePath, project.Path)
+	err = repo.Archive(commit, repo.Path)
+	if err = RenderError(r, res, err); err != nil {
+		return
+	}
 
 	RenderRes(r, res, deploy)
 }
