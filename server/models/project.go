@@ -18,6 +18,7 @@ type Project struct {
 	Tags     string
 	Note     string
 	Created  time.Time
+	Modified time.Time
 
 	ProjectClusters []*ProjectCluster `orm:"-"`
 }
@@ -76,6 +77,7 @@ func (m Project) Add(name, path, pushpath, tags, note string) (*Project, error) 
 		Tags:     tags,
 		Note:     note,
 		Created:  time.Now(),
+		Modified: time.Now(),
 	}
 	id, err := DB.Insert(project)
 	if err != nil {
@@ -109,9 +111,9 @@ func (m Project) Update(id int, name, path, pushpath, tags, note string) (*Proje
 		PushPath: pushpath,
 		Tags:     tags,
 		Note:     note,
-		Created:  time.Now(),
+		Modified: time.Now(),
 	}
-	if _, err := DB.Update(project); err != nil {
+	if _, err := DB.Update(project, "Name", "Path", "PushPath", "Tags", "Note", "Modified"); err != nil {
 		return nil, err
 	}
 

@@ -15,6 +15,7 @@ type ProjectCluster struct {
 	Eshell        string
 	Note          string
 	Created       time.Time
+	Modified      time.Time
 }
 
 func (m ProjectCluster) TableName() string {
@@ -49,6 +50,26 @@ func (m ProjectCluster) Del(id int) error {
 	return nil
 }
 
+func (m ProjectCluster) Add(pid, cid int, customMachine, bshell, eshell, note string) (*ProjectCluster, error) {
+	projectCluster := &ProjectCluster{
+		Pid:           pid,
+		Cid:           cid,
+		CustomMachine: customMachine,
+		Bshell:        bshell,
+		Eshell:        eshell,
+		Note:          note,
+		Created:       time.Now(),
+		Modified:      time.Now(),
+	}
+
+	_, err := DB.Insert(projectCluster)
+	if err != nil {
+		return nil, err
+	}
+
+	return projectCluster, nil
+}
+
 func (m ProjectCluster) Update(id, pid, cid int, customMachine, bshell, eshell, note string) (*ProjectCluster, error) {
 	projectCluster := &ProjectCluster{
 		Id:            id,
@@ -58,10 +79,10 @@ func (m ProjectCluster) Update(id, pid, cid int, customMachine, bshell, eshell, 
 		Bshell:        bshell,
 		Eshell:        eshell,
 		Note:          note,
-		Created:       time.Now(),
+		Modified:      time.Now(),
 	}
 
-	_, err := DB.Update(projectCluster)
+	_, err := DB.Update(projectCluster, "Pid", "Cid", "CustomMachine", "Bshell", "Eshell", "Note", "Modified")
 	if err != nil {
 		return nil, err
 	}

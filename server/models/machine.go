@@ -7,12 +7,14 @@ var (
 )
 
 type Machine struct {
-	Id      int
-	Ip      string
-	Port    string
-	Note    string
-	Status  int
-	Created time.Time
+	Id       int
+	Ip       string
+	Port     string
+	Note     string
+	Token    string
+	Status   int
+	Created  time.Time
+	Modified time.Time
 }
 
 func (m Machine) TableName() string {
@@ -59,9 +61,10 @@ func (m Machine) GetOne(id int) (*Machine, error) {
 
 func (m Machine) Add(ip, port, note string) (*Machine, error) {
 	machine := &Machine{
-		Ip:      ip,
-		Note:    note,
-		Created: time.Now(),
+		Ip:       ip,
+		Note:     note,
+		Created:  time.Now(),
+		Modified: time.Now(),
 	}
 
 	id, err := DB.Insert(machine)
@@ -77,16 +80,17 @@ func (m Machine) Add(ip, port, note string) (*Machine, error) {
 	return machine, nil
 }
 
-func (m Machine) Update(id int, ip, port, note string, status int) (*Machine, error) {
+func (m Machine) Update(id int, ip, port, note, token string, status int) (*Machine, error) {
 	machine := &Machine{
-		Id:      id,
-		Ip:      ip,
-		Port:    port,
-		Note:    note,
-		Status:  status,
-		Created: time.Now(),
+		Id:       id,
+		Ip:       ip,
+		Port:     port,
+		Note:     note,
+		Token:    token,
+		Status:   status,
+		Modified: time.Now(),
 	}
-	_, err := DB.Update(machine)
+	_, err := DB.Update(machine, "Ip", "Port", "Note", "Token", "Status", "Modified")
 	if err != nil {
 		return nil, err
 	}
@@ -94,6 +98,7 @@ func (m Machine) Update(id int, ip, port, note string, status int) (*Machine, er
 	return machine, nil
 }
 
+// set status
 func (m Machine) Del(id int) error {
 	machine := &Machine{
 		Id:     id,

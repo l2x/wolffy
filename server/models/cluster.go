@@ -7,12 +7,13 @@ var (
 )
 
 type Cluster struct {
-	Id      int
-	Name    string
-	Tags    string
-	Machine string
-	Note    string
-	Created time.Time
+	Id       int
+	Name     string
+	Tags     string
+	Machine  string
+	Note     string
+	Created  time.Time
+	Modified time.Time
 }
 
 func (m Cluster) TableName() string {
@@ -59,11 +60,12 @@ func (m Cluster) GetOne(id int) (*Cluster, error) {
 
 func (m Cluster) Add(name, tags, machine, note string) (*Cluster, error) {
 	cluster := &Cluster{
-		Name:    name,
-		Tags:    tags,
-		Machine: machine,
-		Note:    note,
-		Created: time.Now(),
+		Name:     name,
+		Tags:     tags,
+		Machine:  machine,
+		Note:     note,
+		Created:  time.Now(),
+		Modified: time.Now(),
 	}
 	id, err := DB.Insert(cluster)
 	if err != nil {
@@ -80,14 +82,14 @@ func (m Cluster) Add(name, tags, machine, note string) (*Cluster, error) {
 
 func (m Cluster) Update(id int, name, tags, machine, note string) (*Cluster, error) {
 	cluster := &Cluster{
-		Id:      id,
-		Name:    name,
-		Tags:    tags,
-		Machine: machine,
-		Note:    note,
-		Created: time.Now(),
+		Id:       id,
+		Name:     name,
+		Tags:     tags,
+		Machine:  machine,
+		Note:     note,
+		Modified: time.Now(),
 	}
-	_, err := DB.Update(cluster)
+	_, err := DB.Update(cluster, "Name", "Tags", "Machine", "Note", "Modified")
 	if err != nil {
 		return nil, err
 	}
