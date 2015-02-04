@@ -20,11 +20,12 @@ func InitModels() error {
 	orm.RegisterDriver("sqlite3", orm.DR_Sqlite)
 	orm.RegisterDataBase("default", "sqlite3", dbPath)
 
-	orm.RegisterModel(ProjectModel)
 	orm.RegisterModel(ClusterModel)
 	orm.RegisterModel(DeployModel)
-	orm.RegisterModel(ProjectClusterModel)
+	orm.RegisterModel(DeployHistoryModel)
 	orm.RegisterModel(MachineModel)
+	orm.RegisterModel(ProjectModel)
+	orm.RegisterModel(ProjectClusterModel)
 
 	err := orm.RunSyncdb("default", false, true)
 	if err != nil {
