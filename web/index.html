@@ -27,12 +27,12 @@
     <md-content class="" ng-controller="sidebarCtrl">
         <md-button ng-click="close()" class="md-primary" hide-gt-sm>Close Sidenav Left</md-button>
 
-        <div ng-repeat="m in menu" class="docs-menu">
-            <md-button class="md-button-toggle" ng-click="toggle()"> 菜单菜单</md-button>
-            <ul class="menu-toggle-list">
-                <li>
-                    <a class="md-button md-default-theme" class="active" href="#/">
-                        <span class="">Container Elements</span>
+        <div ng-repeat="menu in menus" class="docs-menu">
+            <md-button class="md-button-toggle" ng-click="goto(menu.url)">{{menu.name}}</md-button>
+            <ul class="menu-toggle-list" ng-if="menu.type==0 && menu.children.length>0">
+                <li ng-repeat="child in menu.children">
+                    <a class="md-button md-default-theme" class="active" ng-href="#{{child.url}}">
+                        <span class="">{{child.name}}</span>
                     </a>
                 </li>
             </ul>

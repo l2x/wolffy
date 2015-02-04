@@ -26,8 +26,12 @@ define([
         function($routeProvider, $locationProvider, cfpLoadingBarProvider) {
         $routeProvider
             .when("/", angularAMD.route({
-                templateUrl: './views/latest/index.html',
-                controllerUrl: '../views/latest/ctrl'
+                templateUrl: './views/project_push/index.html',
+                controllerUrl: '../views/project_push/ctrl'
+            }))
+            .when("/project_push", angularAMD.route({
+                templateUrl: './views/project_push/index.html',
+                controllerUrl: '../views/project_push/ctrl'
             }))
             .when("/view1", angularAMD.route({
                 templateUrl: './views/view1/index.html',
