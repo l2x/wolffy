@@ -20,8 +20,9 @@ func init() {
 		panic(err)
 	}
 
-	router()
 }
 
 func main() {
+
+	router()
 }
