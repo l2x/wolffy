@@ -25,14 +25,14 @@
         <h1 class="md-toolbar-tools">wolffy</h1>
     </md-toolbar>
     <md-content class="" ng-controller="sidebarCtrl">
-        <md-button ng-click="close()" class="md-primary" hide-gt-sm>Close Sidenav Left</md-button>
+        <md-button ng-click="close()" class="md-primary" hide-gt-sm>{{'CLOSE' | translate}}</md-button>
 
         <div ng-repeat="menu in menus" class="docs-menu">
-            <md-button class="md-button-toggle" ng-click="goto(menu.url)">{{menu.name}}</md-button>
+            <md-button class="md-button-toggle" ng-click="goto(menu.url)">{{menu.name | translate}}</md-button>
             <ul class="menu-toggle-list" ng-if="menu.type==0 && menu.children.length>0">
                 <li ng-repeat="child in menu.children">
                     <a class="md-button md-default-theme" class="active" ng-href="#{{child.url}}">
-                        <span class="">{{child.name}}</span>
+                        <span class="">{{child.name | translate}}</span>
                     </a>
                 </li>
             </ul>

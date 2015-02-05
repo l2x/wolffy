@@ -9,12 +9,12 @@ define(['angularAMD'], function (angularAMD) {
                 $mdSidenav('left').close()
             };
             var menus = [
-                {name: "项目发布", type: 1, url: "/project_push"},
+                {name: "PROJECT_PUSH", type: 1, url: "/project_push"},
                 {
-                    name: "管理", type: 0, children: [
-                        {name: "项目", url: "/view1"},
-                        {name: "集群", url: "/"},
-                        {name: "用户", url: "/"}
+                    name: "ADMIN", type: 0, children: [
+                        {name: "PROJECT", url: "/view1"},
+                        {name: "CLUSTER", url: "/"},
+                        {name: "USER", url: "/"}
                     ]
                 }
             ]

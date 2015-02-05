@@ -10,8 +10,9 @@ define([
     'ngAnimate',
     'ngAria',
     'ngMaterial',
-    'angularLoadingBar'
-
+    'angularLoadingBar',
+    'ngTranslate',
+    'ngTranslateLoader'
 ], function (angularAMD, sidebar) {
     var app = angular.module("myApp", [
         'ngRoute',
@@ -19,7 +20,8 @@ define([
         'ngAnimate',
         'ngResource',
         'angular-loading-bar',
-        'ngMaterial'
+        'ngMaterial',
+        'pascalprecht.translate'
     ]);
 
     app.config(['$routeProvider', '$locationProvider', 'cfpLoadingBarProvider',
@@ -41,9 +43,25 @@ define([
 
         //$locationProvider.html5Mode(true);
         cfpLoadingBarProvider.includeSpinner = false;
+
+
     }]);
 
+    app.config(['$translateProvider',
+        function($translateProvider) {
+            $translateProvider.useStaticFilesLoader({
+                prefix: './languages/',
+                suffix: '.json'
+            });
 
+            $translateProvider.determinePreferredLanguage(function () {
+                var supportLanguage = [
+                    'zh-cn'
+                ];
+
+                return 'zh-cn'
+            });
+        }]);
 
     return angularAMD.bootstrap(app);
 });
