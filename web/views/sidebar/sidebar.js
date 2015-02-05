@@ -18,26 +18,24 @@ define(['angularAMD'], function (angularAMD) {
                     ]
                 }
             ]
-
             $scope.menus = menus
 
             $scope.goto = function (menu) {
-                if(!menu || !menu.url) {
+                if (!menu || !menu.url) {
                     return
                 }
-
-                resetMenuActive($scope.menus, menu)
                 $location.path(menu.url)
+                resetMenuActive($scope.menus)
             }
 
-            function resetMenuActive(menus, menu) {
-                angular.forEach(menus, function(menu, k) {
-                    menus[k].active = false
-                    angular.forEach(menu.children, function(child, k2){
-                        menus[k].children[k2].active = false
+            function resetMenuActive(menus) {
+                var path = $location.path()
+                angular.forEach(menus, function (menu, k) {
+                    menus[k].active = path == menus[k].url ? true : false
+                    angular.forEach(menu.children, function (child, k2) {
+                        menus[k].children[k2].active = child.url == path ? true: false
                     })
                 })
-                menu.active = true
             }
         }])
 });

@@ -18,7 +18,8 @@ require.config({
         angularLoadingBar: 'libs/angular-loading-bar/build/loading-bar.min',
         ngMaterial: 'libs/angular-material/angular-material.min',
         ngTranslate:'libs/angular-translate/angular-translate.min',
-        ngTranslateLoader: 'libs/angular-translate-loader-static-files/angular-translate-loader-static-files.min'
+        ngTranslateLoader: 'libs/angular-translate-loader-static-files/angular-translate-loader-static-files.min',
+        ngSanitize:'libs/angular-sanitize/angular-sanitize.min'
     },
     shim: {
         angular: {
@@ -36,7 +37,8 @@ require.config({
         hammerProxy: ['hammer'],
         ngMaterial: ['angular', 'hammerProxy', 'ngAnimate', 'ngAria'],
         ngTranslate: ['angular'],
-        ngTranslateLoader: ['angular', 'ngTranslate']
+        ngTranslateLoader: ['angular', 'ngTranslate'],
+        ngSanitize: ['angular']
     },
     deps:['app'],
     baseUrl: 'js/',

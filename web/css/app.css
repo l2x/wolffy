@@ -32,6 +32,10 @@
     color: #ccc;
     font-size: 14px;
 }
+label{
+    margin-bottom: 0;
+    font-weight: normal;
+}
 
 .sidebar {
     padding-top: 20px;
