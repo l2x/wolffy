@@ -1,20 +1,30 @@
 .buttondemoBasicUsage {
-    /** From vulcanized demo **/ }
+    /** From vulcanized demo **/
+}
+
 .buttondemoBasicUsage section {
     background: #f7f7f7;
     border-radius: 3px;
     text-align: center;
     margin: 1em;
     position: relative !important;
-    padding-bottom: 10px; }
+    padding-bottom: 10px;
+}
+
 .buttondemoBasicUsage md-content {
-    margin-right: 7px; }
+    margin-right: 7px;
+}
+
 .buttondemoBasicUsage section .md-button:not(.md-fab) {
-    min-width: 10em; }
+    min-width: 10em;
+}
+
 .buttondemoBasicUsage section .md-button {
     display: block;
     margin: 1em;
-    line-height: 25px; }
+    line-height: 25px;
+}
+
 .buttondemoBasicUsage .label {
     position: absolute;
     bottom: 5px;
@@ -23,32 +33,38 @@
     font-size: 14px;
 }
 
-sidebar{
-    padding-right: 10px;
+.sidebar {
+    padding-top: 20px;
 }
 
 .docs-menu .md-button {
-border-radius: 0;
-color: inherit;
-cursor: pointer;
-font-weight: 400;
-line-height: 40px;
-margin: 0;
-max-height: 40px;
-overflow: hidden;
-padding: 0px 16px;
-text-align: left;
-text-decoration: none;
-white-space: normal;
-width: 100%;
+    border-radius: 0;
+    color: inherit;
+    cursor: pointer;
+    font-weight: 400;
+    line-height: 40px;
+    margin: 0;
+    max-height: 40px;
+    overflow: hidden;
+    padding: 0px 16px;
+    text-align: left;
+    text-decoration: none;
+    white-space: normal;
+    width: 100%;
 }
 
 .docs-menu, .docs-menu ul {
-list-style: none;
-padding: 0;
+    list-style: none;
+    padding: 0;
 }
+
 .docs-menu .menu-toggle-list a.md-button {
-display: block;
-padding: 0 16px 0 32px;
-text-transform: none;
+    display: block;
+    padding: 0 16px 0 32px;
+    text-transform: none;
+}
+
+.docs-menu .md-button.active {
+    color: #03a9f4;
+    background-color: rgba(158, 158, 158, 0.2);
 }
