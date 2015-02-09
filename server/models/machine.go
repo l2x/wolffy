@@ -6,15 +6,20 @@ var (
 	MachineModel = &Machine{}
 )
 
+// status
+// 0-未启用
+// 1-正常
+// -1-停用
 type Machine struct {
-	Id       int
-	Ip       string
-	Port     string
-	Note     string
-	Token    string
-	Status   int
-	Created  time.Time
-	Modified time.Time
+	Id         int
+	Ip         string
+	Port       string
+	Note       string
+	Token      string
+	Status     int
+	Created    time.Time
+	Modified   time.Time
+	LastReport time.Time
 }
 
 func (m Machine) TableName() string {
@@ -59,6 +64,18 @@ func (m Machine) GetOne(id int) (*Machine, error) {
 	return machine, nil
 }
 
+func (m Machine) GetOneByIp(ip string) (*Machine, error) {
+	machine := &Machine{
+		Ip: ip,
+	}
+
+	if err := DB.Read(machine); err != nil {
+		return nil, err
+	}
+
+	return machine, nil
+}
+
 func (m Machine) Add(ip, port, note string) (*Machine, error) {
 	machine := &Machine{
 		Ip:       ip,
@@ -80,17 +97,18 @@ func (m Machine) Add(ip, port, note string) (*Machine, error) {
 	return machine, nil
 }
 
-func (m Machine) Update(id int, ip, port, note, token string, status int) (*Machine, error) {
+func (m Machine) Update(id int, ip, port, note, token string, status int, lastReport time.Time) (*Machine, error) {
 	machine := &Machine{
-		Id:       id,
-		Ip:       ip,
-		Port:     port,
-		Note:     note,
-		Token:    token,
-		Status:   status,
-		Modified: time.Now(),
+		Id:         id,
+		Ip:         ip,
+		Port:       port,
+		Note:       note,
+		Token:      token,
+		Status:     status,
+		Modified:   time.Now(),
+		LastReport: lastReport,
 	}
-	_, err := DB.Update(machine, "Ip", "Port", "Note", "Token", "Status", "Modified")
+	_, err := DB.Update(machine, "Ip", "Port", "Note", "Token", "Status", "Modified", "LastReport")
 	if err != nil {
 		return nil, err
 	}
