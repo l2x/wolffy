@@ -16,7 +16,7 @@ func (c Machine) Report(r render.Render, req *http.Request) {
 	res := NewRes()
 
 	ip := req.URL.Query().Get("ip")
-	status := req.URL.Query().Get("status")
+	token := req.URL.Query().Get("token")
 
 	machine, err := models.MachineModel.GetOneByIp(ip)
 	if err = RenderError(r, res, err); err != nil {
@@ -33,5 +33,20 @@ func (c Machine) Report(r render.Render, req *http.Request) {
 		return
 	}
 
-	RenderRes(r, res, cluster)
+	RenderRes(r, res, machine)
+}
+
+func (c Machine) Add(r render.Render, req *http.Request) {
+	res := NewRes()
+
+	ip := req.URL.Query().Get("ip")
+	port := req.URL.Query().Get("port")
+	note := req.URL.Query().Get("note")
+
+	machine, err := models.MachineModel.Add(ip, port, note)
+	if err = RenderError(r, res, err); err != nil {
+		return
+	}
+
+	RenderRes(r, res, machine)
 }
