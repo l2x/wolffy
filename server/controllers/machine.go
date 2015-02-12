@@ -72,3 +72,17 @@ func (c Machine) Update(r render.Render, req *http.Request) {
 
 	RenderRes(r, res, machine)
 }
+
+func (c Machine) Del(r render.Render, req *http.Request) {
+	res := NewRes()
+
+	id := req.URL.Query().Get("id")
+	idint, _ := strconv.Atoi(id)
+	err := models.MachineModel.Del(idint)
+
+	if err = RenderError(r, res, err); err != nil {
+		return
+	}
+
+	RenderRes(r, res, map[string]string{})
+}
