@@ -60,6 +60,10 @@ func unzip(path, file string) error {
 }
 
 func runCmd(path, cmd string) error {
+	_, stderr, err := com.ExecCmdDir(path, "bash", "-c", cmd)
+	if err != nil {
+		return errors.New(err.Error() + "\n" + stderr)
+	}
 	return nil
 }
 
