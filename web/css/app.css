@@ -72,3 +72,16 @@ label{
     color: #03a9f4;
     background-color: rgba(158, 158, 158, 0.2);
 }
+
+.ml20{
+	margin-left: 20px
+}
+.mr20{
+	margin-right:20px
+}
+.mt20{
+	margin-top:20px
+}
+.mb20{
+	margin-bottom: 20px
+}

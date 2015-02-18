@@ -4,5 +4,6 @@
     "PROJECT":"项目",
     "CLUSTER":"集群",
     "USER": "用户",
-    "CLOSE": "关闭"
+    "CLOSE": "关闭",
+	"SEARCH": "搜索"
 }

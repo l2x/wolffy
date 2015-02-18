@@ -1,4 +1,4 @@
-"use strict";
+//"use strict";
 
 require.config({
     paths: {
@@ -32,7 +32,7 @@ require.config({
         ngMocks:['angular'],
         ngAnimate: ['angular'],
         ngAria: ['angular'],
-        angularLoadingBar: ['ngAnimate'],
+        angularLoadingBar: ['angular', 'ngAnimate'],
         ngload: ['angularAMD'],
         hammerProxy: ['hammer'],
         ngMaterial: ['angular', 'hammerProxy', 'ngAnimate', 'ngAria'],
@@ -45,4 +45,5 @@ require.config({
     urlArgs: "bust=" + (new Date()).getTime()
 })
 
-window.name = "NG_DEFER_BOOTSTRAP!";
+window.name = "NG_DEFER_BOOTSTRAP!"
+;;

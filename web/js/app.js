@@ -44,7 +44,6 @@ define([
         //$locationProvider.html5Mode(true);
         cfpLoadingBarProvider.includeSpinner = false;
 
-
     }]);
 
     app.config(['$translateProvider',
@@ -64,4 +63,5 @@ define([
         }]);
 
     return angularAMD.bootstrap(app);
-});
+})
+;
