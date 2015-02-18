@@ -1,9 +1,11 @@
 {
-    "PROJECT_PUSH": "项目发布",
+    "PROJECT_DEPLOY": "项目部署",
     "ADMIN":"管理",
     "PROJECT":"项目",
     "CLUSTER":"集群",
     "USER": "用户",
     "CLOSE": "关闭",
-	"SEARCH": "搜索"
+	"SEARCH": "搜索",
+	"EDIT": "编辑",
+	"DEPLOY": "部署"
 }

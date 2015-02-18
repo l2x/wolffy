@@ -4,14 +4,9 @@
     <div layout="row" layout-align="start center">
 
         <md-input-container>
-            <label>Title</label>
-            <input ng-model="user.title">
-        </md-input-container>
-        <md-input-container>
             <label>Email</label>
             <input ng-model="user.email" type="email">
         </md-input-container>
-
 		<md-button class="md-raised ml20">{{'SEARCH' | translate}}</md-button>
 
     </div>
@@ -35,7 +30,10 @@
         <td>1.1.2</td>
         <td>2015-01-01 12:09:22</td>
         <td>2015-02-05 23:31:05</td>
-        <td></td>
+        <td>
+			<md-button class="md-primary">{{'EDIT' | translate}}</md-button>
+			<md-button class="md-primary">{{'DEPLOY' | translate}}</md-button>
+		</td>
     </tr>
     <tr>
         <td>微密后台-消息模块</td>
