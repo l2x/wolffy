@@ -28,12 +28,12 @@ define([
         function($routeProvider, $locationProvider, cfpLoadingBarProvider) {
         $routeProvider
             .when("/", angularAMD.route({
-                templateUrl: './views/project_push/index.html',
-                controllerUrl: '../views/project_push/ctrl'
+                templateUrl: './views/project_deploy/index.html',
+                controllerUrl: '../views/project_deploy/ctrl'
             }))
             .when("/project_push", angularAMD.route({
-                templateUrl: './views/project_push/index.html',
-                controllerUrl: '../views/project_push/ctrl'
+                templateUrl: './views/project_deploy/index.html',
+                controllerUrl: '../views/project_deploy/ctrl'
             }))
             .when("/view1", angularAMD.route({
                 templateUrl: './views/view1/index.html',
@@ -63,5 +63,4 @@ define([
         }]);
 
     return angularAMD.bootstrap(app);
-})
-;
+});
