@@ -25,11 +25,14 @@ define(['angularAMD'], function (angularAMD) {
                     return
                 }
                 $location.path(menu.url)
-                resetMenuActive($scope.menus)
             }
 
-            function resetMenuActive(menus) {
-                var path = $location.path()
+			$scope.$on('$routeChangeSuccess', function(next, current) {
+                resetMenuActive($scope.menus, current.originalPath)
+			});
+
+            function resetMenuActive(menus, current) {
+                var path = current
                 angular.forEach(menus, function (menu, k) {
                     menus[k].active = path == menus[k].url ? true : false
                     angular.forEach(menu.children, function (child, k2) {

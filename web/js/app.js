@@ -31,7 +31,7 @@ define([
                 templateUrl: './views/project_deploy/index.html',
                 controllerUrl: '../views/project_deploy/ctrl'
             }))
-            .when("/project_push", angularAMD.route({
+            .when("/project_deploy", angularAMD.route({
                 templateUrl: './views/project_deploy/index.html',
                 controllerUrl: '../views/project_deploy/ctrl'
             }))
@@ -39,7 +39,7 @@ define([
                 templateUrl: './views/view1/index.html',
                 controllerUrl: '../views/view1/ctrl'
             }))
-            .otherwise({redirectTo: '/'});
+            .otherwise({redirectTo: '/project_deploy'});
 
         //$locationProvider.html5Mode(true);
         cfpLoadingBarProvider.includeSpinner = false;
