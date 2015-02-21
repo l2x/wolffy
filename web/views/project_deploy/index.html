@@ -4,10 +4,10 @@
     <div layout="row" layout-align="start center">
 
         <md-input-container>
-            <label>Email</label>
-            <input ng-model="user.email" type="email">
+		<label>{{'KEYWORD' | translate}}</label>
+            <input ng-model="args.keywords" type="text">
         </md-input-container>
-		<md-button class="md-raised ml20">{{'SEARCH' | translate}}</md-button>
+		<md-button class="md-raised ml20" ng-click="ev.search()">{{'SEARCH' | translate}}</md-button>
 
     </div>
 </md-content>
@@ -20,36 +20,20 @@
         <th>{{'VERSION' | translate}}</th>
         <th>{{'CREATED' | translate}}</th>
         <th>{{'MODIFIED' | translate}}</th>
-        <th>{{'ACTION' | translate}}</th>
+        <th class="txt-ac">{{'ACTION' | translate}}</th>
     </tr>
     </thead>
     <tbody>
-    <tr>
-        <td>后台-消息模块</td>
-        <td>后台, 消息</td>
-        <td>1.1.2</td>
-        <td>2015-01-01 12:09:22</td>
-        <td class="lh30">2015-02-05 23:31:05</td>
-        <td>
-			<md-button class="md-primary" ng-click="">{{'EDIT' | translate}}</md-button>
-			<md-button class="md-primary" ng-click="">{{'DEPLOY' | translate}}</md-button>
+    <tr ng-repeat="item in deployList">
+		<td>{{item.name}}</td>
+		<td>{{item.tags}}</td>
+		<td>{{item.version}}</td>
+		<td>{{item.created}}</td>
+		<td>{{item.modified}}</td>
+        <td class="txt-ac">
+			<md-button class="md-primary" ng-href="">{{'EDIT' | translate}}</md-button>
+			<md-button class="md-primary" ng-href="">{{'DEPLOY' | translate}}</md-button>
 		</td>
-    </tr>
-    <tr>
-        <td>后台-消息模块</td>
-        <td>后台, 消息</td>
-        <td>1.1.2</td>
-        <td>2015-01-01 12:09:22</td>
-        <td>2015-02-05 23:31:05</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>后台-消息模块</td>
-        <td>后台, 消息</td>
-        <td>1.1.2</td>
-        <td>2015-01-01 12:09:22</td>
-        <td>2015-02-05 23:31:05</td>
-        <td></td>
     </tr>
     </tbody>
 </table>

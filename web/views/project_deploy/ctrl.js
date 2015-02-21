@@ -1,21 +1,20 @@
 "use strict";
 
-define(['app'], function (app) {
-    return ['$scope',
-        function ($scope) {
-            $scope.name = "haha"
+define(['app', '../service/project_service'], function (app) {
+    return ['$scope', 'Project.Search', function ($scope, Search) {
+			$scope.args = {}
+			$scope.ev = {}
 
-            $scope.country = {};
-            $scope.countries = [
-                {name: 'Venezuela', code: 'VE'},
-                {name: 'Vietnam', code: 'VN'},
-                {name: 'Virgin Islands, British', code: 'VG'},
-                {name: 'Virgin Islands, U.S.', code: 'VI'},
-                {name: 'Wallis and Futuna', code: 'WF'},
-                {name: 'Western Sahara', code: 'EH'},
-                {name: 'Yemen', code: 'YE'},
-                {name: 'Zambia', code: 'ZM'},
-                {name: 'Zimbabwe', code: 'ZW'}
-            ];
+			$scope.deployList = [
+				{name:"后台", tags:"后台, 消息", version:"1.1.1", created:"2014-01-01 12:00:00", modified:"2014-01-02 12:00:00"},
+				{name:"后台2", tags:"后台, 消息", version:"1.1.2", created:"2014-06-01 19:00:00", modified:"2014-06-02 17:00:00"}
+			]
+
+			$scope.ev.search = function(){
+				Search.query({keywords: $scope.args.keywords}, function(json){
+					console.log(json)
+				})
+			}
+
         }];
 });
