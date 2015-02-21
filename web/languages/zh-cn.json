@@ -1,11 +1,17 @@
 {
-    "PROJECT_DEPLOY": "项目部署",
+	"ACTION":"操作",
     "ADMIN":"管理",
-    "PROJECT":"项目",
-    "CLUSTER":"集群",
-    "USER": "用户",
+	"CREATED": "创建日期",
     "CLOSE": "关闭",
-	"SEARCH": "搜索",
+    "CLUSTER":"集群",
+	"DEPLOY": "部署",
 	"EDIT": "编辑",
-	"DEPLOY": "部署"
+	"MODIFIED":"修改日期",
+	"NAME": "名称",
+    "PROJECT_DEPLOY": "项目部署",
+    "PROJECT":"项目",
+    "USER": "用户",
+	"SEARCH": "搜索",
+	"TAG":"标签",
+	"VERSION": "版本"
 }
