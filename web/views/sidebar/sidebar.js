@@ -12,9 +12,9 @@ define(['angularAMD'], function (angularAMD) {
                 {name: "PROJECT_DEPLOY", type: 1, url: "/project_deploy"},
                 {
                     name: "ADMIN", type: 0, children: [
-                        {name: "PROJECT", url: "/view1"},
-                        {name: "CLUSTER", url: "/"},
-                        {name: "USER", url: "/"}
+                        {name: "PROJECT", url: "/project"},
+                        {name: "CLUSTER", url: "/cluster"},
+                        {name: "USER", url: "/user"}
                     ]
                 }
             ]
