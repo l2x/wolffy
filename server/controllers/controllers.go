@@ -7,6 +7,7 @@ func InitControllers() error {
 	return nil
 }
 
+//返回数据格式
 type Res struct {
 	Errno  int         `json:"errno"`
 	Errmsg string      `json:"errmsg"`
@@ -21,6 +22,7 @@ func NewRes() Res {
 	}
 }
 
+//标准输出
 func RenderError(r render.Render, res Res, err error) error {
 	if err != nil {
 		res.Errmsg = err.Error()
