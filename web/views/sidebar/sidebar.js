@@ -32,7 +32,26 @@ define(['angularAMD'], function (angularAMD) {
 			});
 
             function resetMenuActive(menus, current) {
+				var flag = false
                 var path = current
+
+				//TODO check return
+                angular.forEach(menus, function (menu, k) {
+					if (path == menus[k].url) {
+						flag = true
+					}
+
+                    angular.forEach(menu.children, function (child, k2) {
+						if (path == child.url) {
+							flag = true
+						}
+                    })
+                })
+
+				if (flag == false) {
+					return
+				}
+
                 angular.forEach(menus, function (menu, k) {
                     menus[k].active = path == menus[k].url ? true : false
                     angular.forEach(menu.children, function (child, k2) {
