@@ -2,26 +2,26 @@
 
 define(['app'], function(app) {
 
-    app.factory('Project.Search', function($resource) {
-		return $resource("/project/search/", {}, {
+    app.factory('Cluster.Search', function($resource) {
+		return $resource("/cluster/search/", {}, {
             query: {isArray: false}
         });
     })
 
-    app.factory('Project.Get', function($resource) {
-		return $resource("/project/get/", {}, {
+    app.factory('Cluster.GetAll', function($resource) {
+		return $resource("/cluster/search/", {}, {
             query: {isArray: false}
         });
     })
 
-    app.factory('Project.GetAll', function($resource) {
-		return $resource("/project/search/", {}, {
+    app.factory('Cluster.Get', function($resource) {
+		return $resource("/cluster/get/", {}, {
             query: {isArray: false}
         });
     })
 
-    app.factory('Project.Save', function($resource) {
-		return $resource("/project/save/", {}, {
+    app.factory('Cluster.Save', function($resource) {
+		return $resource("/cluster/save/", {}, {
             query: {isArray: false}
         });
     })

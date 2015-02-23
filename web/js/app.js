@@ -31,13 +31,25 @@ define([
                 templateUrl: './views/deploy/list.html',
                 controllerUrl: '../views/deploy/list'
             }))
+            .when("/deploy", angularAMD.route({
+				templateUrl: './views/deploy/push.html',
+                controllerUrl: '../views/deploy/push'
+            }))
+            .when("/project/list", angularAMD.route({
+				templateUrl: './views/project/list.html',
+				controllerUrl: '../views/project/list'
+            }))
             .when("/project/edit", angularAMD.route({
 				templateUrl: './views/project/edit.html',
 				controllerUrl: '../views/project/edit'
             }))
-            .when("/deploy", angularAMD.route({
-				templateUrl: './views/deploy/push.html',
-                controllerUrl: '../views/deploy/push'
+			.when("/cluster/list", angularAMD.route({
+				templateUrl: './views/cluster/list.html',
+				controllerUrl: '../views/cluster/list'
+            }))
+			.when("/cluster/edit", angularAMD.route({
+				templateUrl: './views/cluster/edit.html',
+				controllerUrl: '../views/cluster/edit'
             }))
             .when("/view1", angularAMD.route({
                 templateUrl: './views/view1/index.html',
