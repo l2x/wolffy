@@ -49,6 +49,20 @@ func (c Deploy) Push(r render.Render, req *http.Request) {
 	RenderRes(r, res, deploy)
 }
 
+func (c Deploy) Get(r render.Render, req *http.Request) {
+	res := NewRes()
+
+	id := req.URL.Query().Get("id")
+	idint, _ := strconv.Atoi(id)
+
+	deploy, err := models.DeployModel.GetOne(idint)
+	if err = RenderError(r, res, err); err != nil {
+		return
+	}
+
+	RenderRes(r, res, deploy)
+}
+
 func (c Deploy) History(r render.Render, req *http.Request) {
 	res := NewRes()
 
