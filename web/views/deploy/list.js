@@ -1,6 +1,6 @@
 "use strict";
 
-define(['app', '../service/project_service'], function (app) {
+define(['app', '../service/project'], function (app) {
     return ['$scope', 'Project.Search', function ($scope, Search) {
 			$scope.args = {}
 			$scope.ev = {}

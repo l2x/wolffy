@@ -27,19 +27,23 @@ define([
     app.config(['$routeProvider', '$locationProvider', 'cfpLoadingBarProvider',
         function($routeProvider, $locationProvider, cfpLoadingBarProvider) {
         $routeProvider
-            .when("/", angularAMD.route({
-                templateUrl: './views/project_deploy/index.html',
-                controllerUrl: '../views/project_deploy/ctrl'
+			.when("/deploy/list", angularAMD.route({
+                templateUrl: './views/deploy/list.html',
+                controllerUrl: '../views/deploy/list'
             }))
-            .when("/project_deploy", angularAMD.route({
-                templateUrl: './views/project_deploy/index.html',
-                controllerUrl: '../views/project_deploy/ctrl'
+            .when("/project/edit", angularAMD.route({
+				templateUrl: './views/project/edit.html',
+				controllerUrl: '../views/project/edit'
+            }))
+            .when("/deploy", angularAMD.route({
+				templateUrl: './views/deploy/push.html',
+                controllerUrl: '../views/deploy/push'
             }))
             .when("/view1", angularAMD.route({
                 templateUrl: './views/view1/index.html',
                 controllerUrl: '../views/view1/ctrl'
             }))
-            .otherwise({redirectTo: '/project_deploy'});
+            .otherwise({redirectTo: '/deploy/list'});
 
         //$locationProvider.html5Mode(true);
         cfpLoadingBarProvider.includeSpinner = false;

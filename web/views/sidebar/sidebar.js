@@ -9,7 +9,7 @@ define(['angularAMD'], function (angularAMD) {
                 $mdSidenav('left').close()
             };
             var menus = [
-                {name: "PROJECT_DEPLOY", type: 1, url: "/project_deploy"},
+				{name: "PROJECT_DEPLOY", type: 1, url: "/deploy/list"},
                 {
                     name: "ADMIN", type: 0, children: [
                         {name: "PROJECT", url: "/project"},

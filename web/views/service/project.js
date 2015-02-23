@@ -14,4 +14,16 @@ define(['app'], function(app) {
         });
     })
 
+    app.factory('Project.Get', function($resource) {
+		return $resource("/project/get/", {}, {
+            query: {isArray: false}
+        });
+    })
+
+    app.factory('Project.Save', function($resource) {
+		return $resource("/project/save/", {}, {
+            query: {isArray: false}
+        });
+    })
+
 })
