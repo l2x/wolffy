@@ -32,8 +32,8 @@ define([
                 controllerUrl: '../views/deploy/list'
             }))
             .when("/deploy", angularAMD.route({
-				templateUrl: './views/deploy/push.html',
-                controllerUrl: '../views/deploy/push'
+				templateUrl: './views/deploy/index.html',
+                controllerUrl: '../views/deploy/index'
             }))
             .when("/project/list", angularAMD.route({
 				templateUrl: './views/project/list.html',
