@@ -13,7 +13,7 @@ import (
 
 type Machine struct{}
 
-func (c Machine) Report(r render.Render, req *http.Request) {
+func (c Machine) Ping(r render.Render, req *http.Request) {
 	res := NewRes()
 
 	ip := req.URL.Query().Get("ip")

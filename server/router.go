@@ -39,5 +39,8 @@ func router() {
 	m.Get("/deploy/push/", deploy.Push)
 	m.Get("/deploy/history/", deploy.History)
 
+	machine := controllers.Machine{}
+	m.Get("/machine/ping/", machine.Ping)
+
 	m.RunOnAddr(":8000")
 }
