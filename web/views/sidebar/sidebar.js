@@ -10,6 +10,7 @@ define(['angularAMD'], function (angularAMD) {
             };
             var menus = [
 				{name: "PROJECT_DEPLOY", type: 1, url: "/deploy/list"},
+				{name: "PROJECT_DEPLOY", type: 1, url: "/deploy/test"},
                 {
                     name: "ADMIN", type: 0, children: [
                         {name: "PROJECT", url: "/project"},
@@ -35,15 +36,16 @@ define(['angularAMD'], function (angularAMD) {
 				var flag = false
                 var path = current
 
-				//TODO check return
                 angular.forEach(menus, function (menu, k) {
 					if (path == menus[k].url) {
 						flag = true
+						return
 					}
 
                     angular.forEach(menu.children, function (child, k2) {
 						if (path == child.url) {
 							flag = true
+							return
 						}
                     })
                 })
