@@ -1,12 +1,48 @@
 
-<md-content>
-    <div layout="row" layout-align="start center">
+<md-content class="p10">
+	<div>
+		<md-button class="md-raised md-primary">{{'BACK' | translate}}</md-button>
+	</div>
 
-        <md-input-container>
-		<label>{{'KEYWORD' | translate}}</label>
-            <input ng-model="args.keywords" type="text">
-        </md-input-container>
-		<md-button class="md-raised ml20" ng-click="ev.search()">{{'SEARCH' | translate}}</md-button>
+	<h1>{{'PROJECT_EDIT' | translate}}</h1>
+
+    <div>
+		<md-input-container flex>
+        	<label>{{'PROJECT_NAME' | translate}}</label>
+        	<input ng-model="project.name" required>
+      	</md-input-container>
+
+		<md-input-container>
+			<label>{{'NOTE' | translate}}</label>
+        	<input ng-model="project.note">
+      	</md-input-container>
+
+		<md-input-container>
+			<label>{{'GIT_PATH' | translate}}</label>
+        	<input ng-model="project.path" required>
+      	</md-input-container>
+
+		<md-input-container>
+			<label>{{'DEPLOY_PATH' | translate}}</label>
+        	<input ng-model="project.pushpath" required>
+      	</md-input-container>
+
+		<md-input-container>
+			<label>{{'TAG' | translate}}</label>
+        	<input ng-model="project.tags">
+      	</md-input-container>
+
+		<div>
+			<div layout="column" layout-align="center center" style="min-height: 300px;">
+			  <md-select ng-model="someVal">
+				<md-option value="1">One</md-option>
+				<md-option value="2" ng-selected="selected">Two</md-option>
+			  </md-select>
+			</div>
+		    <div>
+				<md-button class="md-raised">{{'ADD_CLUSTER' | translate}}</md-button>
+			</div>
+		</div>
 
     </div>
 </md-content>

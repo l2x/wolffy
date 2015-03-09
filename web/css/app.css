@@ -85,6 +85,11 @@ label{
 .mb20{
 	margin-bottom: 20px
 }
+
+.p10{
+	padding:10px
+}
+
 .lh30{
 	line-height:30px !important;
 }
