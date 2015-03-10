@@ -8,6 +8,7 @@
     "CLUSTER":"集群",
 	"DEPLOY": "部署",
 	"DEPLOY_PATH": "部署路径",
+	"DELETE":"删除",
 	"EDIT": "编辑",
 	"GIT_PATH":"代码库地址",
 	"KEYWORD":"关键字",
@@ -19,6 +20,7 @@
 	"PROJECT_EDIT": "项目编辑",
 	"PROJECT_NAME":"项目名称",
     "USER": "用户",
+	"SAVE": "保存",
 	"SEARCH": "搜索",
 	"TAG":"标签",
 	"VERSION": "版本"

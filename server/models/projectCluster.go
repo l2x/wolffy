@@ -7,15 +7,15 @@ var (
 )
 
 type ProjectCluster struct {
-	Id            int
-	Pid           int
-	Cid           int
-	CustomMachine string
-	Bshell        string
-	Eshell        string
-	Note          string
-	Created       time.Time
-	Modified      time.Time
+	Id            int       `json:"id"`
+	Pid           int       `json:"pid"`
+	Cid           int       `json:"cid"`
+	CustomMachine string    `json:"customMachine"`
+	Bshell        string    `json:"bshell"`
+	Eshell        string    `json:"eshell"`
+	Note          string    `json:"note"`
+	Created       time.Time `json:"created"`
+	Modified      time.Time `json:"modified"`
 }
 
 func (m ProjectCluster) TableName() string {

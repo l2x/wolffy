@@ -90,9 +90,34 @@ label{
 	padding:10px
 }
 
+.pl20{
+	padding-left:20px;
+}
+.pr20{
+	padding-right:20px;
+}
+
 .lh30{
 	line-height:30px !important;
 }
 .txt-ac{
 	text-align:center
+}
+
+.vshow{
+	visibility: visible
+}
+.vhide{
+	visibility: hidden
+}
+
+.project_form{
+	padding:10px;
+	max-width: 600px;
+}
+
+.project_cluster_list {
+	background:#f7f7f7;
+	margin-bottom: 20px;
+	padding: 20px;
 }

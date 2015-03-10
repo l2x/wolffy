@@ -11,16 +11,16 @@ var (
 )
 
 type Project struct {
-	Id       int
-	Name     string
-	Path     string
-	PushPath string
-	Tags     string
-	Note     string
-	Created  time.Time
-	Modified time.Time
+	Id       int       `json:"id"`
+	Name     string    `json:"name"`
+	Path     string    `json:"path"`
+	PushPath string    `json:"pushPath"`
+	Tags     string    `json:"tags"`
+	Note     string    `json:"note"`
+	Created  time.Time `json:"created"`
+	Modified time.Time `json:"modified"`
 
-	ProjectClusters []*ProjectCluster `orm:"-"`
+	ProjectClusters []*ProjectCluster `orm:"-", json:"projectClusters"`
 }
 
 func (m Project) TableName() string {
