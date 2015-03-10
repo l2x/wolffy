@@ -9,6 +9,7 @@
 	"DEPLOY": "部署",
 	"DEPLOY_PATH": "部署路径",
 	"DELETE":"删除",
+	"DELETE_PROJECT":"删除项目",
 	"EDIT": "编辑",
 	"GIT_PATH":"代码库地址",
 	"KEYWORD":"关键字",
@@ -19,8 +20,10 @@
     "PROJECT_DEPLOY": "项目部署",
 	"PROJECT_EDIT": "项目编辑",
 	"PROJECT_NAME":"项目名称",
+	"REMOVE":"移除",
     "USER": "用户",
 	"SAVE": "保存",
+	"SAVE_PROJECT": "保存项目",
 	"SEARCH": "搜索",
 	"TAG":"标签",
 	"VERSION": "版本"

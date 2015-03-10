@@ -82,6 +82,13 @@ label{
 .mt20{
 	margin-top:20px
 }
+.mt30{
+	margin-top:30px
+}
+.mb30{
+	margin-bottom:30px
+}
+
 .mb20{
 	margin-bottom: 20px
 }
@@ -118,6 +125,11 @@ label{
 
 .project_cluster_list {
 	background:#f7f7f7;
-	margin-bottom: 20px;
+	margin-bottom: 5px;
 	padding: 20px;
+}
+.project_act{
+	background:#f7f7f7;
+	padding:20px;
+	margin-top:40px;
 }

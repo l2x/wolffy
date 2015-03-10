@@ -30,7 +30,7 @@
 
 		<div >
 			<form  class="project_cluster_list" ng-repeat="cluster in args.project.projectClusters">
-			  <div>
+			  <div class="mb30">
 			  	 <label class="pr20">{{'CLUSTER' | translate}}</label>
 				 <md-select ng-model="cluster.cid" >
 				  <md-option ng-repeat="clu in args.clusters" value="{{clu.id}}" ng-selected="clu.id==cluster.cid">{{clu.name}}</md-option>
@@ -53,13 +53,17 @@
 			  </md-input-container>
 
 			  <div layout="row" layout-align="space-between center">
-				  <md-button class="md-raised md-warn" ng-click="ev.delCluster(cluster)">{{'DELETE' | translate}}</md-button>
+				  <md-button class="md-warn" ng-click="ev.delCluster(cluster)">{{'REMOVE' | translate}}</md-button>
 			  </div>
 			</form>
 
-		    <div layout="row" layout-align="space-between center">
+		    <div layout="row" layout-align="end center" class="pr20">
 				<md-button class="md-raised" ng-click="ev.addCluster()">{{'ADD_CLUSTER' | translate}}</md-button>
-		<md-button class="md-raised md-primary"  ng-click="ev.saveCluster(cluster)">{{'SAVE' | translate}}</md-button>
+			</div>
+
+		    <div layout="row" layout-align="space-between center" class="project_act">
+				<md-button class="md-warn" ng-click="ev.delCluster(cluster)">{{'DELETE_PROJECT' | translate}}</md-button>
+				<md-button class="md-raised md-primary"  ng-click="ev.saveCluster(cluster)">{{'SAVE_PROJECT' | translate}}</md-button>
 			</div>
 		</div>
 
