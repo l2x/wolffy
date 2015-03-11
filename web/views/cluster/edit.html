@@ -22,18 +22,18 @@
 			<div  class="project_cluster_list" >
 				<h4>{{'MACHINE' | translate}}{{'LIST' | translate}}</h4>
 
-				<div class="cluster_machine_cell"  layout="row" layout-align="space-between center" ng-repeat="machine in args.cluster.machine" ng-class="machine.hover == true ? 'md-whiteframe-z1':''" ng-mouseenter="machine.hover = true" ng-mouseleave="machine.hover = false">
+				<div class="cluster_machine_cell"  layout="row" layout-align="space-between center" ng-repeat="machine in args.cluster.machines" ng-class="machine.hover == true ? 'md-whiteframe-z1':''" ng-mouseenter="machine.hover = true" ng-mouseleave="machine.hover = false">
 					<span>{{machine.ip}}</span>
 					<md-button class="md-warn" ng-click="ev.removeMachine($index)">{{'REMOVE' | translate}}</md-button>
 				</div>
 			</div>
 
 			<div layout="row" layout-align="end center" class="cluster_machine_add">
-				<md-select ng-model="_addmachine" >
-				<md-option ng-repeat="machine in args.machines" value="{{machine.id}}">{{machine.ip}}</md-option>
+				<md-select ng-model="_addmachine" placeholder="{{'CHOICE_MACHINE' | translate}}">
+				<md-option ng-repeat="machine in args.machines" value="{{$index}}">{{machine.ip}}</md-option>
 				  </md-select>
 
-				<md-button class="md-raised" ng-click="ev.addMachine()">{{'ADD' | translate}}{{'MACHINE' | translate}}</md-button>
+				  <md-button class="md-raised" ng-click="ev.addMachine(_addmachine)" ng-disabled="!_addmachine">{{'ADD' | translate}}{{'MACHINE' | translate}}</md-button>
 			</div>
 
 		    <div layout="row" layout-align="space-between center" class="project_act">

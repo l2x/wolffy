@@ -10,7 +10,7 @@ define(['app', '../service/cluster'], function (app) {
 			$scope.args.cluster = {
 				"name" : "test",
 				"tags":"后台",
-				"machine": [
+				"machines": [
 			{"ip":"127.0.0.1", "status":1},
 			{"ip":"127.0.0.2", "status":1},
 			{"ip":"127.0.0.2", "status":1}
@@ -22,6 +22,16 @@ define(['app', '../service/cluster'], function (app) {
 			{"id":2, "ip":"127.0.0.2", "status":1},
 			{"id":3, "ip":"127.0.0.2", "status":1}
 			]
+
+			$scope.ev.addMachine = function($idx) {
+				for(var i=0; i<$scope.args.cluster.machines.length; i++) {
+					if($scope.args.cluster.machines[i].ip == $scope.args.machines[$idx].ip) {
+						return
+					}
+				}
+
+				$scope.args.cluster.machines.push($scope.args.machines[$idx])
+			}
 
 			$scope.ev.save = function() {
 				Save.query()

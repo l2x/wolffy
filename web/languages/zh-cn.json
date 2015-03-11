@@ -3,6 +3,7 @@
     "ADMIN":"管理",
 	"ADD":"添加",
 	"BACK": "返回",
+	"CHOICE_MACHINE": "请选择机器",
 	"CREATED": "创建日期",
     "CLOSE": "关闭",
     "CLUSTER":"集群",
