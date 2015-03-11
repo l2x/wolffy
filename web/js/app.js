@@ -51,6 +51,22 @@ define([
 				templateUrl: './views/cluster/edit.html',
 				controllerUrl: '../views/cluster/edit'
             }))
+			.when("/user/list", angularAMD.route({
+				templateUrl: './views/user/list.html',
+				controllerUrl: '../views/user/list'
+            }))
+			.when("/user/edit", angularAMD.route({
+				templateUrl: './views/user/edit.html',
+				controllerUrl: '../views/user/edit'
+            }))
+			.when("/login", angularAMD.route({
+				templateUrl: './views/index/login.html',
+				controllerUrl: '../views/index/login'
+            }))
+			.when("/logout", angularAMD.route({
+				templateUrl: './views/index/logout.html',
+				controllerUrl: '../views/index/logout'
+            }))
             .when("/view1", angularAMD.route({
                 templateUrl: './views/view1/index.html',
                 controllerUrl: '../views/view1/ctrl'

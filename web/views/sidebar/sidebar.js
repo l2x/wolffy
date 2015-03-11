@@ -9,13 +9,12 @@ define(['angularAMD'], function (angularAMD) {
                 $mdSidenav('left').close()
             };
             var menus = [
-				{name: "PROJECT_DEPLOY", type: 1, url: "/deploy/list"},
-				{name: "PROJECT_DEPLOY", type: 1, url: "/deploy/test"},
+				{name: "PROJECT", type: 1, url: "/project/list"},
                 {
                     name: "ADMIN", type: 0, children: [
-                        {name: "PROJECT", url: "/project"},
-                        {name: "CLUSTER", url: "/cluster"},
-                        {name: "USER", url: "/user"}
+                        {name: "CLUSTER", url: "/cluster/list"},
+                        {name: "MACHINE", url: "/machine/list"},
+                        {name: "USER", url: "/user/list"}
                     ]
                 }
             ]

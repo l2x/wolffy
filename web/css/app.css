@@ -133,3 +133,20 @@ label{
 	padding:20px;
 	margin-top:40px;
 }
+.cluster_machine_cell{
+	padding:15px;
+	margin-bottom: 15px
+}
+.cluster_machine_cell .md-warn {
+	visibility: hidden
+}
+.cluster_machine_cell.md-whiteframe-z1 .md-warn {
+	visibility: visible
+}
+.cluster_machine_add{
+	padding-right:20px
+}
+.cluster_machine_add md-select{
+	margin-top:0;
+	margin-right:20px;
+}
