@@ -10,7 +10,7 @@ type Cluster struct {
 	Id       int
 	Name     string
 	Tags     string
-	Machine  string
+	Machines string
 	Note     string
 	Created  time.Time
 	Modified time.Time
@@ -58,11 +58,11 @@ func (m Cluster) GetOne(id int) (*Cluster, error) {
 	return cluster, nil
 }
 
-func (m Cluster) Add(name, tags, machine, note string) (*Cluster, error) {
+func (m Cluster) Add(name, tags, machines, note string) (*Cluster, error) {
 	cluster := &Cluster{
 		Name:     name,
 		Tags:     tags,
-		Machine:  machine,
+		Machines: machines,
 		Note:     note,
 		Created:  time.Now(),
 		Modified: time.Now(),
@@ -80,16 +80,16 @@ func (m Cluster) Add(name, tags, machine, note string) (*Cluster, error) {
 	return cluster, nil
 }
 
-func (m Cluster) Update(id int, name, tags, machine, note string) (*Cluster, error) {
+func (m Cluster) Update(id int, name, tags, machines, note string) (*Cluster, error) {
 	cluster := &Cluster{
 		Id:       id,
 		Name:     name,
 		Tags:     tags,
-		Machine:  machine,
+		Machines: machines,
 		Note:     note,
 		Modified: time.Now(),
 	}
-	_, err := DB.Update(cluster, "Name", "Tags", "Machine", "Note", "Modified")
+	_, err := DB.Update(cluster, "Name", "Tags", "Machines", "Note", "Modified")
 	if err != nil {
 		return nil, err
 	}

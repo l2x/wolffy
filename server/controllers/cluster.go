@@ -44,10 +44,10 @@ func (c Cluster) Add(r render.Render, req *http.Request) {
 
 	name := req.URL.Query().Get("name")
 	tags := req.URL.Query().Get("tags")
-	machine := req.URL.Query().Get("machine")
+	machines := req.URL.Query().Get("machines")
 	note := req.URL.Query().Get("note")
 
-	cluster, err := models.ClusterModel.Add(name, tags, machine, note)
+	cluster, err := models.ClusterModel.Add(name, tags, machines, note)
 	if err = RenderError(r, res, err); err != nil {
 		return
 	}
@@ -75,7 +75,7 @@ func (c Cluster) Update(r render.Render, req *http.Request) {
 	res := NewRes()
 	name := req.URL.Query().Get("name")
 	tags := req.URL.Query().Get("tags")
-	machine := req.URL.Query().Get("machine")
+	machines := req.URL.Query().Get("machines")
 	note := req.URL.Query().Get("note")
 	id := req.URL.Query().Get("id")
 
@@ -84,7 +84,7 @@ func (c Cluster) Update(r render.Render, req *http.Request) {
 		return
 	}
 
-	cluster, err := models.ClusterModel.Update(idint, name, tags, machine, note)
+	cluster, err := models.ClusterModel.Update(idint, name, tags, machines, note)
 	if err = RenderError(r, res, err); err != nil {
 		return
 	}
