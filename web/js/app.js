@@ -51,6 +51,13 @@ define([
 				templateUrl: './views/cluster/edit.html',
 				controllerUrl: '../views/cluster/edit'
             }))
+			.when("/machine/list", angularAMD.route({
+				templateUrl: './views/machine/list.html',
+				controllerUrl: '../views/machine/list'
+            }))
+			.when("/machine/add", angularAMD.route({
+				templateUrl: './views/machine/add.html',
+            }))
 			.when("/user/list", angularAMD.route({
 				templateUrl: './views/user/list.html',
 				controllerUrl: '../views/user/list'
@@ -71,7 +78,7 @@ define([
                 templateUrl: './views/view1/index.html',
                 controllerUrl: '../views/view1/ctrl'
             }))
-            .otherwise({redirectTo: '/deploy/list'});
+            .otherwise({redirectTo: '/'});
 
         //$locationProvider.html5Mode(true);
         cfpLoadingBarProvider.includeSpinner = false;

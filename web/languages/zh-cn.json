@@ -1,4 +1,5 @@
 {
+	"ABNORMAL":"异常",
 	"ACTION":"操作",
     "ADMIN":"管理",
 	"ADD":"添加",
@@ -18,11 +19,13 @@
 	"MODIFIED":"修改日期",
 	"NAME": "名称",
 	"NOTE": "备注",
+	"NORMAL":"正常",
     "PROJECT":"项目",
 	"REMOVE":"移除",
     "USER": "用户",
 	"SAVE": "保存",
 	"SEARCH": "搜索",
+	"STATUS": "状态",
 	"TAG":"标签",
 	"VERSION": "版本"
 }

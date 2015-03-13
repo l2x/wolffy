@@ -150,3 +150,7 @@ label{
 	margin-top:0;
 	margin-right:20px;
 }
+
+.warn{
+	color: rgb(244,67,54);
+}
