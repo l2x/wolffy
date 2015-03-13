@@ -32,6 +32,10 @@ define(['app', '../service/cluster', '../filter/filter'], function (app) {
 				$scope.args.cluster.machines.push($scope.args.machines[$idx])
 			}
 
+			$scope.ev.removeMachine = function($idx) {
+				$scope.args.cluster.machines.splice($idx, 1)
+			}
+
 			$scope.ev.save = function() {
 				Save.query()
 			}
