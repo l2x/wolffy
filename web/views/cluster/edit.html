@@ -30,7 +30,7 @@
 
 			<div layout="row" layout-align="end center" class="cluster_machine_add">
 				<md-select ng-model="_addmachine" placeholder="{{'CHOICE_MACHINE' | translate}}">
-				<md-option ng-repeat="machine in args.machines" value="{{$index}}">{{machine.ip}}</md-option>
+				<md-option ng-repeat="machine in args.machines" value="{{$index}}" ng-show="machine.ip | ipFilter:args.cluster.machines">{{machine.ip}}</md-option>
 				  </md-select>
 
 				  <md-button class="md-raised" ng-click="ev.addMachine(_addmachine)" ng-disabled="!_addmachine">{{'ADD' | translate}}{{'MACHINE' | translate}}</md-button>

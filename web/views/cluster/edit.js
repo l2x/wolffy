@@ -1,6 +1,6 @@
 "use strict";
 
-define(['app', '../service/cluster'], function (app) {
+define(['app', '../service/cluster', '../filter/filter'], function (app) {
     return ['$scope', function ($scope) {
 			$scope.args = {
 				cluster:{}
@@ -12,7 +12,6 @@ define(['app', '../service/cluster'], function (app) {
 				"tags":"后台",
 				"machines": [
 			{"ip":"127.0.0.1", "status":1},
-			{"ip":"127.0.0.2", "status":1},
 			{"ip":"127.0.0.2", "status":1}
 	]
 			}
@@ -20,7 +19,7 @@ define(['app', '../service/cluster'], function (app) {
 			$scope.args.machines = [
 			{"id":1, "ip":"127.0.0.1", "status":1},
 			{"id":2, "ip":"127.0.0.2", "status":1},
-			{"id":3, "ip":"127.0.0.2", "status":1}
+			{"id":4, "ip":"127.0.0.3", "status":1}
 			]
 
 			$scope.ev.addMachine = function($idx) {
