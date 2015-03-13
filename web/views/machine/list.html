@@ -1,0 +1,41 @@
+<h1>{{'MACHINE' | translate}}</h1>
+
+<md-content>
+    <div layout="row" layout-align="space-between center" >
+		<div layout="row" layout-align="start center">
+			<md-input-container>
+			<label>{{'KEYWORD' | translate}}</label>
+				<input ng-model="args.keywords" type="text">
+			</md-input-container>
+			<md-button class="md-raised ml20" ng-click="ev.search()">{{'SEARCH' | translate}}</md-button>
+		</div>
+
+		<md-button class="md-raised md-primary mr20" href="#/machine/add">{{'ADD' | translate}}{{'MACHINE' | translate}}</md-button>
+    </div>
+</md-content>
+
+<table class="table table-striped table-hover">
+    <thead>
+    <tr>
+        <th>{{'IP' | translate}}</th>
+        <th>{{'CREATED' | translate}}</th>
+        <th>{{'MODIFIED' | translate}}</th>
+        <th>{{'STATUS' | translate}}</th>
+        <th class="txt-ac">{{'ACTION' | translate}}</th>
+    </tr>
+    </thead>
+    <tbody>
+	<tr ng-repeat="item in args.list">
+		<td>{{item.ip}}</td>
+		<td>{{item.created}}</td>
+		<td>{{item.modified}}</td>
+		<td>
+			<span ng-if="item.status == 0">{{'NORMAL' | translate}}</span>
+			<span ng-if="item.status == 1" class="warn">{{'ABNORMAL' | translate}}</span>
+		</td>
+        <td class="txt-ac">
+			<md-button class="md-warn" href="" ng-click="">{{'REMOVE' | translate}}</md-button>
+		</td>
+    </tr>
+    </tbody>
+</table>
