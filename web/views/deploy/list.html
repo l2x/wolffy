@@ -20,7 +20,7 @@
     <tbody>
     <tr ng-repeat="item in args.list">
 		<td>{{item.commit}}</td>
-		<td>{{item.diff}}</td>
+		<td ng-click="showDiff($event, $index)">{{'CHECK' | translate}}</td>
 		<td>{{item.created}}</td>
 		<td>{{item.status}}</td>
         <td class="txt-ac">
@@ -30,3 +30,11 @@
     </tr>
     </tbody>
 </table>
+
+<script type="custom/tpl" id="diffTpl">
+<md-dialog aria-label="diffTpl">
+	<md-content>
+	{{diff}}
+	</md-content>
+</md-dialog>
+</script>

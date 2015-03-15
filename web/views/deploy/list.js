@@ -1,7 +1,7 @@
 "use strict";
 
 define(['app'], function (app) {
-    return ['$scope', function ($scope) {
+    return ['$scope', '$mdDialog', function ($scope, $mdDialog) {
 			$scope.args = {}
 			$scope.ev = {}
 
@@ -17,6 +17,22 @@ define(['app'], function (app) {
 				created:"2015-01-01 12:00:00",
 			}
 			]
+
+			$scope.showDiff = function(ev, $idx) {
+				var dialog = {
+				  controller: DialogController,
+				  template: document.getElementById('diffTpl').innerHTML,
+				  targetEvent: ev,
+				}
+				.then()
+			}
+
+			function DialogController($scope, $mdDialog) {
+			  $scope.hide = function() {
+				$mdDialog.hide()
+			  }
+			}
+
 
         }];
 });
