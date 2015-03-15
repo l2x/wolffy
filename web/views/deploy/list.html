@@ -3,7 +3,7 @@
 <md-content>
 	<div layout="row" layout-align="start center" class="deploy_project_hd">
 		<span>{{args.project.name}}</span>
-		<md-button class="md-raised md-primary ml20" ng-click="">{{'ADD' | translate}}{{'LATEST' | translate}}{{'VERSION' | translate}}</md-button>
+		<md-button class="md-raised md-primary ml20" ng-click="ev.addLatest(args.project.id)">{{'ADD' | translate}}{{'LATEST' | translate}}{{'VERSION' | translate}}</md-button>
     </div>
 </md-content>
 
@@ -20,12 +20,17 @@
     <tbody>
     <tr ng-repeat="item in args.list">
 		<td>{{item.commit}}</td>
-		<td ng-click="showDiff($event, $index)">{{'CHECK' | translate}}</td>
+		<td ng-click="ev.showDiff($event, $index)">{{'CHECK' | translate}}</td>
 		<td>{{item.created}}</td>
-		<td>{{item.status}}</td>
+		<td ng-click="ev.showStatus($event, $index)">
+			<span ng-if="item.status == 0">{{'NOT_START' | translate}}</span>
+			<span ng-if="item.status == 1">
+				{{'DEPLOYING' | translate}}
+			</span>
+			<span ng-if="item.status == 2">{{'DEPLOY_FAIL' | translate}}</span>
+		</td>
         <td class="txt-ac">
-			<md-button class="md-primary" ng-href="#/project/edit">{{'EDIT' | translate}}</md-button>
-			<md-button class="md-primary" ng-href="#/deploy">{{'DEPLOY' | translate}}</md-button>
+			<md-button class="md-primary" href="" ng-click="ev.deploy($event, $index)">{{'DEPLOY' | translate}}</md-button>
 		</td>
     </tr>
     </tbody>

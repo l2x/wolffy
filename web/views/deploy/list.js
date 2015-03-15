@@ -18,13 +18,19 @@ define(['app'], function (app) {
 			}
 			]
 
-			$scope.showDiff = function(ev, $idx) {
+			$scope.ev.addLatest = function($idx) {
+			}
+
+			$scope.ev.showDiff = function(ev, $idx) {
 				var dialog = {
 				  controller: DialogController,
 				  template: document.getElementById('diffTpl').innerHTML,
 				  targetEvent: ev,
 				}
-				.then()
+				$mdDialog.show(dialog).then()
+			}
+
+			$scope.ev.showStatus = function(ev, $idx) {
 			}
 
 			function DialogController($scope, $mdDialog) {
