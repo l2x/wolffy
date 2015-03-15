@@ -12,12 +12,12 @@ var (
 // - 2 发布完成
 // - 3 发布失败
 type DeployHistory struct {
-	Id       int
-	Did      int
-	Status   int
-	Note     string
-	Created  time.Time
-	Modified time.Time
+	Id      int       `json:"id"`
+	Did     int       `json:"did"`
+	IP      string    `json:"ip"`
+	Status  int       `json:"status"`
+	Note    string    `json:"note"`
+	Created time.Time `json:"created"`
 }
 
 func (m DeployHistory) TableName() string {
@@ -51,10 +51,9 @@ func (m DeployHistory) GetOne(id int) (*DeployHistory, error) {
 
 func (m DeployHistory) Add(did int) (*DeployHistory, error) {
 	deployHistory := &DeployHistory{
-		Did:      did,
-		Status:   1,
-		Created:  time.Now(),
-		Modified: time.Now(),
+		Did:     did,
+		Status:  1,
+		Created: time.Now(),
 	}
 	id, err := DB.Insert(deployHistory)
 	if err != nil {
@@ -71,12 +70,11 @@ func (m DeployHistory) Add(did int) (*DeployHistory, error) {
 
 func (m DeployHistory) Update(id, status int, note string) error {
 	deployHistory := &DeployHistory{
-		Id:       id,
-		Status:   status,
-		Note:     note,
-		Modified: time.Now(),
+		Id:     id,
+		Status: status,
+		Note:   note,
 	}
-	_, err := DB.Update(deployHistory, "Status", "Note", "Modified")
+	_, err := DB.Update(deployHistory, "Status", "Note")
 	if err != nil {
 		return err
 	}

@@ -1,35 +1,28 @@
-<h1>{{'PROJECT_DEPLOY' | translate}}</h1>
+<h1>{{'PROJECT' | translate}}{{'DEPLOY' | translate}}</h1>
 
 <md-content>
-    <div layout="row" layout-align="start center">
-
-        <md-input-container>
-		<label>{{'KEYWORD' | translate}}</label>
-            <input ng-model="args.keywords" type="text">
-        </md-input-container>
-		<md-button class="md-raised ml20" ng-click="ev.search()">{{'SEARCH' | translate}}</md-button>
-
+	<div layout="row" layout-align="start center" class="deploy_project_hd">
+		<span>{{args.project.name}}</span>
+		<md-button class="md-raised md-primary ml20" ng-click="">{{'ADD' | translate}}{{'LATEST' | translate}}{{'VERSION' | translate}}</md-button>
     </div>
 </md-content>
 
 <table class="table table-striped table-hover">
     <thead>
     <tr>
-		<th>{{'NAME' | translate}}</th>
-        <th>{{'TAG' | translate}}</th>
         <th>{{'VERSION' | translate}}</th>
+        <th>{{'DIFF' | translate}}</th>
         <th>{{'CREATED' | translate}}</th>
-        <th>{{'MODIFIED' | translate}}</th>
+        <th>{{'STATUS' | translate}}</th>
         <th class="txt-ac">{{'ACTION' | translate}}</th>
     </tr>
     </thead>
     <tbody>
-    <tr ng-repeat="item in deployList">
-		<td>{{item.name}}</td>
-		<td>{{item.tags}}</td>
-		<td>{{item.version}}</td>
+    <tr ng-repeat="item in args.list">
+		<td>{{item.commit}}</td>
+		<td>{{item.diff}}</td>
 		<td>{{item.created}}</td>
-		<td>{{item.modified}}</td>
+		<td>{{item.status}}</td>
         <td class="txt-ac">
 			<md-button class="md-primary" ng-href="#/project/edit">{{'EDIT' | translate}}</md-button>
 			<md-button class="md-primary" ng-href="#/deploy">{{'DEPLOY' | translate}}</md-button>

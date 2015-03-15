@@ -17,14 +17,12 @@ var (
 // - 3 发布失败
 // - 4 发布失败(部分机器)
 type Deploy struct {
-	Id       int
-	Pid      int
-	Commit   string
-	Status   int
-	Created  time.Time
-	Modified time.Time
-
-	DeployHistory []*DeployHistory `orm:"-"`
+	Id       int       `json:"id"`
+	Pid      int       `json:"pid"`
+	Commit   string    `json:"commit"`
+	Status   int       `json:"status"`
+	Created  time.Time `json:"created"`
+	Modified time.Time `json:"modified"`
 }
 
 func (m Deploy) TableName() string {
