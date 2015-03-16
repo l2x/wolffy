@@ -1,0 +1,17 @@
+<md-content class="project_form">
+	<h1>{{'USER' | translate}}{{'EDIT' | translate}}</h1>
+
+    <div>
+		<md-input-container>
+			<label>{{'USERNAME' | translate}}</label>
+			<input ng-model="args.user.username">
+      	</md-input-container>
+
+		<md-input-container flex>
+        	<label>{{'NAME' | translate}}</label>
+        	<input ng-model="args.user.name" required>
+      	</md-input-container>
+
+
+    </div>
+</md-content>

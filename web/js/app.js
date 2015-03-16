@@ -58,7 +58,7 @@ define([
 				templateUrl: './views/user/list.html',
 				controllerUrl: '../views/user/list'
             }))
-			.when("/user/edit", angularAMD.route({
+			.when("/user/edit/:id", angularAMD.route({
 				templateUrl: './views/user/edit.html',
 				controllerUrl: '../views/user/edit'
             }))

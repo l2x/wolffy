@@ -1,0 +1,38 @@
+<h1>{{'USER' | translate}}</h1>
+
+<md-content>
+    <div layout="row" layout-align="start center">
+
+        <md-input-container>
+		<label>{{'KEYWORD' | translate}}</label>
+            <input ng-model="args.keywords" type="text">
+        </md-input-container>
+		<md-button class="md-raised ml20" ng-click="ev.search()">{{'SEARCH' | translate}}</md-button>
+
+    </div>
+</md-content>
+
+<table class="table table-striped table-hover">
+    <thead>
+    <tr>
+		<th>{{'USERNAME' | translate}}</th>
+		<th>{{'NAME' | translate}}</th>
+        <th>{{'CREATED' | translate}}</th>
+        <th>{{'LAST_LOGIN' | translate}}{{'DATE' | translate}}</th>
+        <th>{{'LAST_LOGIN' | translate}}{{'IP' | translate}}</th>
+        <th class="txt-ac">{{'ACTION' | translate}}</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="item in args.list">
+		<td>{{item.username}}</td>
+		<td>{{item.name}}</td>
+		<td>{{item.created}}</td>
+		<td>{{item.created}}</td>
+		<td>{{item.modified}}</td>
+        <td class="txt-ac">
+			<md-button class="md-primary" ng-href="#/user/edit/{{item.id}}">{{'EDIT' | translate}}</md-button>
+		</td>
+    </tr>
+    </tbody>
+</table>
