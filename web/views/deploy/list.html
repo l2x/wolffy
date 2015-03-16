@@ -30,7 +30,7 @@
 			<span ng-if="item.status == 2">{{'DEPLOY_FAIL' | translate}}</span>
 		</td>
         <td class="txt-ac">
-			<md-button class="md-primary" href="" ng-click="ev.deploy($event, $index)">{{'DEPLOY' | translate}}</md-button>
+			<md-button class="md-primary" href="" ng-click="ev.deploy($event, $index, item.commit)">{{'DEPLOY' | translate}}</md-button>
 		</td>
     </tr>
     </tbody>
@@ -39,7 +39,11 @@
 <script type="custom/tpl" id="diffTpl">
 <md-dialog aria-label="diffTpl">
 	<md-content>
-	{{diff}}
+	{{ctrl.diff}}
 	</md-content>
+
+	<div class="md-actions" layout="row">
+		<md-button ng-click="hide()" class="md-primary">{{'CLOSE' | translate}}</md-button>
+	</div>
 </md-dialog>
 </script>

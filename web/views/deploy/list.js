@@ -26,11 +26,20 @@ define(['app'], function (app) {
 				  controller: DialogController,
 				  template: document.getElementById('diffTpl').innerHTML,
 				  targetEvent: ev,
+				  bindToController:true,
+				  controllerAs:"ctrl",
+				  locals: {
+					  diff: $scope.args.list[$idx].diff
+				  }
 				}
 				$mdDialog.show(dialog).then()
 			}
 
 			$scope.ev.showStatus = function(ev, $idx) {
+			}
+
+			$scope.ev.deploy = function(ev, $id, $commit) {
+
 			}
 
 			function DialogController($scope, $mdDialog) {
