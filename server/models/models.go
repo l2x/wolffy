@@ -26,6 +26,7 @@ func InitModels() error {
 	orm.RegisterModel(MachineModel)
 	orm.RegisterModel(ProjectModel)
 	orm.RegisterModel(ProjectClusterModel)
+	orm.RegisterModel(UserModel)
 
 	err := orm.RunSyncdb("default", false, true)
 	if err != nil {
