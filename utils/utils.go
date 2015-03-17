@@ -1,6 +1,10 @@
 package utils
 
-import "strings"
+import (
+	"crypto/md5"
+	"io"
+	"strings"
+)
 
 type StringReverse []string
 
@@ -29,4 +33,10 @@ func DelEmptySlice(arr []string) []string {
 		}
 	}
 	return res
+}
+
+func Md5(s string) string {
+	h := md5.New()
+	io.WriteString(h, s)
+	return string(h.Sum(nil))
 }

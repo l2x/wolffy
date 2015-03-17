@@ -1,9 +1,11 @@
 package controllers
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/l2x/wolffy/server/config"
+	"github.com/l2x/wolffy/utils"
 )
 
 var (
@@ -38,11 +40,12 @@ func (s *Session) add(id int, username, ip string) {
 		Expire:    time.Now().Add(time.Duration(config.SessionExpire) * time.Second),
 	}
 
-	s.cache[username] = cache
+	sid := s.genSid()
+	s.cache[sid] = cache
 }
 
-func (s *Session) Update(username string) bool {
-	cache, ok := s.cache[username]
+func (s *Session) Update(sid string) bool {
+	cache, ok := s.cache[sid]
 	if !ok {
 		return false
 	}
@@ -51,8 +54,14 @@ func (s *Session) Update(username string) bool {
 	return true
 }
 
-func (s *Session) del(username string) {
-	delete(s.cache, username)
+func (s *Session) Del(sid string) {
+	delete(s.cache, sid)
+}
+
+func (s *Session) genSid() string {
+	t := fmt.Sprintf("%v", time.Now().UnixNano())
+	sid := utils.Md5(utils.Md5(t))
+	return sid
 }
 
 func (s *Session) trash() {
