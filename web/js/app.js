@@ -78,12 +78,12 @@ define([
 				controllerUrl: '../views/user/edit'
             }))
 			.when("/login", angularAMD.route({
-				templateUrl: './views/index/login.html',
-				controllerUrl: '../views/index/login'
+				templateUrl: './views/user/login.html',
+				controllerUrl: '../views/user/login'
             }))
 			.when("/logout", angularAMD.route({
-				templateUrl: './views/index/logout.html',
-				controllerUrl: '../views/index/logout'
+				templateUrl: './views/user/logout.html',
+				controllerUrl: '../views/user/logout'
             }))
             .otherwise({redirectTo: '/'});
 

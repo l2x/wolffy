@@ -13,6 +13,9 @@ var (
 	BasePath string = "/tmp/"
 	RepoPath string = "/tmp/repo"
 	DBPath   string = "/tmp/data"
+
+	SessionInterval = 1
+	SessionExpire   = 3600
 )
 
 func InitConfig(conf string) error {
