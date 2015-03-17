@@ -39,11 +39,19 @@ define([
 				templateUrl: './views/project/edit.html',
 				controllerUrl: '../views/project/edit'
             }))
+            .when("/project/edit/:id", angularAMD.route({
+				templateUrl: './views/project/edit.html',
+				controllerUrl: '../views/project/edit'
+            }))
 			.when("/cluster/list", angularAMD.route({
 				templateUrl: './views/cluster/list.html',
 				controllerUrl: '../views/cluster/list'
             }))
 			.when("/cluster/edit", angularAMD.route({
+				templateUrl: './views/cluster/edit.html',
+				controllerUrl: '../views/cluster/edit'
+            }))
+			.when("/cluster/edit/:id", angularAMD.route({
 				templateUrl: './views/cluster/edit.html',
 				controllerUrl: '../views/cluster/edit'
             }))
@@ -54,11 +62,18 @@ define([
 			.when("/machine/add", angularAMD.route({
 				templateUrl: './views/machine/add.html',
             }))
+			.when("/machine/add/:id", angularAMD.route({
+				templateUrl: './views/machine/add.html',
+            }))
 			.when("/user/list", angularAMD.route({
 				templateUrl: './views/user/list.html',
 				controllerUrl: '../views/user/list'
             }))
 			.when("/user/edit/:id", angularAMD.route({
+				templateUrl: './views/user/edit.html',
+				controllerUrl: '../views/user/edit'
+            }))
+			.when("/user/edit", angularAMD.route({
 				templateUrl: './views/user/edit.html',
 				controllerUrl: '../views/user/edit'
             }))
@@ -69,10 +84,6 @@ define([
 			.when("/logout", angularAMD.route({
 				templateUrl: './views/index/logout.html',
 				controllerUrl: '../views/index/logout'
-            }))
-            .when("/view1", angularAMD.route({
-                templateUrl: './views/view1/index.html',
-                controllerUrl: '../views/view1/ctrl'
             }))
             .otherwise({redirectTo: '/'});
 
