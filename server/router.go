@@ -39,6 +39,16 @@ func router() {
 	m.Get("/deploy/push/", deploy.Push)
 	m.Get("/deploy/history/", deploy.History)
 
+	user := controllers.User{}
+	m.Get("/user/get/", user.Get)
+	m.Get("/user/getall/", user.GetAll)
+	m.Get("/user/delete/", user.Del)
+	m.Get("/user/add/", user.Add)
+	m.Get("/user/update/", user.Update)
+	m.Get("/user/updatepassword/", user.UpdatePassword)
+	m.Get("/user/login/", user.Login)
+	m.Get("/user/logout/", user.Logout)
+
 	machine := controllers.Machine{}
 	m.Get("/machine/ping/", machine.Ping)
 

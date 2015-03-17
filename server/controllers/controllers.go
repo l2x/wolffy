@@ -3,6 +3,7 @@ package controllers
 import "github.com/martini-contrib/render"
 
 func InitControllers() error {
+	NewSession()
 
 	return nil
 }
