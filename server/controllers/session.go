@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/l2x/wolffy/server/config"
+	"github.com/l2x/wolffy/server/models"
 	"github.com/l2x/wolffy/utils"
 )
 
@@ -68,6 +69,26 @@ func (s *Session) Add(id int, username, ip string) {
 	s.cache[sid] = cache
 }
 
+func (s *Session) GetUser(req *http.Request) (*models.User, error) {
+	cookie, err := req.Cookie(config.CookieName)
+	if err != nil {
+		return nil, err
+	}
+	sid := cookie.Value
+
+	session, err := s.Get(sid)
+	if err != nil {
+		return nil, err
+	}
+
+	user, err := models.UserModel.GetOne(session.Id)
+	if err != nil {
+		return nil, err
+	}
+
+	return user, nil
+}
+
 func (s *Session) Update(sid string) bool {
 	cache, ok := s.cache[sid]
 	if !ok {
@@ -76,6 +97,14 @@ func (s *Session) Update(sid string) bool {
 	cache.Expire = time.Now().Add(time.Duration(config.SessionExpire) * time.Second)
 
 	return true
+}
+
+func (s *Session) Get(sid string) (*Cache, error) {
+	session, ok := s.cache[sid]
+	if !ok {
+		return nil, errors.New("session not found")
+	}
+	return session, nil
 }
 
 func (s *Session) Del(sid string) {
