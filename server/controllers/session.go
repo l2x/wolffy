@@ -1,18 +1,12 @@
 package controllers
 
 import (
-	"errors"
 	"fmt"
 	"net/http"
 	"time"
 
 	"github.com/l2x/wolffy/server/config"
 	"github.com/l2x/wolffy/utils"
-)
-
-var (
-	ERR_SESSION_NOT_FOUND = errors.New("session not found.")
-	ERR_SESSION_EXPIRED   = errors.New("session expired.")
 )
 
 var (
@@ -39,24 +33,24 @@ func NewSession() {
 	go Sessions.trash()
 }
 
-func (s *Session) Check(w http.ResponseWriter, req *http.Request) error {
+func CheckSession(res http.ResponseWriter, req *http.Request) error {
 	cookie, err := req.Cookie(config.CookieName)
 	if err != nil {
 		return err
 	}
 	sid := cookie.Value
-	c, ok := s.cache[sid]
+	c, ok := Sessions.cache[sid]
 	if !ok {
-		return ERR_SESSION_NOT_FOUND
+		return config.ERR_SESSION_NOT_FOUND
 	}
 
 	if time.Now().Before(c.Expire) {
-		delete(s.cache, sid)
-		return ERR_SESSION_EXPIRED
+		delete(Sessions.cache, sid)
+		return config.ERR_SESSION_EXPIRED
 	}
 
 	cookie.Expires = time.Now().Add(time.Duration(config.SessionExpire) * time.Second)
-	http.SetCookie(w, cookie)
+	http.SetCookie(res, cookie)
 
 	return nil
 }
