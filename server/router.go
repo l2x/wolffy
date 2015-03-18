@@ -20,7 +20,9 @@ func router() {
 	m.Use(func(r render.Render, req http.ResponseWriter, res *http.Request) {
 		err := controllers.CheckSession(req, res)
 		if err != nil {
-			controllers.RenderError(r, err)
+			result := controllers.NewRes()
+			result.Errno = 1001
+			//controllers.RenderError(r, result, err)
 		}
 	})
 

@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"errors"
 	"fmt"
 	"net/http"
 	"time"
@@ -33,7 +34,7 @@ func NewSession() {
 	go Sessions.trash()
 }
 
-func CheckSession(res http.ResponseWriter, req *http.Request) string {
+func CheckSession(res http.ResponseWriter, req *http.Request) error {
 	cookie, err := req.Cookie(config.CookieName)
 	if err != nil {
 		return err
@@ -41,18 +42,18 @@ func CheckSession(res http.ResponseWriter, req *http.Request) string {
 	sid := cookie.Value
 	c, ok := Sessions.cache[sid]
 	if !ok {
-		return config.GetErr(config.ERR_SESSION_NOT_FOUND)
+		return errors.New("session not found")
 	}
 
 	if time.Now().Before(c.Expire) {
 		delete(Sessions.cache, sid)
-		return config.GetErr(config.ERR_SESSION_EXPIRED)
+		return errors.New("seesion expired")
 	}
 
 	cookie.Expires = time.Now().Add(time.Duration(config.SessionExpire) * time.Second)
 	http.SetCookie(res, cookie)
 
-	return ""
+	return nil
 }
 
 func (s *Session) Add(id int, username, ip string) {
