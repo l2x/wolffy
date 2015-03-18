@@ -33,7 +33,7 @@ func NewSession() {
 	go Sessions.trash()
 }
 
-func CheckSession(res http.ResponseWriter, req *http.Request) error {
+func CheckSession(res http.ResponseWriter, req *http.Request) string {
 	cookie, err := req.Cookie(config.CookieName)
 	if err != nil {
 		return err
@@ -41,18 +41,18 @@ func CheckSession(res http.ResponseWriter, req *http.Request) error {
 	sid := cookie.Value
 	c, ok := Sessions.cache[sid]
 	if !ok {
-		return config.ERR_SESSION_NOT_FOUND
+		return config.GetErr(config.ERR_SESSION_NOT_FOUND)
 	}
 
 	if time.Now().Before(c.Expire) {
 		delete(Sessions.cache, sid)
-		return config.ERR_SESSION_EXPIRED
+		return config.GetErr(config.ERR_SESSION_EXPIRED)
 	}
 
 	cookie.Expires = time.Now().Add(time.Duration(config.SessionExpire) * time.Second)
 	http.SetCookie(res, cookie)
 
-	return nil
+	return ""
 }
 
 func (s *Session) Add(id int, username, ip string) {

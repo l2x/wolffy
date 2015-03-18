@@ -17,10 +17,10 @@ func router() {
 	m.Use(martini.Static("web"))
 	m.Use(render.Renderer())
 
-	m.Use(func(res http.ResponseWriter, req *http.Request) {
-		err := controllers.CheckSession(res, req)
+	m.Use(func(r render.Render, req http.ResponseWriter, res *http.Request) {
+		err := controllers.CheckSession(req, res)
 		if err != nil {
-			res.WriteHeader(http.StatusUnauthorized)
+			controllers.RenderError(r, err)
 		}
 	})
 
