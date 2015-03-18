@@ -1,11 +1,18 @@
 package controllers
 
 import (
+	"errors"
 	"fmt"
+	"net/http"
 	"time"
 
 	"github.com/l2x/wolffy/server/config"
 	"github.com/l2x/wolffy/utils"
+)
+
+var (
+	ERR_SESSION_NOT_FOUND = errors.New("session not found.")
+	ERR_SESSION_EXPIRED   = errors.New("session expired.")
 )
 
 var (
@@ -32,7 +39,29 @@ func NewSession() {
 	go Sessions.trash()
 }
 
-func (s *Session) add(id int, username, ip string) {
+func (s *Session) Check(w http.ResponseWriter, req *http.Request) error {
+	cookie, err := req.Cookie(config.CookieName)
+	if err != nil {
+		return err
+	}
+	sid := cookie.Value
+	c, ok := s.cache[sid]
+	if !ok {
+		return ERR_SESSION_NOT_FOUND
+	}
+
+	if time.Now().Before(c.Expire) {
+		delete(s.cache, sid)
+		return ERR_SESSION_EXPIRED
+	}
+
+	cookie.Expires = time.Now().Add(time.Duration(config.SessionExpire) * time.Second)
+	http.SetCookie(w, cookie)
+
+	return nil
+}
+
+func (s *Session) Add(id int, username, ip string) {
 	cache := &Cache{
 		Id:        id,
 		Ip:        ip,
@@ -59,7 +88,7 @@ func (s *Session) Del(sid string) {
 }
 
 func (s *Session) genSid() string {
-	t := fmt.Sprintf("%v", time.Now().UnixNano())
+	t := fmt.Sprintf("%v%v", time.Now().UnixNano(), utils.RandInt(0, 999999))
 	sid := utils.Md5(utils.Md5(t))
 	return sid
 }
