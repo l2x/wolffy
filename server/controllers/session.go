@@ -25,6 +25,7 @@ type Cache struct {
 	LastLogin time.Time
 	Expire    time.Time
 	Ip        string
+	Value     string
 }
 
 func NewSession() {
@@ -35,7 +36,7 @@ func NewSession() {
 	go Sessions.trash()
 }
 
-func CheckSession(res http.ResponseWriter, req *http.Request) error {
+func CheckSession(w http.ResponseWriter, req *http.Request) error {
 	cookie, err := req.Cookie(config.CookieName)
 	if err != nil {
 		return err
@@ -43,21 +44,27 @@ func CheckSession(res http.ResponseWriter, req *http.Request) error {
 	sid := cookie.Value
 	c, ok := Sessions.cache[sid]
 	if !ok {
-		return errors.New("session not found")
+		return config.GetErr(config.ERR_SESSION_INVALID)
 	}
 
 	if time.Now().Before(c.Expire) {
 		delete(Sessions.cache, sid)
-		return errors.New("seesion expired")
+		return config.GetErr(config.ERR_SESSION_INVALID)
+	}
+
+	ip := utils.ClientIp(req)
+	if c.Value != Sessions.genSidValue(sid, ip) {
+		delete(Sessions.cache, sid)
+		return config.GetErr(config.ERR_SESSION_INVALID)
 	}
 
 	cookie.Expires = time.Now().Add(time.Duration(config.SessionExpire) * time.Second)
-	http.SetCookie(res, cookie)
+	http.SetCookie(w, cookie)
 
 	return nil
 }
 
-func (s *Session) Add(id int, username, ip string) {
+func (s *Session) Add(w http.ResponseWriter, id int, username, ip string) {
 	cache := &Cache{
 		Id:        id,
 		Ip:        ip,
@@ -66,7 +73,13 @@ func (s *Session) Add(id int, username, ip string) {
 	}
 
 	sid := s.genSid()
+	cache.Value = s.genSidValue(sid, cache.Ip)
 	s.cache[sid] = cache
+
+	expire := time.Now().Add(time.Duration(config.SessionExpire) * time.Second)
+	cookie := http.Cookie{Name: config.CookieName, Value: cache.Value, Path: "/", Expires: expire}
+
+	http.SetCookie(w, &cookie)
 }
 
 func (s *Session) GetUser(req *http.Request) (*models.User, error) {
@@ -109,6 +122,11 @@ func (s *Session) Get(sid string) (*Cache, error) {
 
 func (s *Session) Del(sid string) {
 	delete(s.cache, sid)
+}
+
+func (s *Session) genSidValue(sid string, ip string) string {
+	sid = fmt.Sprintf("%v%v%v", sid, ip, time.Now().UnixNano())
+	return utils.Md5(sid)
 }
 
 func (s *Session) genSid() string {

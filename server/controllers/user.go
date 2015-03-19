@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"errors"
 	"net/http"
 	"strconv"
 	"time"
@@ -15,7 +14,7 @@ import (
 
 type User struct{}
 
-func (c User) Login(r render.Render, req *http.Request) {
+func (c User) Login(r render.Render, w http.ResponseWriter, req *http.Request) {
 	res := NewRes()
 
 	username := req.URL.Query().Get("username")
@@ -32,9 +31,10 @@ func (c User) Login(r render.Render, req *http.Request) {
 		return
 	}
 
+	// 如果长时间没有登录，需要修改密码
 	if user.LastLogin.Before(time.Now().AddDate(0, 6, 0)) {
-		err = errors.New("need change passowrd")
-		res.Errno = 1002
+		res.Errno = config.ERR_USER_NEED_CHANGE_PWD
+		err = config.GetErr(res.Errno)
 		RenderError(r, res, err)
 	}
 
@@ -44,7 +44,7 @@ func (c User) Login(r render.Render, req *http.Request) {
 		return
 	}
 
-	Sessions.Add(user.Id, user.Username, ip)
+	Sessions.Add(w, user.Id, user.Username, ip)
 
 	RenderRes(r, res, user)
 }
@@ -195,7 +195,7 @@ func checkAdministrator(req *http.Request) error {
 	}
 
 	if user.Administrator != 1 {
-		return errors.New("user not administrator")
+		return config.GetErr(config.ERR_USER_NOT_ADMIN)
 	}
 
 	return nil

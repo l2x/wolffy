@@ -15,10 +15,6 @@ func (c Cluster) GetAll(r render.Render, req *http.Request) {
 	res := NewRes()
 
 	clusters, err := models.ClusterModel.GetAll()
-	if err != nil {
-		RenderError(r, 1, err.Error())
-		return
-	}
 	if err = RenderError(r, res, err); err != nil {
 		return
 	}
