@@ -2,6 +2,7 @@
 	<h1>{{'PROJECT' | translate}}{{'EDIT' | translate}}</h1>
 
     <div>
+		<form name="projectform">
 		<md-input-container flex>
         	<label>{{'NAME' | translate}}</label>
         	<input ng-model="args.project.name" required>
@@ -28,7 +29,7 @@
       	</md-input-container>
 
 		<div >
-			<form  class="project_cluster_list" ng-repeat="cluster in args.project.projectClusters">
+			<div  class="project_cluster_list" ng-repeat="cluster in args.project.projectClusters">
 			  <div class="mb30">
 			  	 <label class="pr20">{{'CLUSTER' | translate}}</label>
 				 <md-select ng-model="cluster.cid" >
@@ -54,17 +55,17 @@
 			  <div layout="row" layout-align="space-between center">
 				  <md-button class="md-warn" ng-click="ev.delCluster(cluster)">{{'REMOVE' | translate}}</md-button>
 			  </div>
-			</form>
+			</div>
 
 		    <div layout="row" layout-align="end center" class="pr20">
 				<md-button class="md-raised" ng-click="ev.addCluster()">{{'ADD_CLUSTER' | translate}}</md-button>
 			</div>
 
 		    <div layout="row" layout-align="space-between center" class="project_act">
-				<md-button class="md-warn" ng-click="ev.delCluster(cluster)">{{'DELETE_PROJECT' | translate}}</md-button>
-				<md-button class="md-raised md-primary"  ng-click="ev.saveCluster(cluster)">{{'SAVE_PROJECT' | translate}}</md-button>
+				<md-button class="md-warn" ng-click="ev.del()" >{{'DELETE_PROJECT' | translate}}</md-button>
+				<md-button class="md-raised md-primary"  type="submit" ng-click="ev.save()">{{'SAVE_PROJECT' | translate}}</md-button>
 			</div>
 		</div>
-
+		</form>
     </div>
 </md-content>

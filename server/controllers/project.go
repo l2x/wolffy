@@ -77,6 +77,9 @@ func (c Project) Get(r render.Render, req *http.Request) {
 	if err = RenderError(r, res, err); err != nil {
 		return
 	}
+	projectClusters, _ := models.ProjectClusterModel.GetAll(project.Id)
+
+	project.ProjectClusters = projectClusters
 
 	RenderRes(r, res, project)
 }

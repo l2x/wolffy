@@ -31,8 +31,8 @@
 		<td>{{item.created}}</td>
 		<td>{{item.modified}}</td>
         <td class="txt-ac">
-			<md-button class="md-primary" ng-href="#/project/edit">{{'EDIT' | translate}}</md-button>
-			<md-button class="md-primary" ng-href="#/deploy/list">{{'DEPLOY' | translate}}</md-button>
+			<md-button class="md-primary" ng-href="#/project/edit/{{item.id}}">{{'EDIT' | translate}}</md-button>
+			<md-button class="md-primary" ng-href="#/deploy/list/{{item.id}}">{{'DEPLOY' | translate}}</md-button>
 		</td>
     </tr>
     </tbody>

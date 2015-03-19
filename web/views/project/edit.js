@@ -1,36 +1,19 @@
 "use strict";
 
 define(['app', '../service/project'], function (app) {
-    return ['$scope', 'Project.Save', 'Project.Get', function ($scope, Save, Get) {
+    return ['$scope','$route', 'Project.Save', 'Project.Get', function ($scope, $route, Save, Get) {
 			$scope.args = {
 				"project":{},
 				"clusters":[]
 			}
 			$scope.ev = {}
 
-			$scope.args.project = {
-  "id": 1,
-  "name": "项目1",
-  "path": "git@xxxx",
-  "pushPath": "/var/www/project1",
-  "tags": "后台,测试",
-  "note": "this is a test.",
-  "created": "2015-01-01 12:00:00",
-  "modified": "2015-01-01 12:00:00",
-  "projectClusters": [
-    {
-      "id": 12,
-      "pid": 1,
-      "cid": 1,
-      "customMachine": "",
-      "bshell": "mkdir logs",
-      "eshell": "ln -s /var/www/project1 /usr/www/project1",
-      "note": "",
-      "created": "2015-01-01 12:00:00",
-      "modified": "2015-01-01 13:00:00"
-    }
-  ]
-}
+			var $id = $route.current.params.id
+			if ($id) {
+				Get.query({id: $id}, function(json) {
+					$scope.args.project = json.data
+				})
+			}
 
 $scope.args.clusters = [
 {
@@ -43,7 +26,7 @@ $scope.args.clusters = [
 }
 ]
 
-		    $scope.ev.addCluster = function() {
+			$scope.ev.addCluster = function() {
 				if(!$scope.args.project.projectClusters)
 					$scope.args.project.projectClusters = []
 				$scope.args.project.projectClusters.push([])
@@ -54,16 +37,37 @@ $scope.args.clusters = [
 				$scope.args.project.projectClusters.splice(idx, 1)
 			}
 
-			$scope.ev.saveCluster = function() {
-			}
-
 			$scope.ev.save = function() {
-				Save.query()
+				if(!$scope.projectform.$valid) {
+					return false
+				}
+
+				var $data = {
+					name: $scope.args.project.name,
+					path: $scope.args.project.path,
+					pushPath: $scope.args.project.pushPath,
+					note: $scope.args.project.note ? $scope.args.project.note : "",
+					tags: $scope.args.project.tags ? $scope.args.project.tags : "",
+					projectClusters: JSON.stringify(getClusters())
+				}
+				Save.query($data, function(json) {
+
+				})
 			}
 
-			Get.query({id: 1}, function(json) {
-
-			})
+			function getClusters() {
+				var $data = []
+				angular.forEach($scope.args.project.projectClusters,  function(v) {
+					var cluster = {
+						cid: v.cid,
+						bshell: v.bshell ? v.bshell:"",
+						eshell: v.eshell ? v.eshell:"",
+						note: v.note ? v.note:""
+					}
+					$data.push(cluster)
+				})
+				return $data
+			}
 
         }];
 });
