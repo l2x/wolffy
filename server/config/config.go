@@ -14,6 +14,8 @@ var (
 	RepoPath = "/tmp/repo"
 	DBPath   = "/tmp/data"
 
+	PrivateKey = ""
+
 	SessionInterval = 1
 	SessionExpire   = 3600
 	CookieName      = "wolffy_sid"
@@ -24,6 +26,18 @@ func InitConfig(conf string) error {
 	if err != nil {
 		return err
 	}
+
+	err = loadConfig()
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func loadConfig() error {
+	PrivateKey = "123"
+
 	return nil
 }
 

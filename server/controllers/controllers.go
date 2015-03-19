@@ -24,15 +24,15 @@ func NewRes() Res {
 }
 
 //标准输出
-func RenderError(r render.Render, errno int, data interface{}) {
-	res := NewRes()
-	res.Errno = errno
-	res.Errmsg = config.GetErr(errno)
-	res.Data = data
-	r.JSON(200, res)
+func RenderError(r render.Render, res Res, err error) error {
+	if err != nil {
+		res.Errmsg = err.Error()
+		r.JSON(200, res)
+	}
+	return err
 }
 
-func RenderRes(r render.Render, data interface{}) {
+func RenderRes(r render.Render, res Res, data interface{}) {
 	res.Errno = 0
 	res.Data = data
 	r.JSON(200, res)

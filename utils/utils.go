@@ -4,6 +4,7 @@ import (
 	"crypto/md5"
 	"io"
 	"math/rand"
+	"net/http"
 	"strings"
 	"time"
 )
@@ -46,4 +47,13 @@ func Md5(s string) string {
 func RandInt(min int, max int) int {
 	rand.Seed(time.Now().UnixNano())
 	return min + rand.Intn(max-min)
+}
+
+func ClientIp(r *http.Request) string {
+	ip := r.Header.Get("X-Real-Ip")
+	if ip == "" {
+		s := strings.Split(r.RemoteAddr, ":")
+		ip = s[0]
+	}
+	return ip
 }

@@ -52,6 +52,17 @@ func (m User) GetOne(id int) (*User, error) {
 	return user, nil
 }
 
+func (m User) GetViaUsername(username string) (*User, error) {
+	user := &User{
+		Username: username,
+	}
+	if err := DB.Read(user); err != nil {
+		return nil, err
+	}
+
+	return user, nil
+}
+
 func (m User) GetAll() ([]*User, error) {
 	users := []*User{}
 	if _, err := DB.QueryTable(m.TableName()).All(&users); err != nil {
@@ -68,6 +79,7 @@ func (m User) Add(username, name, password string, administrator int) (*User, er
 		Password:      password,
 		Administrator: administrator,
 		Created:       time.Now(),
+		LastLogin:     time.Now().AddDate(-1, 0, 0),
 	}
 	id, err := DB.Insert(user)
 	if err != nil {
@@ -97,17 +109,31 @@ func (m User) Update(id int, username, name string, administrator int) (*User, e
 	return user, nil
 }
 
-func (m User) UpdatePassword(id int, password string) (*User, error) {
+func (m User) UpdatePassword(id int, password string) error {
 	user := &User{
 		Id:       id,
 		Password: password,
 	}
 	_, err := DB.Update(user, "Password")
 	if err != nil {
-		return nil, err
+		return err
 	}
 
-	return user, nil
+	return nil
+}
+
+func (m User) UpdateLastLogin(id int, ip string) error {
+	user := &User{
+		Id:          id,
+		LastLogin:   time.Now(),
+		LastLoginIp: ip,
+	}
+	_, err := DB.Update(user, "LastLogin", "LastLoginIp")
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func (m User) Del(id int) error {

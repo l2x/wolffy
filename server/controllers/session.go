@@ -1,11 +1,13 @@
 package controllers
 
 import (
+	"errors"
 	"fmt"
 	"net/http"
 	"time"
 
 	"github.com/l2x/wolffy/server/config"
+	"github.com/l2x/wolffy/server/models"
 	"github.com/l2x/wolffy/utils"
 )
 
@@ -33,7 +35,7 @@ func NewSession() {
 	go Sessions.trash()
 }
 
-func CheckSession(res http.ResponseWriter, req *http.Request) string {
+func CheckSession(res http.ResponseWriter, req *http.Request) error {
 	cookie, err := req.Cookie(config.CookieName)
 	if err != nil {
 		return err
@@ -41,18 +43,18 @@ func CheckSession(res http.ResponseWriter, req *http.Request) string {
 	sid := cookie.Value
 	c, ok := Sessions.cache[sid]
 	if !ok {
-		return config.GetErr(config.ERR_SESSION_NOT_FOUND)
+		return errors.New("session not found")
 	}
 
 	if time.Now().Before(c.Expire) {
 		delete(Sessions.cache, sid)
-		return config.GetErr(config.ERR_SESSION_EXPIRED)
+		return errors.New("seesion expired")
 	}
 
 	cookie.Expires = time.Now().Add(time.Duration(config.SessionExpire) * time.Second)
 	http.SetCookie(res, cookie)
 
-	return ""
+	return nil
 }
 
 func (s *Session) Add(id int, username, ip string) {
@@ -67,6 +69,26 @@ func (s *Session) Add(id int, username, ip string) {
 	s.cache[sid] = cache
 }
 
+func (s *Session) GetUser(req *http.Request) (*models.User, error) {
+	cookie, err := req.Cookie(config.CookieName)
+	if err != nil {
+		return nil, err
+	}
+	sid := cookie.Value
+
+	session, err := s.Get(sid)
+	if err != nil {
+		return nil, err
+	}
+
+	user, err := models.UserModel.GetOne(session.Id)
+	if err != nil {
+		return nil, err
+	}
+
+	return user, nil
+}
+
 func (s *Session) Update(sid string) bool {
 	cache, ok := s.cache[sid]
 	if !ok {
@@ -75,6 +97,14 @@ func (s *Session) Update(sid string) bool {
 	cache.Expire = time.Now().Add(time.Duration(config.SessionExpire) * time.Second)
 
 	return true
+}
+
+func (s *Session) Get(sid string) (*Cache, error) {
+	session, ok := s.cache[sid]
+	if !ok {
+		return nil, errors.New("session not found")
+	}
+	return session, nil
 }
 
 func (s *Session) Del(sid string) {
