@@ -1,5 +1,6 @@
 log/*
 tests/*
 */data.db
+server/database/
 
 .idea
