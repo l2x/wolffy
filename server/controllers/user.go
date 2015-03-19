@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
 	"time"
@@ -20,24 +21,29 @@ func (c User) Login(r render.Render, w http.ResponseWriter, req *http.Request) {
 	username := req.URL.Query().Get("username")
 	password := req.URL.Query().Get("password")
 
+	fmt.Println(1)
 	user, err := models.UserModel.GetViaUsername(username)
 	if err = RenderError(r, res, err); err != nil {
 		return
 	}
 
+	fmt.Println(2)
 	password = SignPassword(password, user.Id)
 	user, err = models.UserModel.CheckPassword(username, password)
 	if err = RenderError(r, res, err); err != nil {
 		return
 	}
 
+	fmt.Println(3)
 	// 如果长时间没有登录，需要修改密码
-	if user.LastLogin.Before(time.Now().AddDate(0, 6, 0)) {
+	if user.LastLogin.Before(time.Now().AddDate(0, -6, 0)) {
 		res.Errno = config.ERR_USER_NEED_CHANGE_PWD
 		err = config.GetErr(res.Errno)
 		RenderError(r, res, err)
+		return
 	}
 
+	fmt.Println(4)
 	ip := utils.ClientIp(req)
 	err = models.UserModel.UpdateLastLogin(user.Id, ip)
 	if err = RenderError(r, res, err); err != nil {
@@ -169,6 +175,7 @@ func (c User) UpdatePassword(r render.Render, req *http.Request) {
 		return
 	}
 
+	oldpassword = SignPassword(oldpassword, user.Id)
 	user, err = models.UserModel.CheckPassword(user.Username, oldpassword)
 	if err = RenderError(r, res, err); err != nil {
 		return

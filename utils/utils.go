@@ -2,7 +2,7 @@ package utils
 
 import (
 	"crypto/md5"
-	"io"
+	"encoding/hex"
 	"math/rand"
 	"net/http"
 	"strings"
@@ -39,9 +39,9 @@ func DelEmptySlice(arr []string) []string {
 }
 
 func Md5(s string) string {
-	h := md5.New()
-	io.WriteString(h, s)
-	return string(h.Sum(nil))
+	hasher := md5.New()
+	hasher.Write([]byte(s))
+	return hex.EncodeToString(hasher.Sum(nil))
 }
 
 func RandInt(min int, max int) int {

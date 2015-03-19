@@ -12,9 +12,10 @@ var (
 	ERR_USER_NOT_ADMIN       = 2002
 
 	ERR = map[int]string{
-		ERR_OK:              "ok",
-		ERR_UNKNOWN:         "unknown error",
-		ERR_SESSION_INVALID: "session invalid",
+		ERR_OK:                   "ok",
+		ERR_UNKNOWN:              "unknown error",
+		ERR_SESSION_INVALID:      "session invalid",
+		ERR_USER_NEED_CHANGE_PWD: "need change password",
 	}
 )
 

@@ -9,7 +9,7 @@ var (
 type User struct {
 	Id            int       `json:"id"`
 	Username      string    `json:"username"`
-	Password      string    `json:"password"`
+	Password      string    `json:"-"`
 	Name          string    `json:"name"`
 	Administrator int       `json:"administrator"`
 	Created       time.Time `json:"created"`
@@ -28,12 +28,10 @@ func (m User) TableUnique() [][]string {
 }
 
 func (m User) CheckPassword(username, password string) (*User, error) {
-	user := &User{
-		Username: username,
-		Password: password,
-	}
+	user := &User{}
 
-	if err := DB.Read(user); err != nil {
+	err := DB.QueryTable(m.TableName()).Filter("username", username).Filter("password", password).Limit(1).One(user)
+	if err != nil {
 		return nil, err
 	}
 
@@ -53,10 +51,9 @@ func (m User) GetOne(id int) (*User, error) {
 }
 
 func (m User) GetViaUsername(username string) (*User, error) {
-	user := &User{
-		Username: username,
-	}
-	if err := DB.Read(user); err != nil {
+	user := &User{}
+	err := DB.QueryTable(m.TableName()).Filter("username", username).Limit(1).One(user)
+	if err != nil {
 		return nil, err
 	}
 

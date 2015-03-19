@@ -47,7 +47,7 @@ func (m Deploy) GetAll(pid int) ([]*Deploy, error) {
 
 func (m Deploy) GetOne(id int) (*Deploy, error) {
 	deploy := &Deploy{}
-	err := DB.QueryTable(m.TableName()).Filter("Id", id).One(deploy)
+	err := DB.QueryTable(m.TableName()).Filter("Id", id).Limit(1).One(deploy)
 	if err != nil {
 		return nil, err
 	}

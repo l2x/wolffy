@@ -42,7 +42,7 @@ func (m DeployHistory) GetAll(did int) ([]*DeployHistory, error) {
 
 func (m DeployHistory) GetOne(id int) (*DeployHistory, error) {
 	deployHistory := &DeployHistory{}
-	err := DB.QueryTable(m.TableName()).Filter("Id", id).One(deployHistory)
+	err := DB.QueryTable(m.TableName()).Filter("Id", id).Limit(1).One(deployHistory)
 	if err != nil {
 		return nil, err
 	}
