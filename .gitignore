@@ -2,5 +2,6 @@ log/*
 tests/*
 */data.db
 server/database/
+server/repo/
 
 .idea

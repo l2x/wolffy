@@ -36,6 +36,10 @@ define(['angularAMD'], function (angularAMD) {
                 var path = current
 
                 angular.forEach(menus, function (menu, k) {
+					if (!path) {
+						return
+					}
+
 					if (path == menus[k].url) {
 						flag = true
 						return
