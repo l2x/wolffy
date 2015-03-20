@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"encoding/json"
 	"net/http"
 	"strconv"
 
@@ -115,6 +116,47 @@ func (c Project) Add(r render.Render, req *http.Request) {
 	if err = RenderError(r, res, err); err != nil {
 		models.ProjectModel.Del(project.Id)
 		return
+	}
+
+	RenderRes(r, res, project)
+}
+
+func (c Project) Edit(r render.Render, req *http.Request) {
+	res := NewRes()
+
+	//path := "git@123.57.75.209:leiyonglin/wolffy.git"
+	id := req.URL.Query().Get("id")
+	name := req.URL.Query().Get("name")
+	path := req.URL.Query().Get("path")
+	pushPath := req.URL.Query().Get("pushPath")
+	tags := req.URL.Query().Get("tags")
+	note := req.URL.Query().Get("note")
+	projectClusters := req.URL.Query().Get("projectClusters")
+	idint, err := strconv.Atoi(id)
+	if err = RenderError(r, res, err); err != nil {
+		return
+	}
+
+	var clusters []models.ProjectCluster
+	err = json.Unmarshal([]byte(projectClusters), &clusters)
+	if err = RenderError(r, res, err); err != nil {
+		return
+	}
+
+	var project *models.Project
+
+	if project.Id == 0 {
+		project, err = models.ProjectModel.Add(name, path, pushPath, tags, note)
+	} else {
+		project, err = models.ProjectModel.Update(idint, name, path, pushPath, tags, note)
+	}
+	if err = RenderError(r, res, err); err != nil {
+		return
+	}
+
+	err = models.ProjectClusterModel.DelProject(project.Id)
+	for _, v := range clusters {
+		_, err = models.ProjectClusterModel.Add(project.Id, v.Cid, "", v.Bshell, v.Eshell, v.Note)
 	}
 
 	RenderRes(r, res, project)

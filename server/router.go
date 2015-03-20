@@ -32,6 +32,7 @@ func router() {
 
 	project := controllers.Project{}
 	m.Get("/project/add/", project.Add)
+	m.Get("/project/edit/", project.Edit)
 	m.Get("/project/get/", project.Get)
 	m.Get("/project/del/", project.Del)
 	m.Get("/project/update/", project.Update)

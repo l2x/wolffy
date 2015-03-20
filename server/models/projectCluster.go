@@ -22,9 +22,9 @@ func (m ProjectCluster) TableName() string {
 	return "project_cluster"
 }
 
-func (m ProjectCluster) TableIndex() [][]string {
+func (m ProjectCluster) TableUnique() [][]string {
 	return [][]string{
-		[]string{"Pid"},
+		[]string{"Pid", "Cid"},
 	}
 }
 
@@ -44,6 +44,15 @@ func (m ProjectCluster) Del(id int) error {
 		Id: id,
 	}
 	if _, err := DB.Delete(projectCluster); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m ProjectCluster) DelProject(pid int) error {
+	_, err := DB.QueryTable(m.TableName()).Filter("pid", pid).Delete()
+	if err != nil {
 		return err
 	}
 

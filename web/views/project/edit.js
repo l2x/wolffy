@@ -43,6 +43,7 @@ $scope.args.clusters = [
 				}
 
 				var $data = {
+					id: $scope.args.project.id ? $scope.args.project.id : 0,
 					name: $scope.args.project.name,
 					path: $scope.args.project.path,
 					pushPath: $scope.args.project.pushPath,
@@ -59,7 +60,7 @@ $scope.args.clusters = [
 				var $data = []
 				angular.forEach($scope.args.project.projectClusters,  function(v) {
 					var cluster = {
-						cid: v.cid,
+						cid: v.cid - 0,
 						bshell: v.bshell ? v.bshell:"",
 						eshell: v.eshell ? v.eshell:"",
 						note: v.note ? v.note:""
