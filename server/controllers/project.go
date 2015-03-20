@@ -98,31 +98,8 @@ func (c Project) Search(r render.Render, req *http.Request) {
 
 func (c Project) Add(r render.Render, req *http.Request) {
 	res := NewRes()
-
-	//path := "git@123.57.75.209:leiyonglin/wolffy.git"
-	name := req.URL.Query().Get("name")
-	path := req.URL.Query().Get("path")
-	pushpath := req.URL.Query().Get("pushpath")
-	tags := req.URL.Query().Get("tags")
-	note := req.URL.Query().Get("note")
-
-	project, err := models.ProjectModel.Add(name, path, pushpath, tags, note)
-	if err = RenderError(r, res, err); err != nil {
-		return
-	}
-
-	repo := git.NewRepository(config.RepoPath, project.Path)
-	_, err = repo.Clone()
-	if err = RenderError(r, res, err); err != nil {
-		models.ProjectModel.Del(project.Id)
-		return
-	}
-
-	RenderRes(r, res, project)
-}
-
-func (c Project) Edit(r render.Render, req *http.Request) {
-	res := NewRes()
+	var err error
+	var idint int = 0
 
 	//path := "git@123.57.75.209:leiyonglin/wolffy.git"
 	id := req.URL.Query().Get("id")
@@ -132,9 +109,15 @@ func (c Project) Edit(r render.Render, req *http.Request) {
 	tags := req.URL.Query().Get("tags")
 	note := req.URL.Query().Get("note")
 	projectClusters := req.URL.Query().Get("projectClusters")
-	idint, err := strconv.Atoi(id)
-	if err = RenderError(r, res, err); err != nil {
-		return
+	if projectClusters == "" {
+		projectClusters = "[]"
+	}
+
+	if id != "" {
+		idint, err = strconv.Atoi(id)
+		if err = RenderError(r, res, err); err != nil {
+			return
+		}
 	}
 
 	var clusters []models.ProjectCluster
@@ -145,7 +128,7 @@ func (c Project) Edit(r render.Render, req *http.Request) {
 
 	var project *models.Project
 
-	if project.Id == 0 {
+	if idint == 0 {
 		project, err = models.ProjectModel.Add(name, path, pushPath, tags, note)
 	} else {
 		project, err = models.ProjectModel.Update(idint, name, path, pushPath, tags, note)
