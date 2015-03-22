@@ -12,6 +12,7 @@ var (
 // -1-停用
 type Machine struct {
 	Id         int
+	Cid        int
 	Ip         string
 	Port       string
 	Note       string
@@ -24,6 +25,12 @@ type Machine struct {
 
 func (m Machine) TableName() string {
 	return "machine"
+}
+
+func (m Machine) TableIndex() [][]string {
+	return [][]string{
+		[]string{"Cid"},
+	}
 }
 
 func (m Machine) TableUnique() [][]string {
@@ -65,11 +72,9 @@ func (m Machine) GetOne(id int) (*Machine, error) {
 }
 
 func (m Machine) GetOneByIp(ip string) (*Machine, error) {
-	machine := &Machine{
-		Ip: ip,
-	}
+	machine := &Machine{}
 
-	if err := DB.Read(machine); err != nil {
+	if err := DB.QueryTable(m.TableName()).Filter("Ip", ip).Limit(1).One(machine); err != nil {
 		return nil, err
 	}
 
@@ -97,9 +102,10 @@ func (m Machine) Add(ip, port, note string) (*Machine, error) {
 	return machine, nil
 }
 
-func (m Machine) Update(id int, ip, port, note, token string, status int, lastReport time.Time) (*Machine, error) {
+func (m Machine) Update(id, cid int, ip, port, note, token string, status int, lastReport time.Time) (*Machine, error) {
 	machine := &Machine{
 		Id:         id,
+		Cid:        cid,
 		Ip:         ip,
 		Port:       port,
 		Note:       note,
@@ -108,7 +114,7 @@ func (m Machine) Update(id int, ip, port, note, token string, status int, lastRe
 		Modified:   time.Now(),
 		LastReport: lastReport,
 	}
-	_, err := DB.Update(machine, "Ip", "Port", "Note", "Token", "Status", "Modified", "LastReport")
+	_, err := DB.Update(machine, "Cid", "Ip", "Port", "Note", "Token", "Status", "Modified", "LastReport")
 	if err != nil {
 		return nil, err
 	}

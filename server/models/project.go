@@ -117,5 +117,10 @@ func (m Project) Update(id int, name, path, pushpath, tags, note string) (*Proje
 		return nil, err
 	}
 
+	project, err := m.GetOne(project.Id)
+	if err != nil {
+		return nil, err
+	}
+
 	return project, nil
 }
