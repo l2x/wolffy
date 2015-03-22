@@ -1,7 +1,7 @@
 "use strict";
 
 define(['app', '../service/project'], function (app) {
-    return ['$scope','$route', 'Project.Save', 'Project.Get', function ($scope, $route, Save, Get) {
+    return ['$scope', '$rootScope','$route', '$window', '$mdDialog', 'Project.Save', 'Project.Get', 'Project.Delete', function ($scope, $rootScope, $route, $window, $mdDialog, Save, Get, Delete) {
 			$scope.args = {
 				"project":{},
 				"clusters":[]
@@ -52,7 +52,27 @@ $scope.args.clusters = [
 					projectClusters: JSON.stringify(getClusters())
 				}
 				Save.query($data, function(json) {
+					if($rootScope.checkErr(json)) {
+						return
+					}
+					$window.history.back()
+				})
+			}
 
+			$scope.ev.delete = function(ev) {
+				var $dialog = $mdDialog.alert()
+				.title('Are you ABSOLUTELY sure?')
+				.content('This action CANNOT be undone. This will permanently delete this project.')
+				.ok('Delete this project')
+				.targetEvent(ev)
+
+				$mdDialog.show($dialog).then(function() {
+					Delete.query({id: $scope.args.project.id}, function(json){
+					if($rootScope.checkErr(json)) {
+						return
+					}
+					$window.history.back()
+					})
 				})
 			}
 

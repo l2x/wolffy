@@ -156,7 +156,7 @@ func (c Project) Add(r render.Render, req *http.Request) {
 	RenderRes(r, res, project)
 }
 
-func (c Project) Del(r render.Render, req *http.Request) {
+func (c Project) Delete(r render.Render, req *http.Request) {
 	res := NewRes()
 	id := req.URL.Query().Get("id")
 	idint, err := strconv.Atoi(id)

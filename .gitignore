@@ -3,5 +3,6 @@ tests/*
 */data.db
 server/database/
 server/repo/
+server/server
 
 .idea

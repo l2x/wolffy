@@ -20,7 +20,7 @@ type Project struct {
 	Created  time.Time `json:"created"`
 	Modified time.Time `json:"modified"`
 
-	ProjectClusters []*ProjectCluster `orm:"-", json:"projectClusters"`
+	ProjectClusters []*ProjectCluster `orm:"-" json:"projectClusters"`
 }
 
 func (m Project) TableName() string {

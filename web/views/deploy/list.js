@@ -39,7 +39,6 @@ define(['app'], function (app) {
 			}
 
 			$scope.ev.deploy = function(ev, $id, $commit) {
-
 			}
 
 			function DialogController($scope, $mdDialog) {

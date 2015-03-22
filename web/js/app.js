@@ -24,7 +24,7 @@ define([
         'pascalprecht.translate'
     ]);
 
-    app.config(['$routeProvider', '$locationProvider', 'cfpLoadingBarProvider',
+	app.config(['$routeProvider', '$locationProvider', 'cfpLoadingBarProvider',
         function($routeProvider, $locationProvider, cfpLoadingBarProvider) {
         $routeProvider
 			.when("/deploy/list", angularAMD.route({
@@ -107,6 +107,13 @@ define([
                 return 'zh-cn'
             });
         }]);
+
+	app.run(function($rootScope) {
+		$rootScope.checkErr = function(json) {
+			console.log(json)
+			return false
+		}
+	})
 
     return angularAMD.bootstrap(app);
 });
