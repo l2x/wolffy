@@ -84,6 +84,17 @@ func (c Project) Get(r render.Render, req *http.Request) {
 	RenderRes(r, res, project)
 }
 
+func (c Project) GetAll(r render.Render, req *http.Request) {
+	res := NewRes()
+
+	project, err := models.ProjectModel.GetAll()
+	if err = RenderError(r, res, err); err != nil {
+		return
+	}
+
+	RenderRes(r, res, project)
+}
+
 func (c Project) Search(r render.Render, req *http.Request) {
 	res := NewRes()
 	key := req.URL.Query().Get("key")
