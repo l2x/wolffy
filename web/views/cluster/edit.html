@@ -1,8 +1,7 @@
-
 <md-content class="project_form">
 	<h1>{{'CLUSTER' | translate}}</h1>
-
     <div>
+		<form name="clusterform">
 		<md-input-container flex>
 		<label>{{'NAME' | translate}}</label>
         	<input ng-model="args.cluster.name" required>
@@ -38,9 +37,9 @@
 
 		    <div layout="row" layout-align="space-between center" class="project_act">
 				<md-button class="md-warn" ng-click="ev.delCluster(cluster)">{{'DELETE' | translate}}{{'CLUSTER' | translate}}</md-button>
-				<md-button class="md-raised md-primary"  ng-click="ev.saveCluster(cluster)">{{'SAVE' | translate}}{{'CLUSTER' | translate}}</md-button>
+				<md-button class="md-raised md-primary" type="submit" ng-click="ev.save()">{{'SAVE' | translate}}{{'CLUSTER' | translate}}</md-button>
 			</div>
 		</div>
-
+	</form>
     </div>
 </md-content>

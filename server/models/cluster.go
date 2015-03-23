@@ -7,13 +7,13 @@ var (
 )
 
 type Cluster struct {
-	Id       int
-	Name     string
-	Tags     string
-	Machines string
-	Note     string
-	Created  time.Time
-	Modified time.Time
+	Id       int       `json:"id"`
+	Name     string    `json:"name"`
+	Tags     string    `json:"tags"`
+	Machines string    `json:"machines"`
+	Note     string    `json:"note"`
+	Created  time.Time `json:"created"`
+	Modified time.Time `json:"modified"`
 }
 
 func (m Cluster) TableName() string {

@@ -11,6 +11,9 @@ define(['app', '../service/project'], function (app) {
 			var $id = $route.current.params.id
 			if ($id) {
 				Get.query({id: $id}, function(json) {
+					if($rootScope.checkErr(json)) {
+						return
+					}
 					$scope.args.project = json.data
 				})
 			}

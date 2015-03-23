@@ -41,13 +41,28 @@ func (c Cluster) Get(r render.Render, req *http.Request) {
 
 func (c Cluster) Add(r render.Render, req *http.Request) {
 	res := NewRes()
+	var idint int
+	var err error
 
+	id := req.URL.Query().Get("id")
 	name := req.URL.Query().Get("name")
 	tags := req.URL.Query().Get("tags")
 	machines := req.URL.Query().Get("machines")
 	note := req.URL.Query().Get("note")
+	if id != "" {
+		idint, err = strconv.Atoi(id)
+		if err = RenderError(r, res, err); err != nil {
+			return
+		}
+	}
 
-	cluster, err := models.ClusterModel.Add(name, tags, machines, note)
+	var cluster *models.Cluster
+	if idint == 0 {
+		cluster, err = models.ClusterModel.Add(name, tags, machines, note)
+	} else {
+		cluster, err = models.ClusterModel.Update(idint, name, tags, machines, note)
+	}
+
 	if err = RenderError(r, res, err); err != nil {
 		return
 	}
