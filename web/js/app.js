@@ -108,11 +108,16 @@ define([
             });
         }]);
 
-	app.run(function($rootScope) {
+	app.run(function($rootScope, $mdDialog) {
 		$rootScope.checkErr = function(json) {
 			console.log(json)
 			return false
 		}
+		$rootScope.confirmDialog = $mdDialog.confirm()
+			.title('Are you ABSOLUTELY sure?')
+			.content('This action CANNOT be undone. This will permanently delete this item.')
+			.ok('Delete')
+			.cancel('Cancel')
 	})
 
     return angularAMD.bootstrap(app);

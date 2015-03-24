@@ -42,7 +42,7 @@ func router() {
 
 	cluster := controllers.Cluster{}
 	m.Get("/cluster/add", cluster.Add)
-	m.Get("/cluster/del", cluster.Del)
+	m.Get("/cluster/delete", cluster.Delete)
 	m.Get("/cluster/get", cluster.Get)
 	m.Get("/cluster/getall", cluster.GetAll)
 	m.Get("/cluster/update", cluster.Update)

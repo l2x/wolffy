@@ -97,7 +97,7 @@ func (m Cluster) Update(id int, name, tags, machines, note string) (*Cluster, er
 	return cluster, nil
 }
 
-func (m Cluster) Del(id int) error {
+func (m Cluster) Delete(id int) error {
 	cluster := &Cluster{
 		Id: id,
 	}

@@ -1,14 +1,18 @@
 "use strict";
 
 define(['app', '../service/cluster'], function (app) {
-    return ['$scope', 'Cluster.Search', function ($scope, Search) {
+	return ['$scope', '$rootScope', 'Cluster.Search', 'Cluster.GetAll', function ($scope, $rootScope, Search, GetAll) {
 			$scope.args = {}
 			$scope.ev = {}
+			$scope.args.list = []
 
-			$scope.args.list = [
-				{name:"集群1", tags:"后台", created:"2014-01-01 12:00:00", modified:"2014-01-02 12:00:00"},
-				{name:"后台2", tags:"后台, 消息", created:"2014-06-01 19:00:00", modified:"2014-06-02 17:00:00"}
-			]
+			GetAll.query({}, function(json){
+				if($rootScope.checkErr(json)) {
+					return
+				}
+
+				$scope.args.list = json.data
+			})
 
 			$scope.ev.search = function(){
 				Search.query({keywords: $scope.args.keywords}, function(json){

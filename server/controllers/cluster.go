@@ -70,7 +70,7 @@ func (c Cluster) Add(r render.Render, req *http.Request) {
 	RenderRes(r, res, cluster)
 }
 
-func (c Cluster) Del(r render.Render, req *http.Request) {
+func (c Cluster) Delete(r render.Render, req *http.Request) {
 	res := NewRes()
 	id := req.URL.Query().Get("id")
 	idint, err := strconv.Atoi(id)
@@ -78,7 +78,7 @@ func (c Cluster) Del(r render.Render, req *http.Request) {
 		return
 	}
 
-	err = models.ClusterModel.Del(idint)
+	err = models.ClusterModel.Delete(idint)
 	if err = RenderError(r, res, err); err != nil {
 		return
 	}

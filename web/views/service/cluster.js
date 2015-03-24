@@ -26,8 +26,8 @@ define(['app'], function(app) {
         });
     })
 
-    app.factory('Project.Delete', function($resource) {
-		return $resource("/project/delete", {}, {
+    app.factory('Cluster.Delete', function($resource) {
+		return $resource("/cluster/delete", {}, {
             query: {isArray: false}
         });
     })

@@ -1,11 +1,10 @@
 "use strict";
 
-define(['app', '../service/project'], function (app) {
-    return ['$scope', '$rootScope','$route', '$window', '$mdDialog', 'Project.Save', 'Project.Get', 'Project.Delete', function ($scope, $rootScope, $route, $window, $mdDialog, Save, Get, Delete) {
-			$scope.args = {
-				"project":{},
-				"clusters":[]
-			}
+define(['app', '../service/project', '../service/cluster', '../filter/filter'], function (app) {
+    return ['$scope', '$rootScope','$route', '$window', '$mdDialog', 'Project.Save', 'Project.Get', 'Project.Delete', 'Cluster.GetAll', function ($scope, $rootScope, $route, $window, $mdDialog, Save, Get, Delete, Cluster_GetAll) {
+			$scope.args = {}
+			$scope.args.project = []
+			$scope.args.clusters = []
 			$scope.ev = {}
 
 			var $id = $route.current.params.id
@@ -18,16 +17,13 @@ define(['app', '../service/project'], function (app) {
 				})
 			}
 
-$scope.args.clusters = [
-{
-	"id":1,
-	"name": "test1"
-},
-{
-	"id":2,
-	"name": "test2"
-}
-]
+			Cluster_GetAll.query({}, function(json) {
+				if($rootScope.checkErr(json)) {
+					return
+				}
+				$scope.args.clusters = json.data
+			})
+
 
 			$scope.ev.addCluster = function() {
 				if(!$scope.args.project.projectClusters)
@@ -63,13 +59,7 @@ $scope.args.clusters = [
 			}
 
 			$scope.ev.delete = function(ev) {
-				var $dialog = $mdDialog.alert()
-				.title('Are you ABSOLUTELY sure?')
-				.content('This action CANNOT be undone. This will permanently delete this project.')
-				.ok('Delete this project')
-				.targetEvent(ev)
-
-				$mdDialog.show($dialog).then(function() {
+				$mdDialog.show($rootScope.confirmDialog.targetEvent(ev)).then(function() {
 					Delete.query({id: $scope.args.project.id}, function(json){
 					if($rootScope.checkErr(json)) {
 						return
@@ -86,7 +76,7 @@ $scope.args.clusters = [
 						cid: v.cid - 0,
 						bshell: v.bshell ? v.bshell:"",
 						eshell: v.eshell ? v.eshell:"",
-						note: v.note ? v.note:""
+						note: v.note ? v.note : ""
 					}
 					$data.push(cluster)
 				})

@@ -1,8 +1,8 @@
 "use strict";
 
 define(['app', '../service/cluster', '../filter/filter'], function (app) {
-	return ['$scope', '$rootScope', '$route','$window', 'Cluster.Get', 'Cluster.Save',
-		function ($scope, $rootScope, $route, $window, Get, Save) {
+	return ['$scope', '$rootScope', '$route','$window', '$mdDialog', 'Cluster.Get', 'Cluster.Save', 'Cluster.Delete',
+		function ($scope, $rootScope, $route, $window, $mdDialog, Get, Save, Delete) {
 			$scope.args = {}
 			$scope.args.cluster = {}
 			$scope.ev = {}
@@ -15,7 +15,7 @@ define(['app', '../service/cluster', '../filter/filter'], function (app) {
 					}
 					$scope.args.cluster = json.data
 					var ip  = []
-				angular.forEach($scope.args.cluster.machines.split(","), function(v) {
+					angular.forEach($scope.args.cluster.machines.split(","), function(v) {
 						ip.push({ip: v})
 					})
 					$scope.args.cluster.machines = ip
@@ -46,6 +46,18 @@ define(['app', '../service/cluster', '../filter/filter'], function (app) {
 
 			$scope.ev.removeMachine = function($idx) {
 				$scope.args.cluster.machines.splice($idx, 1)
+			}
+
+			$scope.ev.delCluster = function(ev) {
+				var dialog = $rootScope.confirmDialog.targetEvent(ev)
+					$mdDialog.show(dialog).then(function() {
+						Delete.query({id: $scope.args.cluster.id}, function(json){
+					if($rootScope.checkErr(json)) {
+						return
+					}
+					$window.history.back()
+					})
+				})
 			}
 
 			$scope.ev.save = function() {

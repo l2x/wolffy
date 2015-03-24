@@ -33,7 +33,7 @@
 			  <div class="mb30">
 			  	 <label class="pr20">{{'CLUSTER' | translate}}</label>
 				 <md-select ng-model="cluster.cid" >
-				  <md-option ng-repeat="clu in args.clusters" value="{{clu.id}}" ng-selected="clu.id==cluster.cid">{{clu.name}}</md-option>
+				 <md-option ng-repeat="clu in args.clusters" value="{{clu.id}}" ng-show="clu.id | clusterFilter:args.project.projectClusters" ng-selected="clu.id==cluster.cid">{{clu.name}}</md-option>
 				  </md-select>
 			  </div>
 
@@ -49,7 +49,7 @@
 
 			  <md-input-container>
 					<label>{{'NOTE' | translate}}</label>
-					<input ng-model="project.tags">
+					<input ng-model="cluster.note">
 			  </md-input-container>
 
 			  <div layout="row" layout-align="space-between center">
