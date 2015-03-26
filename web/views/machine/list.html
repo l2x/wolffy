@@ -7,7 +7,6 @@
 			<label>{{'KEYWORD' | translate}}</label>
 				<input ng-model="args.keywords" type="text">
 			</md-input-container>
-			<md-button class="md-raised ml20" ng-click="ev.search()">{{'SEARCH' | translate}}</md-button>
 		</div>
 
 		<md-button class="md-raised md-primary mr20" href="#/machine/add">{{'ADD' | translate}}{{'MACHINE' | translate}}</md-button>
@@ -25,7 +24,7 @@
     </tr>
     </thead>
     <tbody>
-	<tr ng-repeat="item in args.list">
+	<tr ng-repeat="item in args.list | filter:args.keywords">
 		<td>{{item.ip}}</td>
 		<td>{{item.created}}</td>
 		<td>{{item.modified}}</td>
