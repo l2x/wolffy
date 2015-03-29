@@ -2,13 +2,10 @@
 
 <md-content>
     <div layout="row" layout-align="start center">
-
         <md-input-container>
 		<label>{{'KEYWORD' | translate}}</label>
             <input ng-model="args.keywords" type="text">
         </md-input-container>
-		<md-button class="md-raised ml20" ng-click="ev.search()">{{'SEARCH' | translate}}</md-button>
-
     </div>
 </md-content>
 
@@ -24,7 +21,7 @@
     </tr>
     </thead>
     <tbody>
-    <tr ng-repeat="item in args.list">
+    <tr ng-repeat="item in args.list | filter:args.keywords">
 		<td>{{item.username}}</td>
 		<td>{{item.name}}</td>
 		<td>{{item.created}}</td>
