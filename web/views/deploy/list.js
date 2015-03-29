@@ -1,8 +1,8 @@
 "use strict";
 
 define(['app', '../service/project', '../service/deploy'], function (app) {
-    return ['$scope','$rootScope', '$route', '$mdDialog', 'Project.Get','Project.GetTags', 'Deploy.History', 'Deploy.AddTag',
-	function ($scope, $rootScope, $route, $mdDialog, Project_Get, Project_GetTags, History, AddTag) {
+    return ['$scope','$rootScope', '$route', '$mdDialog', 'Project.Get','Project.GetTags', 'Deploy.History', 'Deploy.AddTag', 'Deploy.Push',
+	function ($scope, $rootScope, $route, $mdDialog, Project_Get, Project_GetTags, History, AddTag, Push) {
 			$scope.args = {}
 			$scope.ev = {}
 			$scope.args.project = {}
@@ -80,6 +80,12 @@ define(['app', '../service/project', '../service/deploy'], function (app) {
 			}
 
 			$scope.ev.deploy = function(ev, $id, $commit) {
+				Push.query({id: $id}, function(json) {
+					if($rootScope.checkErr(json)) {
+						return
+					}
+					console.log(json)
+				})
 			}
 
 			function DialogController($scope, $mdDialog) {

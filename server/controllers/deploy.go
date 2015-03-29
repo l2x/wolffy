@@ -32,6 +32,8 @@ func (c Deploy) Push(r render.Render, req *http.Request) {
 		return
 	}
 
+	//TODO check deploy status
+
 	repo := git.NewRepository(config.RepoPath, project.Path)
 	err = repo.Archive(commit, repo.Path)
 	if err = RenderError(r, res, err); err != nil {
