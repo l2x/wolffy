@@ -20,6 +20,7 @@ type Deploy struct {
 	Id       int       `json:"id"`
 	Pid      int       `json:"pid"`
 	Commit   string    `json:"commit"`
+	Diff     string    `json:"diff"`
 	Status   int       `json:"status"`
 	Created  time.Time `json:"created"`
 	Modified time.Time `json:"modified"`
@@ -35,10 +36,10 @@ func (m Deploy) TableIndex() [][]string {
 	}
 }
 
-func (m Deploy) GetAll(pid int) ([]*Deploy, error) {
+func (m Deploy) GetAll(pid, limits int) ([]*Deploy, error) {
 	var deploys []*Deploy
 
-	_, err := DB.QueryTable(m.TableName()).Filter("pid", pid).All(&deploys)
+	_, err := DB.QueryTable(m.TableName()).Filter("pid", pid).OrderBy("-id").Limit(limits).All(&deploys)
 	if err != nil {
 		return nil, err
 	}
@@ -54,10 +55,11 @@ func (m Deploy) GetOne(id int) (*Deploy, error) {
 	return deploy, nil
 }
 
-func (m Deploy) Add(pid int, commit string) (*Deploy, error) {
+func (m Deploy) Add(pid int, commit, diff string) (*Deploy, error) {
 	deploy := &Deploy{
 		Pid:      pid,
 		Commit:   commit,
+		Diff:     diff,
 		Status:   0,
 		Created:  time.Now(),
 		Modified: time.Now(),

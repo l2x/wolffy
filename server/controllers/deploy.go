@@ -15,19 +15,19 @@ type Deploy struct{}
 func (c Deploy) Push(r render.Render, req *http.Request) {
 	res := NewRes()
 
-	pid := req.URL.Query().Get("pid")
+	id := req.URL.Query().Get("id")
 	commit := req.URL.Query().Get("commit")
-	pidint, err := strconv.Atoi(pid)
+	idint, err := strconv.Atoi(id)
 	if err = RenderError(r, res, err); err != nil {
 		return
 	}
 
-	deploy, err := models.DeployModel.Add(pidint, commit)
+	deploy, err := models.DeployModel.GetOne(idint)
 	if err = RenderError(r, res, err); err != nil {
 		return
 	}
 
-	project, err := models.ProjectModel.GetOne(pidint)
+	project, err := models.ProjectModel.GetOne(idint)
 	if err = RenderError(r, res, err); err != nil {
 		return
 	}
@@ -63,16 +63,48 @@ func (c Deploy) Get(r render.Render, req *http.Request) {
 	RenderRes(r, res, deploy)
 }
 
+func (c Deploy) AddTag(r render.Render, req *http.Request) {
+	res := NewRes()
+	tag := req.URL.Query().Get("tag")
+	btag := req.URL.Query().Get("btag")
+	id := req.URL.Query().Get("id")
+	idint, err := strconv.Atoi(id)
+	if err = RenderError(r, res, err); err != nil {
+		return
+	}
+
+	project, err := models.ProjectModel.GetOne(idint)
+	if err = RenderError(r, res, err); err != nil {
+		return
+	}
+
+	var diff string
+	if btag != "" {
+		repo := git.NewRepository(config.RepoPath, project.Path)
+		diff, err = repo.Diff(tag, btag)
+		if err = RenderError(r, res, err); err != nil {
+			return
+		}
+	}
+
+	deploy, err := models.DeployModel.Add(idint, tag, diff)
+	if err = RenderError(r, res, err); err != nil {
+		return
+	}
+
+	RenderRes(r, res, deploy)
+}
+
 func (c Deploy) History(r render.Render, req *http.Request) {
 	res := NewRes()
 
-	pid := req.URL.Query().Get("pid")
+	pid := req.URL.Query().Get("id")
 	pidint, err := strconv.Atoi(pid)
 	if err = RenderError(r, res, err); err != nil {
 		return
 	}
 
-	deploys, err := models.DeployModel.GetAll(pidint)
+	deploys, err := models.DeployModel.GetAll(pidint, 50)
 	if err = RenderError(r, res, err); err != nil {
 		return
 	}

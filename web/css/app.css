@@ -157,3 +157,7 @@ label{
 .deploy_project_hd{
 	padding: 20px;
 }
+.deploy_project_hd md-select {
+	margin-top:0;
+	margin-right:20px
+}

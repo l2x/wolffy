@@ -27,7 +27,7 @@ define([
 	app.config(['$routeProvider', '$locationProvider', 'cfpLoadingBarProvider',
         function($routeProvider, $locationProvider, cfpLoadingBarProvider) {
         $routeProvider
-			.when("/deploy/list", angularAMD.route({
+			.when("/deploy/list/:id", angularAMD.route({
                 templateUrl: './views/deploy/list.html',
                 controllerUrl: '../views/deploy/list'
             }))

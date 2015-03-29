@@ -14,6 +14,12 @@ define(['app'], function(app) {
         });
     })
 
+    app.factory('Project.GetTags', function($resource) {
+		return $resource("/project/gettags", {}, {
+            query: {isArray: false}
+        });
+    })
+
     app.factory('Project.GetAll', function($resource) {
 		return $resource("/project/getall", {}, {
             query: {isArray: false}

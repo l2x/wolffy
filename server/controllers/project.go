@@ -138,14 +138,26 @@ func (c Project) Add(r render.Render, req *http.Request) {
 	}
 
 	var project *models.Project
+	var add bool
 
 	if idint == 0 {
 		project, err = models.ProjectModel.Add(name, path, pushPath, tags, note)
+		add = true
 	} else {
 		project, err = models.ProjectModel.Update(idint, name, path, pushPath, tags, note)
 	}
 	if err = RenderError(r, res, err); err != nil {
 		return
+	}
+
+	// clone project
+	if add {
+		repo := git.NewRepository(config.RepoPath, path)
+		_, err = repo.Clone()
+		if err = RenderError(r, res, err); err != nil {
+			models.ProjectModel.Del(project.Id)
+			return
+		}
 	}
 
 	err = models.ProjectClusterModel.DelProject(project.Id)
@@ -168,6 +180,8 @@ func (c Project) Delete(r render.Render, req *http.Request) {
 	if err = RenderError(r, res, err); err != nil {
 		return
 	}
+
+	//TODO delete file
 
 	RenderRes(r, res, map[string]string{})
 }

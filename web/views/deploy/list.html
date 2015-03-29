@@ -1,9 +1,12 @@
-<h1>{{'PROJECT' | translate}}{{'DEPLOY' | translate}}</h1>
+<h1>{{'PROJECT' | translate}}{{'DEPLOY' | translate}} - {{args.project.name}}</h1>
 
 <md-content>
 	<div layout="row" layout-align="start center" class="deploy_project_hd">
-		<span>{{args.project.name}}</span>
-		<md-button class="md-raised md-primary ml20" ng-click="ev.addLatest(args.project.id)">{{'ADD' | translate}}{{'LATEST' | translate}}{{'VERSION' | translate}}</md-button>
+		<md-select ng-model="args.tag">
+		<md-option ng-repeat="tag in args.tags" ng-value="tag" ng-selected="$index==0 ? 'selected':''">{{tag}}</md-option>
+		</md-select>
+
+		<md-button class="md-raised md-primary ml20" ng-click="ev.addTag()">{{'ADD' | translate}}{{'VERSION' | translate}}</md-button>
     </div>
 </md-content>
 
@@ -39,7 +42,7 @@
 <script type="custom/tpl" id="diffTpl">
 <md-dialog aria-label="diffTpl">
 	<md-content>
-	{{ctrl.diff}}
+	<pre>{{ctrl.diff}}</pre>
 	</md-content>
 
 	<div class="md-actions" layout="row">
