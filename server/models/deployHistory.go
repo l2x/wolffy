@@ -14,7 +14,7 @@ var (
 type DeployHistory struct {
 	Id      int       `json:"id"`
 	Did     int       `json:"did"`
-	IP      string    `json:"ip"`
+	Ip      string    `json:"ip"`
 	Status  int       `json:"status"`
 	Note    string    `json:"note"`
 	Created time.Time `json:"created"`
@@ -31,11 +31,11 @@ func (m DeployHistory) TableIndex() [][]string {
 }
 
 func (m DeployHistory) GetAll(did int) ([]*DeployHistory, error) {
-	var deployHistorys []*DeployHistory
+	deployHistorys := []*DeployHistory{}
 
 	_, err := DB.QueryTable(m.TableName()).Filter("did", did).All(&deployHistorys)
 	if err != nil {
-		return nil, err
+		return deployHistorys, err
 	}
 	return deployHistorys, nil
 }
@@ -49,10 +49,11 @@ func (m DeployHistory) GetOne(id int) (*DeployHistory, error) {
 	return deployHistory, nil
 }
 
-func (m DeployHistory) Add(did int) (*DeployHistory, error) {
+func (m DeployHistory) Add(did int, ip string) (*DeployHistory, error) {
 	deployHistory := &DeployHistory{
 		Did:     did,
 		Status:  1,
+		Ip:      ip,
 		Created: time.Now(),
 	}
 	id, err := DB.Insert(deployHistory)
@@ -68,13 +69,12 @@ func (m DeployHistory) Add(did int) (*DeployHistory, error) {
 	return deployHistory, nil
 }
 
-func (m DeployHistory) Update(id, status int, note string) error {
+func (m DeployHistory) Update(id, status int) error {
 	deployHistory := &DeployHistory{
 		Id:     id,
 		Status: status,
-		Note:   note,
 	}
-	_, err := DB.Update(deployHistory, "Status", "Note")
+	_, err := DB.Update(deployHistory, "Status")
 	if err != nil {
 		return err
 	}

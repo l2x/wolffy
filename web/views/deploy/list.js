@@ -80,7 +80,8 @@ define(['app', '../service/project', '../service/deploy'], function (app) {
 			}
 
 			$scope.ev.deploy = function(ev, $id, $commit) {
-				Push.query({id: $id}, function(json) {
+
+				Push.query({pid: $scope.args.project.id, id: $id, commit: $commit}, function(json) {
 					if($rootScope.checkErr(json)) {
 						return
 					}

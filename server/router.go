@@ -64,6 +64,8 @@ func router() {
 
 	machine := controllers.Machine{}
 	m.Get("/machine/ping", machine.Ping)
+	m.Get("/machine/add", machine.Add)
+	m.Get("/machine/getall", machine.GetAll)
 
 	m.RunOnAddr(":8000")
 }

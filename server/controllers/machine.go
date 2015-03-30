@@ -29,7 +29,7 @@ func (c Machine) Ping(r render.Render, req *http.Request) {
 		return
 	}
 
-	machine, err = models.MachineModel.Update(machine.Id, 0, machine.Ip, machine.Port, machine.Note, token, 1, time.Now())
+	machine, err = models.MachineModel.Update(machine.Id, machine.Ip, machine.Port, machine.Note, token, 1, time.Now())
 	if err = RenderError(r, res, err); err != nil {
 		return
 	}
@@ -52,6 +52,17 @@ func (c Machine) Add(r render.Render, req *http.Request) {
 	RenderRes(r, res, machine)
 }
 
+func (c Machine) GetAll(r render.Render, req *http.Request) {
+	res := NewRes()
+
+	machine, err := models.MachineModel.GetAll()
+	if err = RenderError(r, res, err); err != nil {
+		return
+	}
+
+	RenderRes(r, res, machine)
+}
+
 func (c Machine) Update(r render.Render, req *http.Request) {
 	res := NewRes()
 
@@ -65,7 +76,7 @@ func (c Machine) Update(r render.Render, req *http.Request) {
 		return
 	}
 
-	machine, err = models.MachineModel.Update(machine.Id, 0, machine.Ip, machine.Port, note, machine.Token, statusInt, time.Now())
+	machine, err = models.MachineModel.Update(machine.Id, machine.Ip, machine.Port, note, machine.Token, statusInt, time.Now())
 	if err = RenderError(r, res, err); err != nil {
 		return
 	}

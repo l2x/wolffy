@@ -16,6 +16,7 @@ type ProjectCluster struct {
 	Note          string    `json:"note"`
 	Created       time.Time `json:"created"`
 	Modified      time.Time `json:"modified"`
+	Cluster       *Cluster  `orm:"-" json:"cluster"`
 }
 
 func (m ProjectCluster) TableName() string {
@@ -34,6 +35,14 @@ func (m ProjectCluster) GetAll(pid int) ([]*ProjectCluster, error) {
 	_, err := DB.QueryTable(m.TableName()).Filter("pid", pid).All(&projectClusters)
 	if err != nil {
 		return nil, err
+	}
+
+	for k, v := range projectClusters {
+		cluster, err := ClusterModel.GetOne(v.Cid)
+		if err != nil {
+			continue
+		}
+		projectClusters[k].Cluster = cluster
 	}
 
 	return projectClusters, nil

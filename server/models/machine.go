@@ -11,26 +11,19 @@ var (
 // 1-正常
 // -1-停用
 type Machine struct {
-	Id         int
-	Cid        int
-	Ip         string
-	Port       string
-	Note       string
-	Token      string
-	Status     int
-	Created    time.Time
-	Modified   time.Time
-	LastReport time.Time
+	Id         int       `json:"id"`
+	Ip         string    `json:"ip"`
+	Port       string    `json:"port"`
+	Note       string    `json:"note"`
+	Token      string    `json:"-"`
+	Status     int       `json:"staus"`
+	Created    time.Time `json:"created"`
+	Modified   time.Time `json:"modified"`
+	LastReport time.Time `json:"lastReport"`
 }
 
 func (m Machine) TableName() string {
 	return "machine"
-}
-
-func (m Machine) TableIndex() [][]string {
-	return [][]string{
-		[]string{"Cid"},
-	}
 }
 
 func (m Machine) TableUnique() [][]string {
@@ -83,10 +76,11 @@ func (m Machine) GetOneByIp(ip string) (*Machine, error) {
 
 func (m Machine) Add(ip, port, note string) (*Machine, error) {
 	machine := &Machine{
-		Ip:       ip,
-		Note:     note,
-		Created:  time.Now(),
-		Modified: time.Now(),
+		Ip:         ip,
+		Note:       note,
+		Created:    time.Now(),
+		Modified:   time.Now(),
+		LastReport: time.Now(),
 	}
 
 	id, err := DB.Insert(machine)
@@ -102,10 +96,9 @@ func (m Machine) Add(ip, port, note string) (*Machine, error) {
 	return machine, nil
 }
 
-func (m Machine) Update(id, cid int, ip, port, note, token string, status int, lastReport time.Time) (*Machine, error) {
+func (m Machine) Update(id int, ip, port, note, token string, status int, lastReport time.Time) (*Machine, error) {
 	machine := &Machine{
 		Id:         id,
-		Cid:        cid,
 		Ip:         ip,
 		Port:       port,
 		Note:       note,
@@ -114,7 +107,7 @@ func (m Machine) Update(id, cid int, ip, port, note, token string, status int, l
 		Modified:   time.Now(),
 		LastReport: lastReport,
 	}
-	_, err := DB.Update(machine, "Cid", "Ip", "Port", "Note", "Token", "Status", "Modified", "LastReport")
+	_, err := DB.Update(machine, "Ip", "Port", "Note", "Token", "Status", "Modified", "LastReport")
 	if err != nil {
 		return nil, err
 	}

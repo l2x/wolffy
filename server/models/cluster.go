@@ -7,13 +7,13 @@ var (
 )
 
 type Cluster struct {
-	Id       int       `json:"id"`
-	Name     string    `json:"name"`
-	Tags     string    `json:"tags"`
-	Machines string    `json:"machines"`
-	Note     string    `json:"note"`
-	Created  time.Time `json:"created"`
-	Modified time.Time `json:"modified"`
+	Id       int        `json:"id"`
+	Name     string     `json:"name"`
+	Tags     string     `json:"tags"`
+	Note     string     `json:"note"`
+	Created  time.Time  `json:"created"`
+	Modified time.Time  `json:"modified"`
+	Machines []*Machine `orm:"-" json:"machines"`
 }
 
 func (m Cluster) TableName() string {
@@ -24,17 +24,6 @@ func (m Cluster) TableUnique() [][]string {
 	return [][]string{
 		[]string{"Name"},
 	}
-}
-
-func (m Cluster) Search(name string) ([]*Cluster, error) {
-	var clusters []*Cluster
-
-	_, err := DB.QueryTable(m.TableName()).Filter("Name__icontains", name).All(&clusters)
-	if err != nil {
-		return nil, err
-	}
-
-	return clusters, nil
 }
 
 func (m Cluster) GetAll() ([]*Cluster, error) {
@@ -55,14 +44,15 @@ func (m Cluster) GetOne(id int) (*Cluster, error) {
 		return nil, err
 	}
 
+	cluster.Machines, _ = ClusterMachineModel.GetAll(cluster.Id)
+
 	return cluster, nil
 }
 
-func (m Cluster) Add(name, tags, machines, note string) (*Cluster, error) {
+func (m Cluster) Add(name, tags, note string) (*Cluster, error) {
 	cluster := &Cluster{
 		Name:     name,
 		Tags:     tags,
-		Machines: machines,
 		Note:     note,
 		Created:  time.Now(),
 		Modified: time.Now(),
@@ -80,16 +70,19 @@ func (m Cluster) Add(name, tags, machines, note string) (*Cluster, error) {
 	return cluster, nil
 }
 
-func (m Cluster) Update(id int, name, tags, machines, note string) (*Cluster, error) {
+func (m Cluster) Update(id int, name, tags, note string) (*Cluster, error) {
 	cluster := &Cluster{
 		Id:       id,
 		Name:     name,
 		Tags:     tags,
-		Machines: machines,
 		Note:     note,
 		Modified: time.Now(),
 	}
-	_, err := DB.Update(cluster, "Name", "Tags", "Machines", "Note", "Modified")
+	_, err := DB.Update(cluster, "Name", "Tags", "Note", "Modified")
+	if err != nil {
+		return nil, err
+	}
+	cluster, err = m.GetOne(id)
 	if err != nil {
 		return nil, err
 	}

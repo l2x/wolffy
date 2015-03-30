@@ -1,6 +1,8 @@
 package controllers
 
 import (
+	"errors"
+	"fmt"
 	"net/http"
 	"strconv"
 
@@ -16,8 +18,13 @@ func (c Deploy) Push(r render.Render, req *http.Request) {
 	res := NewRes()
 
 	id := req.URL.Query().Get("id")
+	pid := req.URL.Query().Get("pid")
 	commit := req.URL.Query().Get("commit")
 	idint, err := strconv.Atoi(id)
+	if err = RenderError(r, res, err); err != nil {
+		return
+	}
+	pidint, err := strconv.Atoi(pid)
 	if err = RenderError(r, res, err); err != nil {
 		return
 	}
@@ -27,12 +34,14 @@ func (c Deploy) Push(r render.Render, req *http.Request) {
 		return
 	}
 
-	project, err := models.ProjectModel.GetOne(idint)
+	if deploy.Status == 1 {
+		RenderError(r, res, errors.New(config.ERR[config.ERR_PROJECT_DEPLOYING]))
+	}
+
+	project, err := models.ProjectModel.GetOne(pidint)
 	if err = RenderError(r, res, err); err != nil {
 		return
 	}
-
-	//TODO check deploy status
 
 	repo := git.NewRepository(config.RepoPath, project.Path)
 	err = repo.Archive(commit, repo.Path)
@@ -40,15 +49,47 @@ func (c Deploy) Push(r render.Render, req *http.Request) {
 		return
 	}
 
-	//TODO push code to agent
+	err = c.pushCluster(project.Id, deploy.Id, commit)
+	if err = RenderError(r, res, err); err != nil {
+		return
+	}
 
 	//finish
-	err = models.DeployModel.UpdateStatus(deploy.Id, 2)
+	err = models.DeployModel.UpdateStatus(deploy.Id, 1)
 	if err = RenderError(r, res, err); err != nil {
 		return
 	}
 
 	RenderRes(r, res, deploy)
+}
+
+func (c Deploy) pushCluster(pid, did int, commit string) error {
+	projectClusters, err := models.ProjectClusterModel.GetAll(pid)
+	if err != nil {
+		return errors.New(config.ERR[config.ERR_PROJECT_CLUSTER_EMPTY])
+	}
+
+	for _, v1 := range projectClusters {
+		for _, v2 := range v1.Cluster.Machines {
+			deployHistory, err := models.DeployHistoryModel.Add(did, v2.Ip)
+			if err != nil {
+				continue
+			}
+
+			go c.pushFile(deployHistory.Id, v1.Bshell, v1.Eshell)
+		}
+	}
+
+	return nil
+}
+
+func (c Deploy) pushFile(dhid int, bshell, eshell string) {
+	fmt.Println(dhid, bshell, eshell)
+	status := 1
+
+	status = 2
+	models.DeployHistoryModel.Update(dhid, status)
+
 }
 
 func (c Deploy) Get(r render.Render, req *http.Request) {
@@ -106,9 +147,15 @@ func (c Deploy) History(r render.Render, req *http.Request) {
 		return
 	}
 
-	deploys, err := models.DeployModel.GetAll(pidint, 50)
+	deploys, err := models.DeployModel.GetAll(pidint, 15)
 	if err = RenderError(r, res, err); err != nil {
 		return
+	}
+
+	// get deploy history
+	for k, v := range deploys {
+		deployHistory, _ := models.DeployHistoryModel.GetAll(v.Id)
+		deploys[k].DeployHistory = deployHistory
 	}
 
 	RenderRes(r, res, deploys)

@@ -1,10 +1,11 @@
 "use strict";
 
-define(['app', '../service/cluster', '../filter/filter'], function (app) {
-	return ['$scope', '$rootScope', '$route','$window', '$mdDialog', 'Cluster.Get', 'Cluster.Save', 'Cluster.Delete',
-		function ($scope, $rootScope, $route, $window, $mdDialog, Get, Save, Delete) {
+define(['app', '../service/cluster','../service/machine', '../filter/filter'], function (app) {
+	return ['$scope', '$rootScope', '$route','$window', '$mdDialog', 'Cluster.Get', 'Cluster.Save', 'Cluster.Delete', 'Machine.GetAll',
+	function ($scope, $rootScope, $route, $window, $mdDialog, Get, Save, Delete, Machine_GetAll) {
 			$scope.args = {}
 			$scope.args.cluster = {}
+			$scope.args.machines = []
 			$scope.ev = {}
 
 			var $id = $route.current.params.id
@@ -14,21 +15,15 @@ define(['app', '../service/cluster', '../filter/filter'], function (app) {
 						return
 					}
 					$scope.args.cluster = json.data
-					var ip  = []
-					angular.forEach($scope.args.cluster.machines.split(","), function(v) {
-						ip.push({ip: v})
-					})
-					$scope.args.cluster.machines = ip
-
-					console.log($scope.args.cluster)
 				})
 			}
 
-			$scope.args.machines = [
-			{ip:"127.0.1"},
-			{ip:"127.0.2"},
-			{ip:"127.0.3"}
-			]
+			Machine_GetAll.query({}, function(json) {
+				if($rootScope.checkErr(json)) {
+					return
+				}
+				$scope.args.machines = json.data
+			})
 
 			$scope.ev.addMachine = function($idx) {
 				if (!$scope.args.cluster.machines) {
@@ -68,7 +63,7 @@ define(['app', '../service/cluster', '../filter/filter'], function (app) {
 				angular.copy($scope.args.cluster, data)
 				var ip = []
 				angular.forEach(data.machines, function(v) {
-					ip.push(v.ip)
+					ip.push(v.id)
 				})
 				data.machines = ip.join(",")
 

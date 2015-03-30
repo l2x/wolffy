@@ -21,6 +21,7 @@ func InitModels() error {
 	orm.RegisterDataBase("default", "sqlite3", dbPath)
 
 	orm.RegisterModel(ClusterModel)
+	orm.RegisterModel(ClusterMachineModel)
 	orm.RegisterModel(DeployModel)
 	orm.RegisterModel(DeployHistoryModel)
 	orm.RegisterModel(MachineModel)
