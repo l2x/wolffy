@@ -16,7 +16,7 @@ type Machine struct {
 	Port       string    `json:"port"`
 	Note       string    `json:"note"`
 	Token      string    `json:"-"`
-	Status     int       `json:"staus"`
+	Status     int       `json:"status"`
 	Created    time.Time `json:"created"`
 	Modified   time.Time `json:"modified"`
 	LastReport time.Time `json:"lastReport"`
