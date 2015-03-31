@@ -35,7 +35,7 @@ func (s Server) Pull(r render.Render, req *http.Request) {
 	}
 
 	if bShell != "" {
-		err = runCmd(path, bShell)
+		err = utils.RunCmd(path, bShell)
 		if err = controllers.RenderError(r, res, err); err != nil {
 			return
 		}
@@ -64,7 +64,7 @@ func (s Server) Pull(r render.Render, req *http.Request) {
 	}
 	//TODO remove old dir
 
-	res.Code = 0
+	res.Errno = 0
 	controllers.RenderRes(r, res, map[string]string{})
 }
 
@@ -73,17 +73,19 @@ func checkSign(sign string) error {
 }
 
 func decompress(file, path string) error {
-	err := utils.Unzip(file)
+	err := utils.Unzip(path, file)
 	if err != nil {
 		return err
 	}
 
 	ufile := strings.TrimRight(file, ".tar.gz")
 	cmd := fmt.Sprintf("ln -s %s %s", ufile, path)
-	err := utils.RunCmd(path, cmd)
+	err = utils.RunCmd(path, cmd)
 	if err != nil {
 		return err
 	}
+
+	return nil
 }
 
 func saveFile(req *http.Request, path string) (string, error) {
