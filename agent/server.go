@@ -1,11 +1,15 @@
 package main
 
 import (
-	"errors"
+	"fmt"
+	"io"
 	"net/http"
+	"os"
+	"path/filepath"
+	"strings"
 
-	"github.com/Unknwon/com"
 	"github.com/l2x/wolffy/server/controllers"
+	"github.com/l2x/wolffy/utils"
 	"github.com/martini-contrib/render"
 )
 
@@ -17,10 +21,15 @@ func (s Server) Pull(r render.Render, req *http.Request) {
 	file := []byte{}
 	sign := req.URL.Query().Get("sign")
 	path := req.URL.Query().Get("path")
-	bShell := req.URL.Query().Get("bShell")
-	eShell := req.URL.Query().Get("eShell")
+	bShell := req.URL.Query().Get("bshell")
+	eShell := req.URL.Query().Get("eshell")
 
 	err := checkSign(sign)
+	if err = controllers.RenderError(r, res, err); err != nil {
+		return
+	}
+
+	err = utils.Mkdir(path)
 	if err = controllers.RenderError(r, res, err); err != nil {
 		return
 	}
@@ -32,18 +41,30 @@ func (s Server) Pull(r render.Render, req *http.Request) {
 		}
 	}
 
-	err = saveFile(path, file)
+	pdir := filepath.Dir(path)
+	sfile, err := saveFile(req, pdir)
+	if err = controllers.RenderError(r, res, err); err != nil {
+		return
+	}
+	err = decompress(sfile, path)
 	if err = controllers.RenderError(r, res, err); err != nil {
 		return
 	}
 
 	if eShell != "" {
-		err = runCmd(path, eShell)
+		err = utils.RunCmd(path, eShell)
 		if err = controllers.RenderError(r, res, err); err != nil {
 			return
 		}
 	}
 
+	err = os.Remove(sfile)
+	if err = controllers.RenderError(r, res, err); err != nil {
+		return
+	}
+	//TODO remove old dir
+
+	res.Code = 0
 	controllers.RenderRes(r, res, map[string]string{})
 }
 
@@ -51,22 +72,34 @@ func checkSign(sign string) error {
 	return nil
 }
 
-func unzip(path, file string) error {
-	_, stderr, err := com.ExecCmdDir(path, "tar", "xvf", file)
+func decompress(file, path string) error {
+	err := utils.Unzip(file)
 	if err != nil {
-		return errors.New(err.Error() + "\n" + stderr)
+		return err
 	}
-	return nil
+
+	ufile := strings.TrimRight(file, ".tar.gz")
+	cmd := fmt.Sprintf("ln -s %s %s", ufile, path)
+	err := utils.RunCmd(path, cmd)
+	if err != nil {
+		return err
+	}
 }
 
-func runCmd(path, cmd string) error {
-	_, stderr, err := com.ExecCmdDir(path, "bash", "-c", cmd)
+func saveFile(req *http.Request, path string) (string, error) {
+	file, handler, err := req.FormFile("file")
 	if err != nil {
-		return errors.New(err.Error() + "\n" + stderr)
+		return "", err
 	}
-	return nil
-}
+	defer file.Close()
 
-func saveFile(path string, file []byte) error {
-	return nil
+	save := fmt.Sprintf("%s/%s", strings.TrimRight(path, "/"), handler.Filename)
+	f, err := os.OpenFile(save, os.O_WRONLY|os.O_CREATE, 0755)
+	if err != nil {
+		return "", err
+	}
+	defer f.Close()
+	io.Copy(f, file)
+
+	return save, nil
 }
