@@ -44,12 +44,12 @@ func (c Deploy) Push(r render.Render, req *http.Request) {
 	}
 
 	repo := git.NewRepository(config.RepoPath, project.Path)
-	err = repo.Archive(commit, repo.Path)
+	archiveFile, err := repo.Archive(commit, repo.Path)
 	if err = RenderError(r, res, err); err != nil {
 		return
 	}
 
-	err = c.pushCluster(project.Id, deploy.Id, commit)
+	err = c.pushCluster(project, deploy.Id, archiveFile)
 	if err = RenderError(r, res, err); err != nil {
 		return
 	}
@@ -63,8 +63,8 @@ func (c Deploy) Push(r render.Render, req *http.Request) {
 	RenderRes(r, res, deploy)
 }
 
-func (c Deploy) pushCluster(pid, did int, commit string) error {
-	projectClusters, err := models.ProjectClusterModel.GetAll(pid)
+func (c Deploy) pushCluster(project *models.Project, did int, archiveFile string) error {
+	projectClusters, err := models.ProjectClusterModel.GetAll(project.Id)
 	if err != nil {
 		return errors.New(config.ERR[config.ERR_PROJECT_CLUSTER_EMPTY])
 	}
@@ -76,20 +76,19 @@ func (c Deploy) pushCluster(pid, did int, commit string) error {
 				continue
 			}
 
-			go c.pushFile(deployHistory.Id, v1.Bshell, v1.Eshell)
+			go c.pushFile(deployHistory.Id, archiveFile, project.PushPath, v1.Bshell, v1.Eshell)
 		}
 	}
 
 	return nil
 }
 
-func (c Deploy) pushFile(dhid int, bshell, eshell string) {
-	fmt.Println(dhid, bshell, eshell)
+func (c Deploy) pushFile(dhid int, archiveFile, pushPath, bshell, eshell string) {
+	fmt.Println(dhid, archiveFile, pushPath, bshell, eshell)
 	status := 1
 
 	status = 2
 	models.DeployHistoryModel.Update(dhid, status)
-
 }
 
 func (c Deploy) Get(r render.Render, req *http.Request) {

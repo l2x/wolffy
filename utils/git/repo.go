@@ -108,16 +108,16 @@ func (repo *Repository) DelTags(commit string) error {
 
 //archive
 //git archive --format=tar.gz --prefix=wolffy-0.1.3/ 0.1.3 --output /tmp/wolffy-0.1.3.tag.gz
-func (repo *Repository) Archive(commit, spath string) error {
+func (repo *Repository) Archive(commit, spath string) (string, error) {
 	prefix := fmt.Sprintf("%s-%s/", repo.Name, commit)
 	spath = fmt.Sprintf("%s-%s%s", spath, commit, ".tar.gz")
 
 	_, stderr, err := com.ExecCmdDir(repo.Path, "git", "archive", "--format", "tar.gz", "--prefix", prefix, commit, "--output", spath)
 
 	if err != nil {
-		return errors.New(err.Error() + "\n" + stderr)
+		return "", errors.New(err.Error() + "\n" + stderr)
 	}
-	return nil
+	return spath, nil
 }
 
 // diff
