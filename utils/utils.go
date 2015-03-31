@@ -3,10 +3,14 @@ package utils
 import (
 	"crypto/md5"
 	"encoding/hex"
+	"errors"
 	"math/rand"
 	"net/http"
+	"os"
 	"strings"
 	"time"
+
+	"github.com/Unknwon/com"
 )
 
 type StringReverse []string
@@ -56,4 +60,30 @@ func ClientIp(r *http.Request) string {
 		ip = s[0]
 	}
 	return ip
+}
+
+func Mkdir(args ...string) error {
+	for _, v := range args {
+		err := os.MkdirAll(v, 0755)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func Unzip(path, file string) error {
+	_, stderr, err := com.ExecCmdDir(path, "tar", "xvf", file)
+	if err != nil {
+		return errors.New(err.Error() + "\n" + stderr)
+	}
+	return nil
+}
+
+func RunCmd(path, cmd string) error {
+	_, stderr, err := com.ExecCmdDir(path, "bash", "-c", cmd)
+	if err != nil {
+		return errors.New(err.Error() + "\n" + stderr)
+	}
+	return nil
 }

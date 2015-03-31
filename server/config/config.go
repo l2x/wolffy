@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+
+	"github.com/l2x/wolffy/utils"
 )
 
 var (
@@ -51,19 +53,9 @@ func loadPath() error {
 	RepoPath = fmt.Sprintf("%s/%s", BasePath, "repo")
 	DBPath = fmt.Sprintf("%s/%s", BasePath, "database")
 
-	err = mkdir(BasePath, RepoPath, DBPath)
+	err = utils.Mkdir(BasePath, RepoPath, DBPath)
 	if err != nil {
 		return err
-	}
-	return nil
-}
-
-func mkdir(args ...string) error {
-	for _, v := range args {
-		err := os.MkdirAll(v, 0755)
-		if err != nil {
-			return err
-		}
 	}
 	return nil
 }

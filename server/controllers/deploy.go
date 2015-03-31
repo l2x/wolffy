@@ -54,7 +54,6 @@ func (c Deploy) Push(r render.Render, req *http.Request) {
 		return
 	}
 
-	//finish
 	err = models.DeployModel.UpdateStatus(deploy.Id, 1)
 	if err = RenderError(r, res, err); err != nil {
 		return
