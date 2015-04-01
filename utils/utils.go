@@ -80,6 +80,14 @@ func Unzip(path, file string) error {
 	return nil
 }
 
+func UnzipToFolder(path, file, folder string) error {
+	_, stderr, err := com.ExecCmdDir(path, "tar", "xvf", file, "-C", folder, "--strip-components=1")
+	if err != nil {
+		return errors.New(err.Error() + "\n" + stderr)
+	}
+	return nil
+}
+
 func RunCmd(path, cmd string) error {
 	_, stderr, err := com.ExecCmdDir(path, "bash", "-c", cmd)
 	if err != nil {

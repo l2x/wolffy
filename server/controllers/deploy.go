@@ -80,10 +80,10 @@ func (c Deploy) pushCluster(project *models.Project, did int, archiveFile string
 				continue
 			}
 
+			wg.Add(1)
 			//ip := fmt.Sprintf("http://%s:%s/pull/", v2.Ip, v2.Port)
 			ip := fmt.Sprintf("http://%s:%s/pull/", v2.Ip, "8001")
 			go func(id int, ip, archiveFile, pushPath, bshell, eshell string) {
-				wg.Add(1)
 				defer wg.Done()
 
 				status := 2
@@ -99,7 +99,7 @@ func (c Deploy) pushCluster(project *models.Project, did int, archiveFile string
 	}
 	wg.Wait()
 
-	//os.Remove(archiveFile)
+	os.Remove(archiveFile)
 	err = models.DeployModel.UpdateStatus(did, 2)
 	if err != nil {
 		return err
@@ -109,26 +109,20 @@ func (c Deploy) pushCluster(project *models.Project, did int, archiveFile string
 }
 
 func (c Deploy) pushFile(ip, archiveFile, pushPath, bshell, eshell string) error {
-	fmt.Println("=====================>", ip, archiveFile, pushPath, bshell, eshell)
 	bodyBuf := &bytes.Buffer{}
 	bodyWriter := multipart.NewWriter(bodyBuf)
 
-	//关键的一步操作
 	fileWriter, err := bodyWriter.CreateFormFile("file", archiveFile)
 	if err != nil {
-		fmt.Println("error writing to buffer")
 		return err
 	}
 
-	//打开文件句柄操作
 	fh, err := os.Open(archiveFile)
 	if err != nil {
-		fmt.Println("error opening file")
 		return err
 	}
 	defer fh.Close()
 
-	//iocopy
 	_, err = io.Copy(fileWriter, fh)
 	if err != nil {
 		return err
@@ -147,7 +141,6 @@ func (c Deploy) pushFile(ip, archiveFile, pushPath, bshell, eshell string) error
 	q.Set("path", pushPath)
 	u.RawQuery = q.Encode()
 
-	fmt.Println("url ===============>", u.String())
 	resp, err := http.Post(u.String(), contentType, bodyBuf)
 	if err != nil {
 		return err

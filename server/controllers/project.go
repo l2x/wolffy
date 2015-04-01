@@ -2,7 +2,9 @@ package controllers
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
+	"os"
 	"strconv"
 
 	"github.com/l2x/wolffy/utils/git"
@@ -151,12 +153,17 @@ func (c Project) Delete(r render.Render, req *http.Request) {
 		return
 	}
 
+	project, err := models.ProjectModel.GetOne(idint)
+	if err = RenderError(r, res, err); err != nil {
+		return
+	}
+
 	err = models.ProjectModel.Del(idint)
 	if err = RenderError(r, res, err); err != nil {
 		return
 	}
 
-	//TODO delete file
+	os.Remove(fmt.Sprintf("%s/%s", config.RepoPath, project.Path))
 
 	RenderRes(r, res, map[string]string{})
 }

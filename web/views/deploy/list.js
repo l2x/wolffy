@@ -55,7 +55,7 @@ define(['app', '../service/project', '../service/deploy'], function (app) {
 				return ""
 			}
 
-			$scope.ev.showDiff = function(ev, $id) {
+			$scope.ev.showDiff = function(ev, id) {
 				var dialog = {
 				  controller: showDiffController,
 				  template: document.getElementById('diffTpl').innerHTML,
@@ -63,14 +63,14 @@ define(['app', '../service/project', '../service/deploy'], function (app) {
 				  bindToController:true,
 				  controllerAs:"ctrl",
 				  locals: {
-					  id: $id,
+					  id: id,
 					  diff: "loading..."
 				  }
 				}
 				$mdDialog.show(dialog).then()
 			}
 
-			$scope.ev.showStatus = function(ev, $idx) {
+			$scope.ev.showStatus = function(ev, id) {
 				var dialog = {
 				  controller: showStatusController,
 				  template: document.getElementById('statusTpl').innerHTML,
@@ -78,15 +78,15 @@ define(['app', '../service/project', '../service/deploy'], function (app) {
 				  bindToController:true,
 				  controllerAs:"ctrl",
 				  locals: {
-					  id: $id,
+					  id: id,
 					  list: []
 				  }
 				}
 				$mdDialog.show(dialog).then()
 			}
 
-			$scope.ev.deploy = function(ev, $id, $commit) {
-				Push.query({pid: $scope.args.project.id, id: $id, commit: $commit}, function(json) {
+			$scope.ev.deploy = function(ev, id, $commit) {
+				Push.query({pid: $scope.args.project.id, id: id, commit: $commit}, function(json) {
 					if($rootScope.checkErr(json)) {
 						return
 					}

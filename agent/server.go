@@ -20,38 +20,41 @@ func (s Server) Pull(r render.Render, req *http.Request) {
 
 	sign := req.URL.Query().Get("sign")
 	path := req.URL.Query().Get("path")
-	bShell := req.URL.Query().Get("bshell")
-	eShell := req.URL.Query().Get("eshell")
+	bshell := req.URL.Query().Get("bshell")
+	eshell := req.URL.Query().Get("eshell")
 
 	err := checkSign(sign)
 	if err = controllers.RenderError(r, res, err); err != nil {
 		return
 	}
 
-	err = utils.Mkdir(path)
+	fmt.Println(path, bshell, eshell)
+	pdir := filepath.Dir(path)
+	dir := filepath.Base(path)
+
+	err = utils.Mkdir(pdir)
 	if err = controllers.RenderError(r, res, err); err != nil {
 		return
 	}
 
-	if bShell != "" {
-		err = utils.RunCmd(path, bShell)
+	if bshell != "" {
+		err = utils.RunCmd(path, bshell)
 		if err = controllers.RenderError(r, res, err); err != nil {
 			return
 		}
 	}
 
-	pdir := filepath.Dir(path)
 	sfile, err := saveFile(req, pdir)
 	if err = controllers.RenderError(r, res, err); err != nil {
 		return
 	}
-	err = decompress(sfile, path)
+	err = decompress(sfile, pdir, dir)
 	if err = controllers.RenderError(r, res, err); err != nil {
 		return
 	}
 
-	if eShell != "" {
-		err = utils.RunCmd(path, eShell)
+	if eshell != "" {
+		err = utils.RunCmd(path, eshell)
 		if err = controllers.RenderError(r, res, err); err != nil {
 			return
 		}
@@ -71,15 +74,20 @@ func checkSign(sign string) error {
 	return nil
 }
 
-func decompress(file, path string) error {
-	err := utils.Unzip(path, file)
+func decompress(file, pdir, dir string) error {
+	fmt.Println("decompress", file, pdir, dir)
+	ufile := strings.TrimRight(file, ".tar.gz")
+	err := utils.Mkdir(ufile)
+	if err != nil {
+		return err
+	}
+	err = utils.UnzipToFolder(pdir, file, ufile)
 	if err != nil {
 		return err
 	}
 
-	ufile := strings.TrimRight(file, ".tar.gz")
-	cmd := fmt.Sprintf("ln -s %s %s", ufile, path)
-	err = utils.RunCmd(path, cmd)
+	cmd := fmt.Sprintf("ln -nsf %s %s", ufile, dir)
+	err = utils.RunCmd(pdir, cmd)
 	if err != nil {
 		return err
 	}
@@ -94,7 +102,10 @@ func saveFile(req *http.Request, path string) (string, error) {
 	}
 	defer file.Close()
 
-	save := fmt.Sprintf("%s/%s", strings.TrimRight(path, "/"), handler.Filename)
+	filename := strings.Split(handler.Filename, "/")
+	save := fmt.Sprintf("%s/%s", strings.TrimRight(path, "/"), filename[len(filename)-1])
+	fmt.Println("saveFile", save)
+
 	f, err := os.OpenFile(save, os.O_WRONLY|os.O_CREATE, 0755)
 	if err != nil {
 		return "", err
