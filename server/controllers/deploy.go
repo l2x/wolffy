@@ -1,10 +1,17 @@
 package controllers
 
 import (
+	"bytes"
 	"errors"
 	"fmt"
+	"io"
+	"io/ioutil"
+	"mime/multipart"
 	"net/http"
+	"net/url"
+	"os"
 	"strconv"
+	"sync"
 
 	"github.com/l2x/wolffy/server/config"
 	"github.com/l2x/wolffy/server/models"
@@ -49,10 +56,7 @@ func (c Deploy) Push(r render.Render, req *http.Request) {
 		return
 	}
 
-	err = c.pushCluster(project, deploy.Id, archiveFile)
-	if err = RenderError(r, res, err); err != nil {
-		return
-	}
+	go c.pushCluster(project, deploy.Id, archiveFile)
 
 	err = models.DeployModel.UpdateStatus(deploy.Id, 1)
 	if err = RenderError(r, res, err); err != nil {
@@ -68,6 +72,7 @@ func (c Deploy) pushCluster(project *models.Project, did int, archiveFile string
 		return errors.New(config.ERR[config.ERR_PROJECT_CLUSTER_EMPTY])
 	}
 
+	var wg sync.WaitGroup
 	for _, v1 := range projectClusters {
 		for _, v2 := range v1.Cluster.Machines {
 			deployHistory, err := models.DeployHistoryModel.Add(did, v2.Ip)
@@ -75,19 +80,86 @@ func (c Deploy) pushCluster(project *models.Project, did int, archiveFile string
 				continue
 			}
 
-			go c.pushFile(deployHistory.Id, archiveFile, project.PushPath, v1.Bshell, v1.Eshell)
+			//ip := fmt.Sprintf("http://%s:%s/pull/", v2.Ip, v2.Port)
+			ip := fmt.Sprintf("http://%s:%s/pull/", v2.Ip, "8001")
+			go func(id int, ip, archiveFile, pushPath, bshell, eshell string) {
+				wg.Add(1)
+				defer wg.Done()
+
+				status := 2
+				note := ""
+				err := c.pushFile(ip, archiveFile, pushPath, bshell, eshell)
+				if err != nil {
+					status = 3
+					note = err.Error()
+				}
+				models.DeployHistoryModel.Update(id, status, note)
+			}(deployHistory.Id, ip, archiveFile, project.PushPath, v1.Bshell, v1.Eshell)
 		}
+	}
+	wg.Wait()
+
+	//os.Remove(archiveFile)
+	err = models.DeployModel.UpdateStatus(did, 2)
+	if err != nil {
+		return err
 	}
 
 	return nil
 }
 
-func (c Deploy) pushFile(dhid int, archiveFile, pushPath, bshell, eshell string) {
-	fmt.Println(dhid, archiveFile, pushPath, bshell, eshell)
-	status := 1
+func (c Deploy) pushFile(ip, archiveFile, pushPath, bshell, eshell string) error {
+	fmt.Println("=====================>", ip, archiveFile, pushPath, bshell, eshell)
+	bodyBuf := &bytes.Buffer{}
+	bodyWriter := multipart.NewWriter(bodyBuf)
 
-	status = 2
-	models.DeployHistoryModel.Update(dhid, status)
+	//关键的一步操作
+	fileWriter, err := bodyWriter.CreateFormFile("file", archiveFile)
+	if err != nil {
+		fmt.Println("error writing to buffer")
+		return err
+	}
+
+	//打开文件句柄操作
+	fh, err := os.Open(archiveFile)
+	if err != nil {
+		fmt.Println("error opening file")
+		return err
+	}
+	defer fh.Close()
+
+	//iocopy
+	_, err = io.Copy(fileWriter, fh)
+	if err != nil {
+		return err
+	}
+
+	contentType := bodyWriter.FormDataContentType()
+	bodyWriter.Close()
+
+	u, err := url.Parse(ip)
+	if err != nil {
+		return err
+	}
+	q := u.Query()
+	q.Set("bshell", bshell)
+	q.Set("eshell", eshell)
+	q.Set("path", pushPath)
+	u.RawQuery = q.Encode()
+
+	fmt.Println("url ===============>", u.String())
+	resp, err := http.Post(u.String(), contentType, bodyBuf)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+	resp_body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return err
+	}
+
+	fmt.Println(string(resp_body))
+	return nil
 }
 
 func (c Deploy) Get(r render.Render, req *http.Request) {
@@ -151,10 +223,41 @@ func (c Deploy) History(r render.Render, req *http.Request) {
 	}
 
 	// get deploy history
-	for k, v := range deploys {
-		deployHistory, _ := models.DeployHistoryModel.GetAll(v.Id)
-		deploys[k].DeployHistory = deployHistory
+	for k, _ := range deploys {
+		deploys[k].Diff = ""
 	}
 
 	RenderRes(r, res, deploys)
+}
+
+func (c Deploy) GetDiff(r render.Render, req *http.Request) {
+	res := NewRes()
+	id := req.URL.Query().Get("id")
+	idint, err := strconv.Atoi(id)
+	if err = RenderError(r, res, err); err != nil {
+		return
+	}
+
+	deploy, err := models.DeployModel.GetOne(idint)
+	if err = RenderError(r, res, err); err != nil {
+		return
+	}
+
+	RenderRes(r, res, deploy)
+}
+
+func (c Deploy) HistoryDetail(r render.Render, req *http.Request) {
+	res := NewRes()
+	id := req.URL.Query().Get("id")
+	idint, err := strconv.Atoi(id)
+	if err = RenderError(r, res, err); err != nil {
+		return
+	}
+
+	detail, err := models.DeployHistoryModel.GetAll(idint)
+	if err = RenderError(r, res, err); err != nil {
+		return
+	}
+
+	RenderRes(r, res, detail)
 }

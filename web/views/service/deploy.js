@@ -14,6 +14,18 @@ define(['app'], function(app) {
         });
     })
 
+    app.factory('Deploy.GetDiff', function($resource) {
+		return $resource("/deploy/getdiff", {}, {
+            query: {isArray: false}
+        });
+    })
+
+    app.factory('Deploy.HistoryDetail', function($resource) {
+		return $resource("/deploy/historyDetail", {}, {
+            query: {isArray: false}
+        });
+    })
+
     app.factory('Deploy.AddTag', function($resource) {
 		return $resource("/deploy/addtag", {}, {
             query: {isArray: false}

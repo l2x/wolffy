@@ -23,17 +23,18 @@
     <tbody>
     <tr ng-repeat="item in args.list">
 		<td>{{item.commit}}</td>
-		<td ng-click="ev.showDiff($event, $index)">{{'CHECK' | translate}}</td>
+		<td ng-click="ev.showDiff($event, item.id)">{{'CHECK' | translate}}</td>
 		<td>{{item.created}}</td>
-		<td ng-click="ev.showStatus($event, $index)">
+		<td ng-click="ev.showStatus($event, item.id)">
 			<span ng-if="item.status == 0">{{'NOT_START' | translate}}</span>
 			<span ng-if="item.status == 1">
 				{{'DEPLOYING' | translate}}
 			</span>
-			<span ng-if="item.status == 2">{{'DEPLOY_FAIL' | translate}}</span>
+			<span ng-if="item.status == 2">{{'DEPLOY_FINISH' | translate}}</span>
+			<span ng-if="item.status == 3">{{'DEPLOY_FAIL' | translate}}</span>
 		</td>
         <td class="txt-ac">
-			<md-button class="md-primary" ng-show="item.status!=1" href="" ng-click="ev.deploy($event, item.id, item.commit)">{{'DEPLOY' | translate}}</md-button>
+			<md-button class="md-primary" ng-show="item.status==0" href="" ng-click="ev.deploy($event, item.id, item.commit)">{{'DEPLOY' | translate}}</md-button>
 		</td>
     </tr>
     </tbody>
@@ -43,6 +44,27 @@
 <md-dialog aria-label="diffTpl">
 	<md-content>
 	<pre>{{ctrl.diff}}</pre>
+	</md-content>
+
+	<div class="md-actions" layout="row">
+		<md-button ng-click="hide()" class="md-primary">{{'CLOSE' | translate}}</md-button>
+	</div>
+</md-dialog>
+</script>
+
+<script type="custom/tpl" id="statusTpl">
+<md-dialog aria-label="statusTpl">
+	<md-content>
+	<div ng-repeat="item in ctrl.list">
+			{{item.ip}} - 
+			<span ng-if="item.status == 0">{{'NOT_START' | translate}}</span>
+			<span ng-if="item.status == 1">
+				{{'DEPLOYING' | translate}}
+			</span>
+			<span ng-if="item.status == 2">{{'DEPLOY_FINISH' | translate}}</span>
+			<span ng-if="item.status == 3">{{'DEPLOY_FAIL' | translate}}</span>
+			<pre ng-show="item.note">{{item.note}}</pre>
+	</div>
 	</md-content>
 
 	<div class="md-actions" layout="row">

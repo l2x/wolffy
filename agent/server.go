@@ -18,7 +18,6 @@ type Server struct{}
 func (s Server) Pull(r render.Render, req *http.Request) {
 	res := controllers.NewRes()
 
-	file := []byte{}
 	sign := req.URL.Query().Get("sign")
 	path := req.URL.Query().Get("path")
 	bShell := req.URL.Query().Get("bshell")

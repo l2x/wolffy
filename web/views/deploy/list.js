@@ -1,8 +1,8 @@
 "use strict";
 
 define(['app', '../service/project', '../service/deploy'], function (app) {
-    return ['$scope','$rootScope', '$route', '$mdDialog', 'Project.Get','Project.GetTags', 'Deploy.History', 'Deploy.AddTag', 'Deploy.Push',
-	function ($scope, $rootScope, $route, $mdDialog, Project_Get, Project_GetTags, History, AddTag, Push) {
+    return ['$scope','$rootScope', '$route', '$window', '$mdDialog', 'Project.Get','Project.GetTags', 'Deploy.History', 'Deploy.AddTag', 'Deploy.Push', 'Deploy.GetDiff', 'Deploy.HistoryDetail',
+	function ($scope, $rootScope, $route, $window, $mdDialog, Project_Get, Project_GetTags, History, AddTag, Push, GetDiff, HistoryDetail) {
 			$scope.args = {}
 			$scope.ev = {}
 			$scope.args.project = {}
@@ -11,6 +11,14 @@ define(['app', '../service/project', '../service/deploy'], function (app) {
 
 			var $id = $route.current.params.id
 			if($id) {
+				History.query({id: $id}, function(json) {
+					if($rootScope.checkErr(json)) {
+						return
+					}
+
+					$scope.args.list = json.data
+				})
+
 				Project_Get.query({id: $id}, function(json) {
 					if($rootScope.checkErr(json)) {
 						return
@@ -27,14 +35,6 @@ define(['app', '../service/project', '../service/deploy'], function (app) {
 					$scope.args.tags = json.data
 					$scope.args.tag = $scope.args.tags[0]
 				})
-
-				History.query({id: $id}, function(json) {
-					if($rootScope.checkErr(json)) {
-						return
-					}
-
-					$scope.args.list = json.data
-				})
 			}
 
 			$scope.ev.addTag = function() {
@@ -44,14 +44,7 @@ define(['app', '../service/project', '../service/deploy'], function (app) {
 						return
 					}
 
-					History.query({id: $id}, function(json) {
-						if($rootScope.checkErr(json)) {
-							return
-						}
-
-						$scope.args.list = json.data
-					})
-
+					$route.reload()
 				})
 			}
 
@@ -62,37 +55,69 @@ define(['app', '../service/project', '../service/deploy'], function (app) {
 				return ""
 			}
 
-			$scope.ev.showDiff = function(ev, $idx) {
+			$scope.ev.showDiff = function(ev, $id) {
 				var dialog = {
-				  controller: DialogController,
+				  controller: showDiffController,
 				  template: document.getElementById('diffTpl').innerHTML,
 				  targetEvent: ev,
 				  bindToController:true,
 				  controllerAs:"ctrl",
 				  locals: {
-					  diff: $scope.args.list[$idx].diff
+					  id: $id,
+					  diff: "loading..."
 				  }
 				}
 				$mdDialog.show(dialog).then()
 			}
 
 			$scope.ev.showStatus = function(ev, $idx) {
+				var dialog = {
+				  controller: showStatusController,
+				  template: document.getElementById('statusTpl').innerHTML,
+				  targetEvent: ev,
+				  bindToController:true,
+				  controllerAs:"ctrl",
+				  locals: {
+					  id: $id,
+					  list: []
+				  }
+				}
+				$mdDialog.show(dialog).then()
 			}
 
 			$scope.ev.deploy = function(ev, $id, $commit) {
-
 				Push.query({pid: $scope.args.project.id, id: $id, commit: $commit}, function(json) {
 					if($rootScope.checkErr(json)) {
 						return
 					}
-					console.log(json)
+					$route.reload()
 				})
 			}
 
-			function DialogController($scope, $mdDialog) {
-			  $scope.hide = function() {
-				$mdDialog.hide()
-			  }
+			function showDiffController(scope, $mdDialog, id) {
+				GetDiff.query({id: id}, function(json) {
+					if($rootScope.checkErr(json)) {
+						return
+					}
+					scope.ctrl.diff = json.data.diff
+				})
+
+				scope.hide = function() {
+					$mdDialog.hide()
+				}
+			}
+			function showStatusController(scope, $mdDialog, id) {
+				HistoryDetail.query({id: id}, function(json) {
+					if($rootScope.checkErr(json)) {
+						return
+					}
+					scope.ctrl.list = json.data
+					console.log(scope.ctrl.list)
+				})
+
+				scope.hide = function() {
+					$mdDialog.hide()
+				}
 			}
 
 

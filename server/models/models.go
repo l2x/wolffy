@@ -16,9 +16,10 @@ var (
 func InitModels() error {
 	dbPath := fmt.Sprintf("%s/%s", strings.TrimRight(config.DBPath, "/"), "data.db")
 
-	orm.Debug = true
+	//orm.Debug = true
 	orm.RegisterDriver("sqlite3", orm.DR_Sqlite)
 	orm.RegisterDataBase("default", "sqlite3", dbPath)
+	orm.SetMaxOpenConns("default", 10)
 
 	orm.RegisterModel(ClusterModel)
 	orm.RegisterModel(ClusterMachineModel)

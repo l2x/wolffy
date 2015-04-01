@@ -4,4 +4,5 @@ func init() {
 }
 
 func main() {
+	router()
 }

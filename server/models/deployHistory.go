@@ -69,12 +69,13 @@ func (m DeployHistory) Add(did int, ip string) (*DeployHistory, error) {
 	return deployHistory, nil
 }
 
-func (m DeployHistory) Update(id, status int) error {
+func (m DeployHistory) Update(id, status int, note string) error {
 	deployHistory := &DeployHistory{
 		Id:     id,
 		Status: status,
+		Note:   note,
 	}
-	_, err := DB.Update(deployHistory, "Status")
+	_, err := DB.Update(deployHistory, "Status", "Note")
 	if err != nil {
 		return err
 	}

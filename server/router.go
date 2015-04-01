@@ -50,7 +50,9 @@ func router() {
 	m.Get("/deploy/push", deploy.Push)
 	m.Get("/deploy/get", deploy.Get)
 	m.Get("/deploy/history", deploy.History)
+	m.Get("/deploy/historyDetail", deploy.HistoryDetail)
 	m.Get("/deploy/addtag", deploy.AddTag)
+	m.Get("/deploy/getdiff", deploy.GetDiff)
 
 	user := controllers.User{}
 	m.Get("/user/get", user.Get)

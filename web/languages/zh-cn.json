@@ -13,6 +13,7 @@
 	"DEPLOY": "部署",
 	"DEPLOYING": "部署中",
 	"DEPLOY_FAIL": "部署失败",
+	"DEPLOY_FINISH": "部署完成",
 	"DEPLOY_PATH": "部署路径",
 	"DELETE":"删除",
 	"DIFF":"差异",
