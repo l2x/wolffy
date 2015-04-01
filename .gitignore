@@ -4,5 +4,6 @@ tests/*
 server/database/
 server/repo/
 server/server
+agent/agent
 
 .idea
