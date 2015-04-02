@@ -48,6 +48,7 @@ func (s Server) Pull(r render.Render, req *http.Request) {
 	if err = controllers.RenderError(r, res, err); err != nil {
 		return
 	}
+	defer os.Remove(sfile)
 	err = decompress(sfile, pdir, dir)
 	if err = controllers.RenderError(r, res, err); err != nil {
 		return
@@ -60,10 +61,6 @@ func (s Server) Pull(r render.Render, req *http.Request) {
 		}
 	}
 
-	err = os.Remove(sfile)
-	if err = controllers.RenderError(r, res, err); err != nil {
-		return
-	}
 	//TODO remove old dir
 
 	res.Errno = 0
@@ -88,6 +85,49 @@ func decompress(file, pdir, dir string) error {
 
 	cmd := fmt.Sprintf("ln -nsf %s %s", ufile, dir)
 	err = utils.RunCmd(pdir, cmd)
+	if err != nil {
+		return err
+	}
+
+	//删除上个版本目录
+	buf, err := readLog(pdir)
+	if err != nil {
+	}
+	err = os.Remove(string(buf))
+	if err != nil {
+	}
+	//记录这个个版本目录
+	err = addLog(ufile, pdir)
+	if err != nil {
+	}
+
+	return nil
+}
+
+func readLog(pdir string) ([]byte, error) {
+	f, err := os.OpenFile(fmt.Sprintf("%s.log", pdir), os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0755)
+	if err != nil {
+		return nil, err
+	}
+	defer f.Close()
+
+	buf := make([]byte, 1024)
+	_, err = f.Read(buf)
+	if err != nil {
+		return nil, err
+	}
+
+	return buf, nil
+}
+
+func addLog(ufile, pdir string) error {
+	f, err := os.OpenFile(fmt.Sprintf("%s.log", pdir), os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0755)
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+
+	_, err = f.WriteString(ufile)
 	if err != nil {
 		return err
 	}
