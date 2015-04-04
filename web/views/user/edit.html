@@ -4,7 +4,7 @@
     <div>
 		<md-input-container>
 			<label>{{'USERNAME' | translate}}</label>
-			<input ng-model="args.user.username">
+			<input ng-model="args.user.username" required>
       	</md-input-container>
 
 		<md-input-container flex>
@@ -12,13 +12,18 @@
         	<input ng-model="args.user.name" required>
       	</md-input-container>
 
+		<md-input-container flex ng-if="!args.user.id">
+        	<label>{{'INITIAL_PASSWORD' | translate}}</label>
+        	<input ng-model="args.user.password" required>
+      	</md-input-container>
+
 		<md-checkbox aria-label="{{'ADMINISTATOR' | translate}}" ng-model="args.user.administrator" class="md-primary">
 		{{'ADMINISTATOR' | translate}}
 	    </md-checkbox>
 
 		    <div layout="row" layout-align="space-between center" class="project_act">
-				<md-button class="md-warn" ng-click="ev.delUser(args.user)">{{'DELETE' | translate}}</md-button>
-				<md-button class="md-raised md-primary"  ng-click="ev.save(args.user)">{{'SAVE' | translate}}</md-button>
+				<md-button class="md-warn" ng-click="ev.delete($event)">{{'DELETE' | translate}}</md-button>
+				<md-button class="md-raised md-primary"  ng-click="ev.save()">{{'SAVE' | translate}}</md-button>
 			</div>
     </div>
 </md-content>

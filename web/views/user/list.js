@@ -1,19 +1,18 @@
 "use strict";
 
-define(['app', '../service/project'], function (app) {
-    return ['$scope', 'Project.Search', function ($scope, Search) {
+define(['app', '../service/user'], function (app) {
+    return ['$scope', '$rootScope', 'User.GetAll', function ($scope, $rootScope, GetAll) {
 			$scope.args = {}
 			$scope.ev = {}
+			$scope.args.list = []
 
-			$scope.args.list = [
-{id:1, username:"123", name:"test user", created:"2014-01-01 12:00:00", "last_login_ip":"127.0.0.1", modified:"2015-01-01 12:00:00"}
-			]
+			GetAll.query({}, function(json) {
+				if($rootScope.checkErr(json)) {
+					return
+				}
 
-			$scope.ev.search = function(){
-				Search.query({keywords: $scope.args.keywords}, function(json){
-					console.log(json)
-				})
-			}
+				$scope.args.list = json.data
+			})
 
         }];
 });

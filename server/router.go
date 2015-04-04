@@ -58,7 +58,7 @@ func router() {
 	m.Get("/user/get", user.Get)
 	m.Get("/user/getall", user.GetAll)
 	m.Get("/user/delete", user.Del)
-	m.Get("/user/add", user.Add)
+	m.Get("/user/edit", user.Edit)
 	m.Get("/user/update", user.Update)
 	m.Get("/user/updatepassword", user.UpdatePassword)
 	m.Get("/user/login", user.Login)

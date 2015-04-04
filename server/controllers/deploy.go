@@ -72,6 +72,7 @@ func (c Deploy) pushCluster(project *models.Project, did int, archiveFile string
 		return errors.New(config.ERR[config.ERR_PROJECT_CLUSTER_EMPTY])
 	}
 
+	allstatus := 2
 	var wg sync.WaitGroup
 	for _, v1 := range projectClusters {
 		for _, v2 := range v1.Cluster.Machines {
@@ -92,6 +93,7 @@ func (c Deploy) pushCluster(project *models.Project, did int, archiveFile string
 				if err != nil {
 					status = 3
 					note = err.Error()
+					allstatus = 3
 				}
 				models.DeployHistoryModel.Update(id, status, note)
 			}(deployHistory.Id, ip, archiveFile, project.PushPath, v1.Bshell, v1.Eshell)
@@ -100,7 +102,7 @@ func (c Deploy) pushCluster(project *models.Project, did int, archiveFile string
 	wg.Wait()
 
 	os.Remove(archiveFile)
-	err = models.DeployModel.UpdateStatus(did, 2)
+	err = models.DeployModel.UpdateStatus(did, allstatus)
 	if err != nil {
 		return err
 	}

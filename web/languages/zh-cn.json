@@ -21,6 +21,7 @@
 	"EDIT": "编辑",
 	"GIT_PATH":"代码库地址",
 	"IP":"ip",
+	"INITIAL_PASSWORD":"初始密码",
 	"KEYWORD":"关键字",
 	"LAST_LOGIN":"上次登录",
 	"LIST":"列表",

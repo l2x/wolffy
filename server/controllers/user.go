@@ -92,20 +92,24 @@ func (c User) GetAll(r render.Render, req *http.Request) {
 	RenderRes(r, res, user)
 }
 
-func (c User) Add(r render.Render, req *http.Request) {
+func (c User) Edit(r render.Render, req *http.Request) {
 	res := NewRes()
 
 	username := req.URL.Query().Get("username")
 	name := req.URL.Query().Get("name")
+	password := req.URL.Query().Get("password")
 	administrator := req.URL.Query().Get("administrator")
-	administratorint, _ := strconv.Atoi(administrator)
+	administratorint := 0
+	if administrator == "true" {
+		administratorint = 1
+	}
 
 	user, err := models.UserModel.Add(username, name, "", administratorint)
 	if err = RenderError(r, res, err); err != nil {
 		return
 	}
 
-	password := GenPassword()
+	password = "123456"
 	signPassword := SignPassword(password, user.Id)
 	err = models.UserModel.UpdatePassword(user.Id, signPassword)
 	if err = RenderError(r, res, err); err != nil {
