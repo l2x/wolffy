@@ -109,7 +109,6 @@ func (c User) Edit(r render.Render, req *http.Request) {
 		return
 	}
 
-	password = "123456"
 	signPassword := SignPassword(password, user.Id)
 	err = models.UserModel.UpdatePassword(user.Id, signPassword)
 	if err = RenderError(r, res, err); err != nil {

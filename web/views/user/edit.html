@@ -2,6 +2,7 @@
 	<h1>{{'USER' | translate}}</h1>
 
     <div>
+		<form  name="userform">
 		<md-input-container>
 			<label>{{'USERNAME' | translate}}</label>
 			<input ng-model="args.user.username" required>
@@ -21,9 +22,10 @@
 		{{'ADMINISTATOR' | translate}}
 	    </md-checkbox>
 
-		    <div layout="row" layout-align="space-between center" class="project_act">
-				<md-button class="md-warn" ng-click="ev.delete($event)">{{'DELETE' | translate}}</md-button>
-				<md-button class="md-raised md-primary"  ng-click="ev.save()">{{'SAVE' | translate}}</md-button>
-			</div>
+		<div layout="row" layout-align="space-between center" class="project_act">
+			<md-button class="md-warn" ng-click="ev.delete($event)">{{'DELETE' | translate}}</md-button>
+			<md-button class="md-raised md-primary"  type="submit" ng-click="ev.save()">{{'SAVE' | translate}}</md-button>
+		</div>
+		</form>
     </div>
 </md-content>

@@ -19,6 +19,10 @@ define(['app', '../service/user'], function (app) {
 			}
 
 			$scope.ev.save = function() {
+				if(!$scope.userform.$valid) {
+					return false
+				}
+
 				Save.query($scope.args.user, function(json){
 					if($rootScope.checkErr(json)) {
 						return
