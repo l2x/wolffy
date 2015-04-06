@@ -18,11 +18,15 @@ func router() {
 	m.Use(render.Renderer())
 
 	m.Use(func(r render.Render, req http.ResponseWriter, res *http.Request) {
+		if res.URL.Path == "/user/login" {
+			return
+		}
+
 		err := controllers.CheckSession(req, res)
 		if err != nil {
 			result := controllers.NewRes()
-			result.Errno = 1001
-			//controllers.RenderError(r, result, err)
+			result.Errno = 401
+			controllers.RenderError(r, result, err)
 		}
 	})
 

@@ -77,6 +77,10 @@ define([
 				templateUrl: './views/user/edit.html',
 				controllerUrl: '../views/user/edit'
             }))
+			.when("/user/changepwd", angularAMD.route({
+				templateUrl: './views/user/changepwd.html',
+				controllerUrl: '../views/user/changepwd'
+            }))
 			.when("/login", angularAMD.route({
 				templateUrl: './views/user/login.html',
 				controllerUrl: '../views/user/login'
@@ -85,11 +89,10 @@ define([
 				templateUrl: './views/user/logout.html',
 				controllerUrl: '../views/user/logout'
             }))
-            .otherwise({redirectTo: '/project/list'});
+            //.otherwise({redirectTo: '/project/list'});
 
         //$locationProvider.html5Mode(true);
         cfpLoadingBarProvider.includeSpinner = false;
-
     }]);
 
     app.config(['$translateProvider',
@@ -108,6 +111,19 @@ define([
             });
         }]);
 
+	/*
+    app.config(['$httpProvider', function($httpProvider) {
+		var statusInterceptor = function() {
+			return {
+				response: function(result) {
+					console.log("--->", result)
+				}
+			}
+		}
+        $httpProvider.interceptors.push(statusInterceptor);
+    }]);
+	*/
+
 	app.run(function($rootScope, $mdDialog) {
 		$rootScope.checkErr = function(json) {
 			console.log(json)
@@ -118,6 +134,7 @@ define([
 			.content('This action CANNOT be undone. This will permanently delete this item.')
 			.ok('Delete')
 			.cancel('Cancel')
+
 	})
 
     return angularAMD.bootstrap(app);

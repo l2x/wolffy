@@ -21,4 +21,14 @@ define(['app'], function(app) {
             query: {isArray: false}
         });
     })
+	app.factory('User.Login', function($resource) {
+		return $resource("/user/login", {}, {
+            query: {isArray: false}
+        });
+    })
+	app.factory('User.Changepwd', function($resource) {
+		return $resource("/user/updatepassword", {}, {
+            query: {isArray: false}
+        });
+    })
 })

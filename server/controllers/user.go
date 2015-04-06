@@ -32,6 +32,9 @@ func (c User) Login(r render.Render, w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
+	ip := utils.ClientIp(req)
+	Sessions.Add(w, user.Id, user.Username, ip)
+
 	// 如果长时间没有登录，需要修改密码
 	if user.LastLogin.Before(time.Now().AddDate(0, -6, 0)) {
 		res.Errno = config.ERR_USER_NEED_CHANGE_PWD
@@ -40,13 +43,10 @@ func (c User) Login(r render.Render, w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	ip := utils.ClientIp(req)
 	err = models.UserModel.UpdateLastLogin(user.Id, ip)
 	if err = RenderError(r, res, err); err != nil {
 		return
 	}
-
-	Sessions.Add(w, user.Id, user.Username, ip)
 
 	RenderRes(r, res, user)
 }
