@@ -1,0 +1,20 @@
+<md-content class="project_form">
+    <div>
+	<h1>{{'CHANGE_PASSWORD' | translate}}</h1>
+		<form name="changepwdform">
+		<md-input-container flex>
+        	<label>{{'OLD_PASSWORD' | translate}}</label>
+        	<input type="password" ng-model="args.user.oldpassword" required>
+      	</md-input-container>
+
+		<md-input-container flex>
+		<label>{{'NEW_PASSWORD' | translate}}</label>
+        	<input type="password" ng-model="args.user.newpassword" required>
+      	</md-input-container>
+
+		<div layout="row" layout-align="space-between center" class="project_act">
+			<md-button class="md-raised md-primary" type="submit" ng-click="ev.save()">{{'LOGIN' | translate}}</md-button>
+		</div>
+		</form>
+    </div>
+</md-content>
