@@ -6,5 +6,5 @@ server/repo/
 server/server
 agent/agent
 web/js/libs
-
+.idea/
 .idea

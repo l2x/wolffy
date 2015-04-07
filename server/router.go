@@ -17,12 +17,12 @@ func router() {
 	m.Use(martini.Static("web"))
 	m.Use(render.Renderer())
 
-	m.Use(func(r render.Render, req http.ResponseWriter, res *http.Request) {
-		if res.URL.Path == "/user/login" {
+	m.Use(func(r render.Render, w http.ResponseWriter, req *http.Request) {
+		if req.URL.Path == "/user/login" {
 			return
 		}
 
-		err := controllers.CheckSession(req, res)
+		err := controllers.CheckSession(w, req)
 		if err != nil {
 			result := controllers.NewRes()
 			result.Errno = 401

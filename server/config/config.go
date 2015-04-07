@@ -20,7 +20,7 @@ var (
 
 	SessionInterval = 1
 	SessionExpire   = 3600
-	CookieName      = "wolffy_sid"
+	CookieName      = "wolffy_sessionid"
 )
 
 func InitConfig(conf string) error {

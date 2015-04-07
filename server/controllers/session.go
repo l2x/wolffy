@@ -41,15 +41,16 @@ func CheckSession(w http.ResponseWriter, req *http.Request) error {
 	if err != nil {
 		return err
 	}
+
 	sid := cookie.Value
-	c, ok := Sessions.cache[sid]
-	if !ok {
-		return config.GetErr(config.ERR_SESSION_INVALID)
+	c, err := Sessions.Get(sid)
+	if err != nil {
+		return err
 	}
 
-	if time.Now().Before(c.Expire) {
+	if time.Now().After(c.Expire) {
 		delete(Sessions.cache, sid)
-		return config.GetErr(config.ERR_SESSION_INVALID)
+		return config.GetErr(config.ERR_SESSION_EXPIRE)
 	}
 
 	ip := utils.ClientIp(req)
@@ -60,6 +61,7 @@ func CheckSession(w http.ResponseWriter, req *http.Request) error {
 
 	cookie.Expires = time.Now().Add(time.Duration(config.SessionExpire) * time.Second)
 	http.SetCookie(w, cookie)
+	Sessions.Update(sid)
 
 	return nil
 }
@@ -77,7 +79,7 @@ func (s *Session) Add(w http.ResponseWriter, id int, username, ip string) {
 	s.cache[sid] = cache
 
 	expire := time.Now().Add(time.Duration(config.SessionExpire) * time.Second)
-	cookie := http.Cookie{Name: config.CookieName, Value: cache.Value, Path: "/", Expires: expire}
+	cookie := http.Cookie{Name: config.CookieName, Value: sid, Path: "/", Expires: expire}
 
 	http.SetCookie(w, &cookie)
 }
@@ -89,12 +91,12 @@ func (s *Session) GetUser(req *http.Request) (*models.User, error) {
 	}
 	sid := cookie.Value
 
-	session, err := s.Get(sid)
+	cache, err := s.Get(sid)
 	if err != nil {
 		return nil, err
 	}
 
-	user, err := models.UserModel.GetOne(session.Id)
+	user, err := models.UserModel.GetOne(cache.Id)
 	if err != nil {
 		return nil, err
 	}
@@ -113,11 +115,11 @@ func (s *Session) Update(sid string) bool {
 }
 
 func (s *Session) Get(sid string) (*Cache, error) {
-	session, ok := s.cache[sid]
+	cache, ok := s.cache[sid]
 	if !ok {
 		return nil, errors.New("session not found")
 	}
-	return session, nil
+	return cache, nil
 }
 
 func (s *Session) Del(sid string) {
@@ -125,7 +127,7 @@ func (s *Session) Del(sid string) {
 }
 
 func (s *Session) genSidValue(sid string, ip string) string {
-	sid = fmt.Sprintf("%v%v%v", sid, ip, time.Now().UnixNano())
+	sid = fmt.Sprintf("%v%v", sid, ip)
 	return utils.Md5(sid)
 }
 
@@ -138,7 +140,7 @@ func (s *Session) genSid() string {
 func (s *Session) trash() {
 	for {
 		for k, v := range s.cache {
-			if time.Now().Before(v.Expire) {
+			if time.Now().After(v.Expire) {
 				delete(s.cache, k)
 			}
 		}

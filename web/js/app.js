@@ -89,7 +89,7 @@ define([
 				templateUrl: './views/user/logout.html',
 				controllerUrl: '../views/user/logout'
             }))
-            //.otherwise({redirectTo: '/project/list'});
+            .otherwise({redirectTo: '/project/list'});
 
         //$locationProvider.html5Mode(true);
         cfpLoadingBarProvider.includeSpinner = false;

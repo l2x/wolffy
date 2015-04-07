@@ -161,15 +161,10 @@ func (c User) Update(r render.Render, req *http.Request) {
 func (c User) UpdatePassword(r render.Render, req *http.Request) {
 	res := NewRes()
 
-	id := req.URL.Query().Get("id")
 	oldpassword := req.URL.Query().Get("newpassword")
 	newpassword := req.URL.Query().Get("oldpassword")
-	idint, err := strconv.Atoi(id)
-	if err = RenderError(r, res, err); err != nil {
-		return
-	}
 
-	user, err := models.UserModel.GetOne(idint)
+	user, err := Sessions.GetUser(req)
 	if err = RenderError(r, res, err); err != nil {
 		return
 	}
