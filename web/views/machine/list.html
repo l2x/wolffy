@@ -1,15 +1,15 @@
 <h1>{{'MACHINE' | translate}}</h1>
 
 <md-content>
-    <div layout="row" layout-align="space-between center" >
-		<div layout="row" layout-align="start center">
-			<md-input-container>
-			<label>{{'KEYWORD' | translate}}</label>
-				<input ng-model="args.keywords" type="text">
-			</md-input-container>
-		</div>
+    <div layout="row" layout-align="space-between center">
+        <div layout="row" layout-align="start center">
+            <md-input-container>
+                <label>{{'KEYWORD' | translate}}</label>
+                <input ng-model="args.keywords" type="text">
+            </md-input-container>
+        </div>
 
-		<md-button class="md-raised md-primary mr20" href="#/machine/add">{{'ADD' | translate}}</md-button>
+        <md-button class="md-raised md-primary mr20" href="#/machine/add">{{'ADD' | translate}}</md-button>
     </div>
 </md-content>
 
@@ -24,17 +24,17 @@
     </tr>
     </thead>
     <tbody>
-	<tr ng-repeat="item in args.list | filter:args.keywords">
-		<td>{{item.ip}}</td>
-		<td>{{item.created}}</td>
-		<td>{{item.modified}}</td>
-		<td>
-			<span ng-if="item.status == 0">{{'NORMAL' | translate}}</span>
-			<span ng-if="item.status == 1" class="warn">{{'ABNORMAL' | translate}}</span>
-		</td>
+    <tr ng-repeat="item in args.list | filter:args.keywords">
+        <td>{{item.ip}}</td>
+        <td>{{item.created}}</td>
+        <td>{{item.modified}}</td>
+        <td>
+            <span ng-if="item.status == 0">{{'NORMAL' | translate}}</span>
+            <span ng-if="item.status == 1" class="warn">{{'ABNORMAL' | translate}}</span>
+        </td>
         <td class="txt-ac">
-			<md-button class="md-warn" href="" ng-click="">{{'REMOVE' | translate}}</md-button>
-		</td>
+            <md-button class="md-warn" href="" ng-click="">{{'REMOVE' | translate}}</md-button>
+        </td>
     </tr>
     </tbody>
 </table>

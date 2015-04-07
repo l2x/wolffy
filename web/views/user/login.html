@@ -1,19 +1,20 @@
 <md-content class="project_form">
     <div>
-		<form name="loginform">
-		<md-input-container>
-			<label>{{'USERNAME' | translate}}</label>
-			<input ng-model="args.user.username" required>
-      	</md-input-container>
+        <form name="loginform">
+            <md-input-container>
+                <label>{{'USERNAME' | translate}}</label>
+                <input ng-model="args.user.username" required>
+            </md-input-container>
 
-		<md-input-container flex>
-        	<label>{{'PASSWORD' | translate}}</label>
-        	<input type="password" ng-model="args.user.password" required>
-      	</md-input-container>
+            <md-input-container flex>
+                <label>{{'PASSWORD' | translate}}</label>
+                <input type="password" ng-model="args.user.password" required>
+            </md-input-container>
 
-		<div layout="row" layout-align="space-between center" class="project_act">
-			<md-button class="md-raised md-primary" type="submit" ng-click="ev.login()">{{'LOGIN' | translate}}</md-button>
-		</div>
-		</form>
+            <div layout="row" layout-align="space-between center" class="project_act">
+                <md-button class="md-raised md-primary" type="submit" ng-click="ev.login()">{{'LOGIN' | translate}}
+                </md-button>
+            </div>
+        </form>
     </div>
 </md-content>

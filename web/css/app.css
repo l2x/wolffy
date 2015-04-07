@@ -32,7 +32,8 @@
     color: #ccc;
     font-size: 14px;
 }
-label{
+
+label {
     margin-bottom: 0;
     font-weight: normal;
 }
@@ -73,91 +74,106 @@ label{
     background-color: rgba(158, 158, 158, 0.2);
 }
 
-.ml20{
-	margin-left: 20px
-}
-.mr20{
-	margin-right:20px
-}
-.mt20{
-	margin-top:20px
-}
-.mt30{
-	margin-top:30px
-}
-.mb30{
-	margin-bottom:30px
+.ml20 {
+    margin-left: 20px
 }
 
-.mb20{
-	margin-bottom: 20px
+.mr20 {
+    margin-right: 20px
 }
 
-.p10{
-	padding:10px
+.mt20 {
+    margin-top: 20px
 }
 
-.pl20{
-	padding-left:20px;
-}
-.pr20{
-	padding-right:20px;
+.mt30 {
+    margin-top: 30px
 }
 
-.lh30{
-	line-height:30px !important;
-}
-.txt-ac{
-	text-align:center
+.mb30 {
+    margin-bottom: 30px
 }
 
-.vshow{
-	visibility: visible
-}
-.vhide{
-	visibility: hidden
+.mb20 {
+    margin-bottom: 20px
 }
 
-.project_form{
-	padding:10px;
-	max-width: 600px;
+.p10 {
+    padding: 10px
+}
+
+.pl20 {
+    padding-left: 20px;
+}
+
+.pr20 {
+    padding-right: 20px;
+}
+
+.lh30 {
+    line-height: 30px !important;
+}
+
+.txt-ac {
+    text-align: center
+}
+
+.vshow {
+    visibility: visible
+}
+
+.vhide {
+    visibility: hidden
+}
+
+.project_form {
+    padding: 10px;
+    max-width: 600px;
 }
 
 .project_cluster_list {
-	background:#f7f7f7;
-	margin-bottom: 5px;
-	padding: 20px;
-}
-.project_act{
-	background:#f7f7f7;
-	padding:20px;
-	margin-top:40px;
-}
-.cluster_machine_cell{
-	padding:15px;
-	margin-bottom: 15px
-}
-.cluster_machine_cell .md-warn {
-	visibility: hidden
-}
-.cluster_machine_cell.md-whiteframe-z1 .md-warn {
-	visibility: visible
-}
-.cluster_machine_add{
-	padding-right:20px
-}
-.cluster_machine_add md-select{
-	margin-top:0;
-	margin-right:20px;
+    background: #f7f7f7;
+    margin-bottom: 5px;
+    padding: 20px;
 }
 
-.warn{
-	color: rgb(244,67,54);
+.project_act {
+    background: #f7f7f7;
+    padding: 20px;
+    margin-top: 40px;
 }
-.deploy_project_hd{
-	padding: 20px;
+
+.cluster_machine_cell {
+    padding: 15px;
+    margin-bottom: 15px
 }
+
+.cluster_machine_cell .md-warn {
+    visibility: hidden
+}
+
+.cluster_machine_cell.md-whiteframe-z1 .md-warn {
+    visibility: visible
+}
+
+.cluster_machine_add {
+    padding-right: 20px
+}
+
+.cluster_machine_add md-select {
+    margin-top: 0;
+    margin-right: 20px;
+}
+
+.warn {
+    color: rgb(244, 67, 54);
+}
+
+.deploy_project_hd {
+    padding: 20px;
+}
+
 .deploy_project_hd md-select {
-	margin-top:0;
-	margin-right:20px
+    margin-top: 0;
+    margin-right: 20px
 }

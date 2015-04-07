@@ -1,45 +1,58 @@
 <md-content class="project_form">
-	<h1>{{'CLUSTER' | translate}}</h1>
+    <h1>{{'CLUSTER' | translate}}</h1>
+
     <div>
-		<form name="clusterform">
-		<md-input-container flex>
-		<label>{{'NAME' | translate}}</label>
-        	<input ng-model="args.cluster.name" required>
-      	</md-input-container>
+        <form name="clusterform">
+            <md-input-container flex>
+                <label>{{'NAME' | translate}}</label>
+                <input ng-model="args.cluster.name" required>
+            </md-input-container>
 
-		<md-input-container>
-			<label>{{'NOTE' | translate}}</label>
-        	<input ng-model="args.cluster.note">
-      	</md-input-container>
+            <md-input-container>
+                <label>{{'NOTE' | translate}}</label>
+                <input ng-model="args.cluster.note">
+            </md-input-container>
 
-		<md-input-container>
-			<label>{{'TAG' | translate}}</label>
-        	<input ng-model="args.cluster.tags">
-      	</md-input-container>
+            <md-input-container>
+                <label>{{'TAG' | translate}}</label>
+                <input ng-model="args.cluster.tags">
+            </md-input-container>
 
-		<div >
-			<div  class="project_cluster_list" >
-				<h4>{{'MACHINE' | translate}}{{'LIST' | translate}}</h4>
+            <div>
+                <div class="project_cluster_list">
+                    <h4>{{'MACHINE' | translate}}{{'LIST' | translate}}</h4>
 
-				<div class="cluster_machine_cell"  layout="row" layout-align="space-between center" ng-repeat="machine in args.cluster.machines" ng-class="machine.hover == true ? 'md-whiteframe-z1':''" ng-mouseenter="machine.hover = true" ng-mouseleave="machine.hover = false">
-					<span>{{machine.ip}}</span>
-					<md-button class="md-warn" ng-click="ev.removeMachine($index)">{{'REMOVE' | translate}}</md-button>
-				</div>
-			</div>
+                    <div class="cluster_machine_cell" layout="row" layout-align="space-between center"
+                         ng-repeat="machine in args.cluster.machines"
+                         ng-class="machine.hover == true ? 'md-whiteframe-z1':''" ng-mouseenter="machine.hover = true"
+                         ng-mouseleave="machine.hover = false">
+                        <span>{{machine.ip}}</span>
+                        <md-button class="md-warn" ng-click="ev.removeMachine($index)">{{'REMOVE' | translate}}
+                        </md-button>
+                    </div>
+                </div>
 
-			<div layout="row" layout-align="end center" class="cluster_machine_add">
-				<md-select ng-model="_addmachine" placeholder="{{'CHOICE_MACHINE' | translate}}">
-				<md-option ng-repeat="machine in args.machines" value="{{$index}}" ng-show="machine.ip | ipFilter:args.cluster.machines">{{machine.ip}}</md-option>
-				  </md-select>
+                <div layout="row" layout-align="end center" class="cluster_machine_add">
+                    <md-select ng-model="_addmachine" placeholder="{{'CHOICE_MACHINE' | translate}}">
+                        <md-option ng-repeat="machine in args.machines" value="{{$index}}"
+                                   ng-show="machine.ip | ipFilter:args.cluster.machines">{{machine.ip}}
+                        </md-option>
+                    </md-select>
 
-				  <md-button class="md-raised" ng-click="ev.addMachine(_addmachine)" ng-disabled="!_addmachine">{{'ADD' | translate}}{{'MACHINE' | translate}}</md-button>
-			</div>
+                    <md-button class="md-raised" ng-click="ev.addMachine(_addmachine)" ng-disabled="!_addmachine">
+                        {{'ADD' | translate}}{{'MACHINE' | translate}}
+                    </md-button>
+                </div>
 
-		    <div layout="row" layout-align="space-between center" class="project_act">
-				<md-button class="md-warn" ng-click="ev.delCluster($event)">{{'DELETE' | translate}}{{'CLUSTER' | translate}}</md-button>
-				<md-button class="md-raised md-primary" type="submit" ng-click="ev.save()">{{'SAVE' | translate}}{{'CLUSTER' | translate}}</md-button>
-			</div>
-		</div>
-	</form>
+                <div layout="row" layout-align="space-between center" class="project_act">
+                    <md-button class="md-warn" ng-click="ev.delCluster($event)">{{'DELETE' | translate}}{{'CLUSTER' |
+                        translate}}
+                    </md-button>
+                    <md-button class="md-raised md-primary" type="submit" ng-click="ev.save()">{{'SAVE' |
+                        translate}}{{'CLUSTER' | translate}}
+                    </md-button>
+                </div>
+            </div>
+        </form>
     </div>
 </md-content>

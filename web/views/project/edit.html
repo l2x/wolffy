@@ -1,71 +1,81 @@
 <md-content class="project_form">
-	<h1>{{'PROJECT' | translate}}{{'EDIT' | translate}}</h1>
+    <h1>{{'PROJECT' | translate}}{{'EDIT' | translate}}</h1>
 
     <div>
-		<form name="projectform">
-		<md-input-container flex>
-        	<label>{{'NAME' | translate}}</label>
-        	<input ng-model="args.project.name" required>
-      	</md-input-container>
+        <form name="projectform">
+            <md-input-container flex>
+                <label>{{'NAME' | translate}}</label>
+                <input ng-model="args.project.name" required>
+            </md-input-container>
 
-		<md-input-container>
-			<label>{{'NOTE' | translate}}</label>
-        	<input ng-model="args.project.note">
-      	</md-input-container>
+            <md-input-container>
+                <label>{{'NOTE' | translate}}</label>
+                <input ng-model="args.project.note">
+            </md-input-container>
 
-		<md-input-container>
-			<label>{{'GIT_PATH' | translate}}</label>
-        	<input ng-model="args.project.path" required>
-      	</md-input-container>
+            <md-input-container>
+                <label>{{'GIT_PATH' | translate}}</label>
+                <input ng-model="args.project.path" required>
+            </md-input-container>
 
-		<md-input-container>
-			<label>{{'DEPLOY_PATH' | translate}}</label>
-        	<input ng-model="args.project.pushPath" required>
-      	</md-input-container>
+            <md-input-container>
+                <label>{{'DEPLOY_PATH' | translate}}</label>
+                <input ng-model="args.project.pushPath" required>
+            </md-input-container>
 
-		<md-input-container>
-			<label>{{'TAG' | translate}}</label>
-        	<input ng-model="args.project.tags">
-      	</md-input-container>
+            <md-input-container>
+                <label>{{'TAG' | translate}}</label>
+                <input ng-model="args.project.tags">
+            </md-input-container>
 
-		<div >
-			<div  class="project_cluster_list" ng-repeat="cluster in args.project.projectClusters">
-			  <div class="mb30">
-			  	 <label class="pr20">{{'CLUSTER' | translate}}</label>
-				 <md-select ng-model="cluster.cid" >
-				 <md-option ng-repeat="clu in args.clusters" value="{{clu.id}}" ng-show="clu.id | clusterFilter:args.project.projectClusters" ng-selected="clu.id==cluster.cid">{{clu.name}}</md-option>
-				  </md-select>
-			  </div>
+            <div>
+                <div class="project_cluster_list" ng-repeat="cluster in args.project.projectClusters">
+                    <div class="mb30">
+                        <label class="pr20">{{'CLUSTER' | translate}}</label>
+                        <md-select ng-model="cluster.cid">
+                            <md-option ng-repeat="clu in args.clusters" value="{{clu.id}}"
+                                       ng-show="clu.id | clusterFilter:args.project.projectClusters"
+                                       ng-selected="clu.id==cluster.cid">{{clu.name}}
+                            </md-option>
+                        </md-select>
+                    </div>
 
-			  <md-input-container flex>
-				<label>部署前shell脚本</label>
-				<textarea ng-model="cluster.bshell" columns="1" ></textarea>
-			  </md-input-container>
+                    <md-input-container flex>
+                        <label>部署前shell脚本</label>
+                        <textarea ng-model="cluster.bshell" columns="1"></textarea>
+                    </md-input-container>
 
-			  <md-input-container flex>
-				<label>部署后shell脚本</label>
-				<textarea ng-model="cluster.eshell" columns="1" ></textarea>
-			  </md-input-container>
+                    <md-input-container flex>
+                        <label>部署后shell脚本</label>
+                        <textarea ng-model="cluster.eshell" columns="1"></textarea>
+                    </md-input-container>
 
-			  <md-input-container>
-					<label>{{'NOTE' | translate}}</label>
-					<input ng-model="cluster.note">
-			  </md-input-container>
+                    <md-input-container>
+                        <label>{{'NOTE' | translate}}</label>
+                        <input ng-model="cluster.note">
+                    </md-input-container>
 
-			  <div layout="row" layout-align="space-between center">
-				  <md-button class="md-warn" ng-click="ev.delCluster(cluster)">{{'REMOVE' | translate}}</md-button>
-			  </div>
-			</div>
+                    <div layout="row" layout-align="space-between center">
+                        <md-button class="md-warn" ng-click="ev.delCluster(cluster)">{{'REMOVE' | translate}}
+                        </md-button>
+                    </div>
+                </div>
 
-		    <div layout="row" layout-align="end center" class="pr20">
-				<md-button class="md-raised" ng-click="ev.addCluster()">{{'ADD' | translate}}{{'CLUSTER' | translate}}</md-button>
-			</div>
+                <div layout="row" layout-align="end center" class="pr20">
+                    <md-button class="md-raised" ng-click="ev.addCluster()">{{'ADD' | translate}}{{'CLUSTER' |
+                        translate}}
+                    </md-button>
+                </div>
 
-		    <div layout="row" layout-align="space-between center" class="project_act">
-				<md-button class="md-warn" ng-click="ev.delete($event)" >{{'DELETE' | translate}}{{'PROJECT' | translate}}</md-button>
-				<md-button class="md-raised md-primary"  type="submit" ng-click="ev.save()">{{'SAVE' | translate}}{{'PROJECT' | translate}}</md-button>
-			</div>
-		</div>
-		</form>
+                <div layout="row" layout-align="space-between center" class="project_act">
+                    <md-button class="md-warn" ng-click="ev.delete($event)">{{'DELETE' | translate}}{{'PROJECT' |
+                        translate}}
+                    </md-button>
+                    <md-button class="md-raised md-primary" type="submit" ng-click="ev.save()">{{'SAVE' |
+                        translate}}{{'PROJECT' | translate}}
+                    </md-button>
+                </div>
+            </div>
+        </form>
     </div>
 </md-content>

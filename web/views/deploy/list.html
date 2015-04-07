@@ -1,12 +1,15 @@
 <h1>{{'PROJECT' | translate}}{{'DEPLOY' | translate}} - {{args.project.name}}</h1>
 
 <md-content>
-	<div layout="row" layout-align="start center" class="deploy_project_hd">
-		<md-select ng-model="args.tag">
-		<md-option ng-repeat="tag in args.tags" ng-value="tag" ng-selected="$index==0 ? 'selected':''">{{tag}}</md-option>
-		</md-select>
+    <div layout="row" layout-align="start center" class="deploy_project_hd">
+        <md-select ng-model="args.tag">
+            <md-option ng-repeat="tag in args.tags" ng-value="tag" ng-selected="$index==0 ? 'selected':''">{{tag}}
+            </md-option>
+        </md-select>
 
-		<md-button class="md-raised md-primary ml20" ng-click="ev.addTag()">{{'ADD' | translate}}{{'VERSION' | translate}}</md-button>
+        <md-button class="md-raised md-primary ml20" ng-click="ev.addTag()">{{'ADD' | translate}}{{'VERSION' |
+            translate}}
+        </md-button>
     </div>
 </md-content>
 
@@ -22,20 +25,22 @@
     </thead>
     <tbody>
     <tr ng-repeat="item in args.list">
-		<td>{{item.commit}}</td>
-		<td ng-click="ev.showDiff($event, item.id)">{{'CHECK' | translate}}</td>
-		<td>{{item.created}}</td>
-		<td ng-click="ev.showStatus($event, item.id)">
-			<span ng-if="item.status == 0">{{'NOT_START' | translate}}</span>
+        <td>{{item.commit}}</td>
+        <td ng-click="ev.showDiff($event, item.id)">{{'CHECK' | translate}}</td>
+        <td>{{item.created}}</td>
+        <td ng-click="ev.showStatus($event, item.id)">
+            <span ng-if="item.status == 0">{{'NOT_START' | translate}}</span>
 			<span ng-if="item.status == 1">
 				{{'DEPLOYING' | translate}}
 			</span>
-			<span ng-if="item.status == 2">{{'DEPLOY_FINISH' | translate}}</span>
-			<span ng-if="item.status == 3">{{'DEPLOY_FAIL' | translate}}</span>
-		</td>
+            <span ng-if="item.status == 2">{{'DEPLOY_FINISH' | translate}}</span>
+            <span ng-if="item.status == 3">{{'DEPLOY_FAIL' | translate}}</span>
+        </td>
         <td class="txt-ac">
-			<md-button class="md-primary" ng-show="item.status==0" href="" ng-click="ev.deploy($event, item.id, item.commit)">{{'DEPLOY' | translate}}</md-button>
-		</td>
+            <md-button class="md-primary" ng-show="item.status==0" href=""
+                       ng-click="ev.deploy($event, item.id, item.commit)">{{'DEPLOY' | translate}}
+            </md-button>
+        </td>
     </tr>
     </tbody>
 </table>
@@ -50,6 +55,7 @@
 		<md-button ng-click="hide()" class="md-primary">{{'CLOSE' | translate}}</md-button>
 	</div>
 </md-dialog>
+
 </script>
 
 <script type="custom/tpl" id="statusTpl">
@@ -71,4 +77,5 @@
 		<md-button ng-click="hide()" class="md-primary">{{'CLOSE' | translate}}</md-button>
 	</div>
 </md-dialog>
+
 </script>

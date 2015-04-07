@@ -3,18 +3,18 @@
 <md-content>
     <div layout="row" layout-align="space-between center">
         <md-input-container>
-		<label>{{'KEYWORD' | translate}}</label>
+            <label>{{'KEYWORD' | translate}}</label>
             <input ng-model="args.keywords" type="text">
         </md-input-container>
 
-		<md-button class="md-raised md-primary mr20" ng-href="#/project/edit">{{'ADD' | translate}}</md-button>
+        <md-button class="md-raised md-primary mr20" ng-href="#/project/edit">{{'ADD' | translate}}</md-button>
     </div>
 </md-content>
 
 <table class="table table-striped table-hover">
     <thead>
     <tr>
-		<th>{{'NAME' | translate}}</th>
+        <th>{{'NAME' | translate}}</th>
         <th>{{'TAG' | translate}}</th>
         <th>{{'CREATED' | translate}}</th>
         <th>{{'MODIFIED' | translate}}</th>
@@ -23,14 +23,14 @@
     </thead>
     <tbody>
     <tr ng-repeat="item in args.list | filter:args.keywords">
-		<td>{{item.name}}</td>
-		<td>{{item.tags}}</td>
-		<td>{{item.created}}</td>
-		<td>{{item.modified}}</td>
+        <td>{{item.name}}</td>
+        <td>{{item.tags}}</td>
+        <td>{{item.created}}</td>
+        <td>{{item.modified}}</td>
         <td class="txt-ac">
-			<md-button class="md-primary" ng-href="#/project/edit/{{item.id}}">{{'EDIT' | translate}}</md-button>
-			<md-button class="md-primary" ng-href="#/deploy/list/{{item.id}}">{{'DEPLOY' | translate}}</md-button>
-		</td>
+            <md-button class="md-primary" ng-href="#/project/edit/{{item.id}}">{{'EDIT' | translate}}</md-button>
+            <md-button class="md-primary" ng-href="#/deploy/list/{{item.id}}">{{'DEPLOY' | translate}}</md-button>
+        </td>
     </tr>
     </tbody>
 </table>

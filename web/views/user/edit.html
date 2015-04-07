@@ -1,31 +1,33 @@
 <md-content class="project_form">
-	<h1>{{'USER' | translate}}</h1>
+    <h1>{{'USER' | translate}}</h1>
 
     <div>
-		<form  name="userform">
-		<md-input-container>
-			<label>{{'USERNAME' | translate}}</label>
-			<input ng-model="args.user.username" required>
-      	</md-input-container>
+        <form name="userform">
+            <md-input-container>
+                <label>{{'USERNAME' | translate}}</label>
+                <input ng-model="args.user.username" required>
+            </md-input-container>
 
-		<md-input-container flex>
-        	<label>{{'NAME' | translate}}</label>
-        	<input ng-model="args.user.name" required>
-      	</md-input-container>
+            <md-input-container flex>
+                <label>{{'NAME' | translate}}</label>
+                <input ng-model="args.user.name" required>
+            </md-input-container>
 
-		<md-input-container flex ng-if="!args.user.id">
-        	<label>{{'INITIAL_PASSWORD' | translate}}</label>
-        	<input ng-model="args.user.password" required>
-      	</md-input-container>
+            <md-input-container flex ng-if="!args.user.id">
+                <label>{{'INITIAL_PASSWORD' | translate}}</label>
+                <input ng-model="args.user.password" required>
+            </md-input-container>
 
-		<md-checkbox aria-label="{{'ADMINISTATOR' | translate}}" ng-model="args.user.administrator" class="md-primary">
-		{{'ADMINISTATOR' | translate}}
-	    </md-checkbox>
+            <md-checkbox aria-label="{{'ADMINISTATOR' | translate}}" ng-model="args.user.administrator"
+                         class="md-primary">
+                {{'ADMINISTATOR' | translate}}
+            </md-checkbox>
 
-		<div layout="row" layout-align="space-between center" class="project_act">
-			<md-button class="md-warn" ng-click="ev.delete($event)">{{'DELETE' | translate}}</md-button>
-			<md-button class="md-raised md-primary"  type="submit" ng-click="ev.save()">{{'SAVE' | translate}}</md-button>
-		</div>
-		</form>
+            <div layout="row" layout-align="space-between center" class="project_act">
+                <md-button class="md-warn" ng-click="ev.delete($event)">{{'DELETE' | translate}}</md-button>
+                <md-button class="md-raised md-primary" type="submit" ng-click="ev.save()">{{'SAVE' | translate}}
+                </md-button>
+            </div>
+        </form>
     </div>
 </md-content>
