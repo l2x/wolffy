@@ -124,9 +124,11 @@ define([
     }]);
 	*/
 
-	app.run(function($rootScope, $mdDialog) {
+	app.run(function($rootScope, $location, $mdDialog) {
 		$rootScope.checkErr = function(json) {
-			console.log(json)
+			if (json && json.errno == 401) {
+				$location.path("/login")
+			}
 			return false
 		}
 		$rootScope.confirmDialog = $mdDialog.confirm()

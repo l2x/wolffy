@@ -7,7 +7,7 @@ import (
 )
 
 func init() {
-	err := config.InitConfig("")
+	err := config.InitConfig()
 	if err != nil {
 		panic(err)
 	}

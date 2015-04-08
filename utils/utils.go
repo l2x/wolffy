@@ -7,6 +7,7 @@ import (
 	"math/rand"
 	"net/http"
 	"os"
+	"os/exec"
 	"strings"
 	"time"
 
@@ -94,4 +95,12 @@ func RunCmd(path, cmd string) error {
 		return errors.New(err.Error() + "\n" + stderr)
 	}
 	return nil
+}
+
+func UUID() (string, error) {
+	out, err := exec.Command("uuidgen").Output()
+	if err != nil {
+		return "", err
+	}
+	return string(out), nil
 }
