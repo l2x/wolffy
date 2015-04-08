@@ -3,7 +3,6 @@ wollfy
 
 ### TODO
 
-1. config 配置表
 2. agent 权限校验
 3. agent 安装页面
 4. 全局错误处理
