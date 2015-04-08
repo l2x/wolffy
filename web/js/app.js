@@ -111,23 +111,14 @@ define([
             });
         }]);
 
-	/*
-    app.config(['$httpProvider', function($httpProvider) {
-		var statusInterceptor = function() {
-			return {
-				response: function(result) {
-					console.log("--->", result)
-				}
-			}
-		}
-        $httpProvider.interceptors.push(statusInterceptor);
-    }]);
-	*/
-
 	app.run(function($rootScope, $location, $mdDialog) {
 		$rootScope.checkErr = function(json) {
 			if (json && json.errno == 401) {
 				$location.path("/login")
+			}
+			if (json && json.errno == 1) {
+				console.log(json.errmsg)
+				return true
 			}
 			return false
 		}
