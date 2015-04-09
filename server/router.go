@@ -67,6 +67,7 @@ func router() {
 	m.Get("/user/updatepassword", user.UpdatePassword)
 	m.Get("/user/login", user.Login)
 	m.Get("/user/logout", user.Logout)
+	m.Get("/user/getuserinfo", user.GetUserInfo)
 
 	machine := controllers.Machine{}
 	m.Get("/machine/ping", machine.Ping)

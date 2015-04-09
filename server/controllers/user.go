@@ -189,6 +189,17 @@ func (c User) UpdatePassword(r render.Render, req *http.Request) {
 	RenderRes(r, res, user)
 }
 
+func (c User) GetUserInfo(r render.Render, req *http.Request) {
+	res := NewRes()
+
+	user, err := Sessions.GetUser(req)
+	if err = RenderError(r, res, err); err != nil {
+		return
+	}
+
+	RenderRes(r, res, user)
+}
+
 func checkAdministrator(req *http.Request) error {
 	user, err := Sessions.GetUser(req)
 	if err != nil {

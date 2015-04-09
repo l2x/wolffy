@@ -31,4 +31,9 @@ define(['app'], function (app) {
             query: {isArray: false}
         });
     })
+    app.factory('User.GetUserInfo', function ($resource) {
+        return $resource("/user/getuserinfo", {}, {
+            query: {isArray: false}
+        });
+    })
 })

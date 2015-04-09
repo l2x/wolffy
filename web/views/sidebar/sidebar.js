@@ -1,21 +1,22 @@
-define(['angularAMD'], function (angularAMD) {
+define(['angularAMD'], function (angularAMD, app) {
     angularAMD.controller("sidebarCtrl", ['$scope', '$rootScope', '$timeout', '$mdSidenav', '$anchorScroll', '$location',
         function ($scope, $rootScope, $timeout, $mdSidenav, $anchorScroll, $location) {
-            $rootScope.toggleLeft = function () {
+            $scope.toggleLeft = function () {
                 $mdSidenav('left').toggle()
             };
-
             $scope.close = function () {
                 $mdSidenav('left').close()
             };
+
+
             var menus = [
                 {name: "PROJECT", type: 1, url: "/project/list"},
                 {
                     name: "ADMIN", type: 0, children: [
                     {name: "CLUSTER", url: "/cluster/list"},
                     {name: "MACHINE", url: "/machine/list"},
-                    {name: "USER", url: "/user/list"}
-                ]
+					{name: "USER", url: "/user/list"}
+					]
                 }
             ]
             $scope.menus = menus

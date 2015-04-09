@@ -118,10 +118,9 @@ func (m Machine) Update(id int, ip, port, note, token string, status int, lastRe
 // set status
 func (m Machine) Del(id int) error {
 	machine := &Machine{
-		Id:     id,
-		Status: -1,
+		Id: id,
 	}
-	if _, err := DB.Update(machine, "Status"); err != nil {
+	if _, err := DB.Delete(machine); err != nil {
 		return err
 	}
 

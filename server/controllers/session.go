@@ -59,8 +59,9 @@ func CheckSession(w http.ResponseWriter, req *http.Request) error {
 		return config.GetErr(config.ERR_SESSION_INVALID)
 	}
 
-	cookie.Expires = time.Now().Add(time.Duration(config.SessionExpire) * time.Second)
-	http.SetCookie(w, cookie)
+	//expire := time.Now().Add(time.Duration(config.SessionExpire) * time.Second)
+	//cookie = &http.Cookie{Name: config.CookieName, Value: sid, Path: "/", Expires: expire, HttpOnly: true}
+	//http.SetCookie(w, cookie)
 	Sessions.Update(sid)
 
 	return nil
@@ -79,9 +80,9 @@ func (s *Session) Add(w http.ResponseWriter, id int, username, ip string) {
 	s.cache[sid] = cache
 
 	expire := time.Now().Add(time.Duration(config.SessionExpire) * time.Second)
-	cookie := http.Cookie{Name: config.CookieName, Value: sid, Path: "/", Expires: expire}
+	cookie := &http.Cookie{Name: config.CookieName, Value: sid, Path: "/", Expires: expire, HttpOnly: true}
 
-	http.SetCookie(w, &cookie)
+	http.SetCookie(w, cookie)
 }
 
 func (s *Session) GetUser(req *http.Request) (*models.User, error) {
