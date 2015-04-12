@@ -112,6 +112,10 @@ func (c User) Edit(r render.Render, req *http.Request) {
 	if administrator == "true" {
 		administratorint = 1
 	}
+	err := checkAdministrator(req)
+	if err = RenderError(r, res, err); err != nil {
+		return
+	}
 
 	user, err := models.UserModel.Add(username, name, "", administratorint)
 	if err = RenderError(r, res, err); err != nil {
@@ -136,6 +140,10 @@ func (c User) Del(r render.Render, req *http.Request) {
 	if err = RenderError(r, res, err); err != nil {
 		return
 	}
+	err = checkAdministrator(req)
+	if err = RenderError(r, res, err); err != nil {
+		return
+	}
 
 	err = models.UserModel.Del(idint)
 	if err = RenderError(r, res, err); err != nil {
@@ -153,6 +161,11 @@ func (c User) Update(r render.Render, req *http.Request) {
 	name := req.URL.Query().Get("name")
 	administrator := req.URL.Query().Get("administrator")
 	administratorint, _ := strconv.Atoi(administrator)
+
+	err := checkAdministrator(req)
+	if err = RenderError(r, res, err); err != nil {
+		return
+	}
 
 	idint, err := strconv.Atoi(id)
 	if err = RenderError(r, res, err); err != nil {

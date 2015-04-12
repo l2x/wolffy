@@ -22,6 +22,7 @@ var (
 		ERR_UNKNOWN:                 "unknown error",
 		ERR_SESSION_INVALID:         "session invalid",
 		ERR_USER_NEED_CHANGE_PWD:    "need change password",
+		ERR_USER_NOT_ADMIN:          "administrator required",
 		ERR_USER_NOT_FOUND:          "user not found",
 		ERR_USER_PASSWORD_INCORRECT: "password incorrect",
 
