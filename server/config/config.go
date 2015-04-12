@@ -13,8 +13,9 @@ var (
 	DatetimeFormat = "2006-01-02 15:04:05"
 	DateFormat     = "2006-01-02"
 
-	config *goconfig.ConfigFile
+	NeedCreateAdministrator = false
 
+	config     *goconfig.ConfigFile
 	ConfigFile = "config/config.ini"
 	BasePath   = "/tmp/"
 	RepoPath   = ""
@@ -107,6 +108,7 @@ func loadPrivateKey() error {
 		}
 		PrivateKey = uuid
 		config.SetValue("", "privateKey", PrivateKey)
+		NeedCreateAdministrator = true
 	}
 	return nil
 }

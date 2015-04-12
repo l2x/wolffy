@@ -1,6 +1,11 @@
 package models
 
-import "time"
+import (
+	"database/sql"
+	"time"
+
+	"github.com/l2x/wolffy/utils"
+)
 
 var (
 	UserModel = &User{}
@@ -62,7 +67,11 @@ func (m User) GetViaUsername(username string) (*User, error) {
 
 func (m User) GetAll() ([]*User, error) {
 	users := []*User{}
-	if _, err := DB.QueryTable(m.TableName()).All(&users); err != nil {
+	_, err := DB.QueryTable(m.TableName()).All(&users)
+	if err == sql.ErrNoRows {
+		return users, nil
+	}
+	if err != nil {
 		return nil, err
 	}
 
@@ -138,6 +147,33 @@ func (m User) Del(id int) error {
 		Id: id,
 	}
 	if _, err := DB.Delete(user); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m User) CheckCreateAdministor() error {
+	users, err := m.GetAll()
+	if err != nil {
+		return err
+	}
+	if len(users) > 0 {
+		return nil
+	}
+	username := "admin"
+	name := "admin"
+	administratorint := 1
+	password := "123456"
+
+	user, err := m.Add(username, name, "", administratorint)
+	if err != nil {
+		return err
+	}
+
+	signPassword := utils.SignPassword(password, user.Id)
+	err = m.UpdatePassword(user.Id, signPassword)
+	if err != nil {
 		return err
 	}
 

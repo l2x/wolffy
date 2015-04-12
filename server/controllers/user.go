@@ -31,7 +31,7 @@ func (c User) Login(r render.Render, w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	password = SignPassword(password, user.Id)
+	password = utils.SignPassword(password, user.Id)
 	user, err = models.UserModel.CheckPassword(username, password)
 	if err == sql.ErrNoRows {
 		res.Errno = config.ERR_USER_PASSWORD_INCORRECT
@@ -122,13 +122,13 @@ func (c User) Edit(r render.Render, req *http.Request) {
 		return
 	}
 
-	signPassword := SignPassword(password, user.Id)
+	signPassword := utils.SignPassword(password, user.Id)
 	err = models.UserModel.UpdatePassword(user.Id, signPassword)
 	if err = RenderError(r, res, err); err != nil {
 		return
 	}
 
-	user.Password = password
+	//user.Password = password
 
 	RenderRes(r, res, user)
 }
@@ -191,13 +191,13 @@ func (c User) UpdatePassword(r render.Render, req *http.Request) {
 		return
 	}
 
-	oldpassword = SignPassword(oldpassword, user.Id)
+	oldpassword = utils.SignPassword(oldpassword, user.Id)
 	user, err = models.UserModel.CheckPassword(user.Username, oldpassword)
 	if err = RenderError(r, res, err); err != nil {
 		return
 	}
 
-	newpassword = SignPassword(newpassword, user.Id)
+	newpassword = utils.SignPassword(newpassword, user.Id)
 	err = models.UserModel.UpdatePassword(user.Id, newpassword)
 	if err = RenderError(r, res, err); err != nil {
 		return
@@ -233,14 +233,4 @@ func checkAdministrator(req *http.Request) error {
 	}
 
 	return nil
-}
-
-func SignPassword(password string, id int) string {
-	password = utils.Md5(password) + utils.Md5(password+strconv.Itoa(id))
-	password = utils.Md5(password + config.PrivateKey)
-	return password
-}
-
-func GenPassword() string {
-	return strconv.Itoa(utils.RandInt(100000, 999999))
 }

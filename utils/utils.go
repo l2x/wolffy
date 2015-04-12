@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"os"
 	"os/exec"
+	"strconv"
 	"strings"
 	"time"
 
@@ -103,4 +104,8 @@ func UUID() (string, error) {
 		return "", err
 	}
 	return string(out), nil
+}
+
+func SignPassword(password string, id int) string {
+	return Md5(Md5(password) + Md5(password+strconv.Itoa(id)))
 }
