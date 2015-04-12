@@ -1,9 +1,8 @@
 package models
 
 import (
+	"database/sql"
 	"time"
-
-	"github.com/astaxie/beego/orm"
 )
 
 var (
@@ -33,23 +32,13 @@ func (m Project) TableUnique() [][]string {
 	}
 }
 
-func (m Project) Search(key string) ([]*Project, error) {
-	projects := []*Project{}
-
-	cond := orm.NewCondition()
-	cond1 := cond.Or("Name__icontains", key).Or("Tags__icontains", key)
-
-	_, err := DB.QueryTable(m.TableName()).SetCond(cond1).All(&projects)
-	if err != nil {
-		return nil, err
-	}
-
-	return projects, nil
-}
-
 func (m Project) GetAll() ([]*Project, error) {
 	projects := []*Project{}
-	if _, err := DB.QueryTable(m.TableName()).All(&projects); err != nil {
+	_, err := DB.QueryTable(m.TableName()).All(&projects)
+	if err == sql.ErrNoRows {
+		return projects, nil
+	}
+	if err != nil {
 		return nil, err
 	}
 

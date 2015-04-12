@@ -1,6 +1,9 @@
 package models
 
-import "time"
+import (
+	"database/sql"
+	"time"
+)
 
 var (
 	DeployHistoryModel = &DeployHistory{}
@@ -34,6 +37,9 @@ func (m DeployHistory) GetAll(did int) ([]*DeployHistory, error) {
 	deployHistorys := []*DeployHistory{}
 
 	_, err := DB.QueryTable(m.TableName()).Filter("did", did).All(&deployHistorys)
+	if err == sql.ErrNoRows {
+		return deployHistorys, nil
+	}
 	if err != nil {
 		return deployHistorys, err
 	}

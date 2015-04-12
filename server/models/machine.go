@@ -1,6 +1,9 @@
 package models
 
-import "time"
+import (
+	"database/sql"
+	"time"
+)
 
 var (
 	MachineModel = &Machine{}
@@ -32,20 +35,13 @@ func (m Machine) TableUnique() [][]string {
 	}
 }
 
-func (m Machine) Search(ip string) ([]*Machine, error) {
-	var machines []*Machine
-
-	_, err := DB.QueryTable(m.TableName()).Filter("Ip__contains", ip).All(&machines)
-	if err != nil {
-		return nil, err
-	}
-
-	return machines, nil
-}
-
 func (m Machine) GetAll() ([]*Machine, error) {
 	var machines []*Machine
-	if _, err := DB.QueryTable(m.TableName()).All(&machines); err != nil {
+	_, err := DB.QueryTable(m.TableName()).All(&machines)
+	if err == sql.ErrNoRows {
+		return machines, nil
+	}
+	if err != nil {
 		return nil, err
 	}
 

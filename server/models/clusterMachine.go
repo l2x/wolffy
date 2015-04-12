@@ -1,6 +1,9 @@
 package models
 
-import "time"
+import (
+	"database/sql"
+	"time"
+)
 
 var (
 	ClusterMachineModel = &ClusterMachine{}
@@ -27,6 +30,9 @@ func (m ClusterMachine) GetAll(cid int) ([]*Machine, error) {
 	clusterMachine := []*ClusterMachine{}
 	machines := []*Machine{}
 	_, err := DB.QueryTable(m.TableName()).Filter("Cid", cid).All(&clusterMachine)
+	if err == sql.ErrNoRows {
+		return machines, nil
+	}
 	if err != nil {
 		return machines, err
 	}

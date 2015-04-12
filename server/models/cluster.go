@@ -1,6 +1,9 @@
 package models
 
-import "time"
+import (
+	"database/sql"
+	"time"
+)
 
 var (
 	ClusterModel = &Cluster{}
@@ -28,7 +31,12 @@ func (m Cluster) TableUnique() [][]string {
 
 func (m Cluster) GetAll() ([]*Cluster, error) {
 	clusters := []*Cluster{}
-	if _, err := DB.QueryTable(m.TableName()).All(&clusters); err != nil {
+	_, err := DB.QueryTable(m.TableName()).All(&clusters)
+	if err == sql.ErrNoRows {
+		return clusters, nil
+	}
+
+	if err != nil {
 		return nil, err
 	}
 

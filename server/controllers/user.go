@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"database/sql"
 	"net/http"
 	"strconv"
 	"strings"
@@ -22,12 +23,20 @@ func (c User) Login(r render.Render, w http.ResponseWriter, req *http.Request) {
 	password := strings.Trim(req.URL.Query().Get("password"), " ")
 
 	user, err := models.UserModel.GetViaUsername(username)
+	if err == sql.ErrNoRows {
+		res.Errno = config.ERR_USER_NOT_FOUND
+		err = config.GetErr(res.Errno)
+	}
 	if err = RenderError(r, res, err); err != nil {
 		return
 	}
 
 	password = SignPassword(password, user.Id)
 	user, err = models.UserModel.CheckPassword(username, password)
+	if err == sql.ErrNoRows {
+		res.Errno = config.ERR_USER_PASSWORD_INCORRECT
+		err = config.GetErr(res.Errno)
+	}
 	if err = RenderError(r, res, err); err != nil {
 		return
 	}

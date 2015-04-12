@@ -1,6 +1,7 @@
 package models
 
 import (
+	"database/sql"
 	"time"
 
 	"github.com/astaxie/beego/orm"
@@ -41,6 +42,9 @@ func (m Deploy) GetAll(pid, limits int) ([]*Deploy, error) {
 	var deploys []*Deploy
 
 	_, err := DB.QueryTable(m.TableName()).Filter("pid", pid).OrderBy("-id").Limit(limits).All(&deploys)
+	if err == sql.ErrNoRows {
+		return deploys, nil
+	}
 	if err != nil {
 		return nil, err
 	}

@@ -1,6 +1,9 @@
 package models
 
-import "time"
+import (
+	"database/sql"
+	"time"
+)
 
 var (
 	ProjectClusterModel = &ProjectCluster{}
@@ -33,6 +36,10 @@ func (m ProjectCluster) GetAll(pid int) ([]*ProjectCluster, error) {
 	var projectClusters []*ProjectCluster
 
 	_, err := DB.QueryTable(m.TableName()).Filter("pid", pid).All(&projectClusters)
+	if err == sql.ErrNoRows {
+		return projectClusters, nil
+	}
+
 	if err != nil {
 		return nil, err
 	}
