@@ -111,13 +111,16 @@ define([
             });
         }]);
 
-	app.run(function($rootScope, $location, $mdDialog) {
+	app.run(function($rootScope, $location, $mdDialog, $mdToast, $animate) {
 		$rootScope.checkErr = function(json) {
 			if (json && json.errno == 401) {
 				$location.path("/login")
 			}
 			if (json && json.errno == 1) {
-				console.log(json.errmsg)
+				console.log(json);
+				$mdToast.show(
+					$mdToast.simple().content(json.errmsg).action("close").hideDelay(0)
+				);
 				return true
 			}
 			return false
