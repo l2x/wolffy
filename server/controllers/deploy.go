@@ -12,7 +12,6 @@ import (
 	"os"
 	"strconv"
 	"sync"
-	"time"
 
 	"github.com/l2x/wolffy/server/config"
 	"github.com/l2x/wolffy/server/models"
@@ -139,7 +138,7 @@ func (c Deploy) pushFile(ip, archiveFile, pushPath, bshell, eshell string) error
 	if err != nil {
 		return err
 	}
-	token, sign := GenSign()
+	token, sign := utils.GenSign(config.PrivateKey)
 	q := u.Query()
 	q.Set("bshell", bshell)
 	q.Set("eshell", eshell)
@@ -260,10 +259,4 @@ func (c Deploy) HistoryDetail(r render.Render, req *http.Request) {
 	}
 
 	RenderRes(r, res, detail)
-}
-
-func GenSign() (string, string) {
-	token := utils.Md5(fmt.Sprintf("%v", time.Now().UnixNano()))
-	sign := utils.Md5(fmt.Sprintf("%s%s", token, config.PrivateKey))
-	return token, sign
 }

@@ -18,12 +18,13 @@ type Server struct{}
 func (s Server) Pull(r render.Render, req *http.Request) {
 	res := controllers.NewRes()
 
+	token := req.URL.Query().Get("token")
 	sign := req.URL.Query().Get("sign")
 	path := req.URL.Query().Get("path")
 	bshell := req.URL.Query().Get("bshell")
 	eshell := req.URL.Query().Get("eshell")
 
-	err := checkSign(sign)
+	err := utils.CheckSign(token, sign, PrivateKey)
 	if err = controllers.RenderError(r, res, err); err != nil {
 		return
 	}

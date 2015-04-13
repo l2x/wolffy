@@ -4,7 +4,10 @@ import (
 	"crypto/md5"
 	"encoding/hex"
 	"errors"
+	"fmt"
+	"io/ioutil"
 	"math/rand"
+	"net"
 	"net/http"
 	"os"
 	"os/exec"
@@ -108,4 +111,44 @@ func UUID() (string, error) {
 
 func SignPassword(password string, id int) string {
 	return Md5(Md5(password) + Md5(password+strconv.Itoa(id)))
+}
+
+func HttpGet(url string, ttl int) ([]byte, error) {
+	timeout := time.Duration(ttl) * time.Second
+	transport := &http.Transport{
+		ResponseHeaderTimeout: timeout,
+		Dial: func(network, addr string) (net.Conn, error) {
+			return net.DialTimeout(network, addr, timeout)
+		},
+	}
+
+	client := &http.Client{
+		Transport: transport,
+	}
+
+	resp, err := client.Get(url)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	return body, nil
+}
+
+func GenSign(privateKey string) (string, string) {
+	token := Md5(fmt.Sprintf("%v", time.Now().UnixNano()))
+	sign := Md5(fmt.Sprintf("%s%s", token, privateKey))
+	return token, sign
+}
+
+func CheckSign(token, sign, privateKey string) error {
+	if sign != Md5(fmt.Sprintf("%s%s", token, privateKey)) {
+		return errors.New(fmt.Sprintf("signature invalid.\ntoken[%s]\nsign[%s]", token, sign))
+	}
+	return nil
 }
