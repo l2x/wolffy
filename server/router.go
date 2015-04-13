@@ -68,10 +68,9 @@ func router() {
 	m.Get("/user/logout", user.Logout)
 	m.Get("/user/getuserinfo", user.GetUserInfo)
 
-	machine := controllers.Machine{}
-	m.Get("/machine/ping", machine.Ping)
-	m.Get("/machine/add", machine.Add)
-	m.Get("/machine/getall", machine.GetAll)
+	Node := controllers.Node{}
+	m.Get("/Node/add", Node.Add)
+	m.Get("/Node/getall", Node.GetAll)
 
 	m.RunOnAddr(":8000")
 }

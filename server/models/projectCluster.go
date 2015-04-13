@@ -13,7 +13,7 @@ type ProjectCluster struct {
 	Id            int       `json:"id"`
 	Pid           int       `json:"pid"`
 	Cid           int       `json:"cid"`
-	CustomMachine string    `json:"customMachine"`
+	CustomNode string    `json:"customNode"`
 	Bshell        string    `json:"bshell"`
 	Eshell        string    `json:"eshell"`
 	Note          string    `json:"note"`
@@ -75,11 +75,11 @@ func (m ProjectCluster) DelProject(pid int) error {
 	return nil
 }
 
-func (m ProjectCluster) Add(pid, cid int, customMachine, bshell, eshell, note string) (*ProjectCluster, error) {
+func (m ProjectCluster) Add(pid, cid int, customNode, bshell, eshell, note string) (*ProjectCluster, error) {
 	projectCluster := &ProjectCluster{
 		Pid:           pid,
 		Cid:           cid,
-		CustomMachine: customMachine,
+		CustomNode: customNode,
 		Bshell:        bshell,
 		Eshell:        eshell,
 		Note:          note,
@@ -95,19 +95,19 @@ func (m ProjectCluster) Add(pid, cid int, customMachine, bshell, eshell, note st
 	return projectCluster, nil
 }
 
-func (m ProjectCluster) Update(id, pid, cid int, customMachine, bshell, eshell, note string) (*ProjectCluster, error) {
+func (m ProjectCluster) Update(id, pid, cid int, customNode, bshell, eshell, note string) (*ProjectCluster, error) {
 	projectCluster := &ProjectCluster{
 		Id:            id,
 		Pid:           pid,
 		Cid:           cid,
-		CustomMachine: customMachine,
+		CustomNode: customNode,
 		Bshell:        bshell,
 		Eshell:        eshell,
 		Note:          note,
 		Modified:      time.Now(),
 	}
 
-	_, err := DB.Update(projectCluster, "Pid", "Cid", "CustomMachine", "Bshell", "Eshell", "Note", "Modified")
+	_, err := DB.Update(projectCluster, "Pid", "Cid", "CustomNode", "Bshell", "Eshell", "Note", "Modified")
 	if err != nil {
 		return nil, err
 	}

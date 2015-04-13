@@ -22,10 +22,10 @@ func InitModels() error {
 	orm.SetMaxOpenConns("default", 10)
 
 	orm.RegisterModel(ClusterModel)
-	orm.RegisterModel(ClusterMachineModel)
+	orm.RegisterModel(ClusterNodeModel)
 	orm.RegisterModel(DeployModel)
 	orm.RegisterModel(DeployHistoryModel)
-	orm.RegisterModel(MachineModel)
+	orm.RegisterModel(NodeModel)
 	orm.RegisterModel(ProjectModel)
 	orm.RegisterModel(ProjectClusterModel)
 	orm.RegisterModel(UserModel)

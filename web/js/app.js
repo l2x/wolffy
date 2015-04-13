@@ -55,15 +55,15 @@ define([
 				templateUrl: './views/cluster/edit.html',
 				controllerUrl: '../views/cluster/edit'
             }))
-			.when("/machine/list", angularAMD.route({
-				templateUrl: './views/machine/list.html',
-				controllerUrl: '../views/machine/list'
+			.when("/node/list", angularAMD.route({
+				templateUrl: './views/node/list.html',
+				controllerUrl: '../views/node/list'
             }))
-			.when("/machine/add", angularAMD.route({
-				templateUrl: './views/machine/add.html',
+			.when("/node/add", angularAMD.route({
+				templateUrl: './views/node/add.html',
             }))
-			.when("/machine/add/:id", angularAMD.route({
-				templateUrl: './views/machine/add.html',
+			.when("/node/add/:id", angularAMD.route({
+				templateUrl: './views/node/add.html',
             }))
 			.when("/user/list", angularAMD.route({
 				templateUrl: './views/user/list.html',

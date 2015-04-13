@@ -77,7 +77,7 @@ func (c Deploy) pushCluster(project *models.Project, did int, archiveFile string
 	allstatus := 2
 	var wg sync.WaitGroup
 	for _, v1 := range projectClusters {
-		for _, v2 := range v1.Cluster.Machines {
+		for _, v2 := range v1.Cluster.Nodes {
 			deployHistory, err := models.DeployHistoryModel.Add(did, v2.Ip)
 			if err != nil {
 				continue

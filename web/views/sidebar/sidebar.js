@@ -14,7 +14,7 @@ define(['angularAMD'], function (angularAMD, app) {
                 {
                     name: "ADMIN", type: 0, children: [
                     {name: "CLUSTER", url: "/cluster/list"},
-                    {name: "MACHINE", url: "/machine/list"},
+                    {name: "Node", url: "/node/list"},
 					{name: "USER", url: "/user/list"}
 					]
                 }

@@ -16,7 +16,7 @@ type Cluster struct {
 	Note     string     `json:"note"`
 	Created  time.Time  `json:"created"`
 	Modified time.Time  `json:"modified"`
-	Machines []*Machine `orm:"-" json:"machines"`
+	Nodes []*Node `orm:"-" json:"nodes"`
 }
 
 func (m Cluster) TableName() string {
@@ -52,7 +52,7 @@ func (m Cluster) GetOne(id int) (*Cluster, error) {
 		return nil, err
 	}
 
-	cluster.Machines, _ = ClusterMachineModel.GetAll(cluster.Id)
+	cluster.Nodes, _ = ClusterNodeModel.GetAll(cluster.Id)
 
 	return cluster, nil
 }

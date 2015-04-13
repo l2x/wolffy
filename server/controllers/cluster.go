@@ -49,7 +49,7 @@ func (c Cluster) Add(r render.Render, req *http.Request) {
 	id := req.URL.Query().Get("id")
 	name := req.URL.Query().Get("name")
 	tags := req.URL.Query().Get("tags")
-	machines := req.URL.Query().Get("machines")
+	nodes := req.URL.Query().Get("nodes")
 	note := req.URL.Query().Get("note")
 	if id != "" {
 		idint, err = strconv.Atoi(id)
@@ -68,7 +68,7 @@ func (c Cluster) Add(r render.Render, req *http.Request) {
 	if err = RenderError(r, res, err); err != nil {
 		return
 	}
-	err = c.Update(cluster.Id, name, tags, note, machines)
+	err = c.Update(cluster.Id, name, tags, note, nodes)
 	if err = RenderError(r, res, err); err != nil {
 		return
 	}
@@ -76,20 +76,20 @@ func (c Cluster) Add(r render.Render, req *http.Request) {
 	RenderRes(r, res, cluster)
 }
 
-func (c Cluster) Update(id int, name, tags, note, machines string) error {
-	err := models.ClusterMachineModel.Delete(id)
+func (c Cluster) Update(id int, name, tags, note, nodes string) error {
+	err := models.ClusterNodeModel.Delete(id)
 	if err != nil {
 		return err
 	}
 
-	m := strings.Split(machines, ",")
+	m := strings.Split(nodes, ",")
 	for _, v := range m {
 		mid, err := strconv.Atoi(strings.Trim(v, " "))
 		if err != nil {
 			fmt.Println(err)
 			continue
 		}
-		err = models.ClusterMachineModel.Add(id, mid)
+		err = models.ClusterNodeModel.Add(id, mid)
 		if err != nil {
 			fmt.Println(err)
 		}

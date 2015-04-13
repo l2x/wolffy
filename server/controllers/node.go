@@ -11,59 +11,59 @@ import (
 	"github.com/l2x/wolffy/server/models"
 )
 
-type Machine struct{}
+type Node struct{}
 
-func (c Machine) Ping(r render.Render, req *http.Request) {
+func (c Node) Ping(r render.Render, req *http.Request) {
 	res := NewRes()
 
 	ip := req.URL.Query().Get("ip")
 	token := req.URL.Query().Get("token")
 
-	machine, err := models.MachineModel.GetOneByIp(ip)
+	node, err := models.NodeModel.GetOneByIp(ip)
 	if err = RenderError(r, res, err); err != nil {
 		return
 	}
 
-	if machine.Status == -1 {
+	if node.Status == -1 {
 		RenderError(r, res, errors.New("server disable."))
 		return
 	}
 
-	machine, err = models.MachineModel.Update(machine.Id, machine.Ip, machine.Port, machine.Note, token, 1, time.Now())
+	node, err = models.NodeModel.Update(node.Id, node.Ip, node.Port, node.Note, token, 1, time.Now())
 	if err = RenderError(r, res, err); err != nil {
 		return
 	}
 
-	RenderRes(r, res, machine)
+	RenderRes(r, res, node)
 }
 
-func (c Machine) Add(r render.Render, req *http.Request) {
+func (c Node) Add(r render.Render, req *http.Request) {
 	res := NewRes()
 
 	ip := req.URL.Query().Get("ip")
 	port := req.URL.Query().Get("port")
 	note := req.URL.Query().Get("note")
 
-	machine, err := models.MachineModel.Add(ip, port, note)
+	node, err := models.NodeModel.Add(ip, port, note)
 	if err = RenderError(r, res, err); err != nil {
 		return
 	}
 
-	RenderRes(r, res, machine)
+	RenderRes(r, res, node)
 }
 
-func (c Machine) GetAll(r render.Render, req *http.Request) {
+func (c Node) GetAll(r render.Render, req *http.Request) {
 	res := NewRes()
 
-	machine, err := models.MachineModel.GetAll()
+	node, err := models.NodeModel.GetAll()
 	if err = RenderError(r, res, err); err != nil {
 		return
 	}
 
-	RenderRes(r, res, machine)
+	RenderRes(r, res, node)
 }
 
-func (c Machine) Update(r render.Render, req *http.Request) {
+func (c Node) Update(r render.Render, req *http.Request) {
 	res := NewRes()
 
 	ip := req.URL.Query().Get("ip")
@@ -71,25 +71,25 @@ func (c Machine) Update(r render.Render, req *http.Request) {
 	status := req.URL.Query().Get("status")
 	statusInt, _ := strconv.Atoi(status)
 
-	machine, err := models.MachineModel.GetOneByIp(ip)
+	node, err := models.NodeModel.GetOneByIp(ip)
 	if err = RenderError(r, res, err); err != nil {
 		return
 	}
 
-	machine, err = models.MachineModel.Update(machine.Id, machine.Ip, machine.Port, note, machine.Token, statusInt, time.Now())
+	node, err = models.NodeModel.Update(node.Id, node.Ip, node.Port, note, node.Token, statusInt, time.Now())
 	if err = RenderError(r, res, err); err != nil {
 		return
 	}
 
-	RenderRes(r, res, machine)
+	RenderRes(r, res, node)
 }
 
-func (c Machine) Del(r render.Render, req *http.Request) {
+func (c Node) Del(r render.Render, req *http.Request) {
 	res := NewRes()
 
 	id := req.URL.Query().Get("id")
 	idint, _ := strconv.Atoi(id)
-	err := models.MachineModel.Del(idint)
+	err := models.NodeModel.Del(idint)
 
 	if err = RenderError(r, res, err); err != nil {
 		return

@@ -1,7 +1,7 @@
 "use strict";
 
-define(['app', '../service/machine'], function (app) {
-    return ['$scope', '$rootScope', 'Machine.GetAll', function ($scope, $rootScope, GetAll) {
+define(['app', '../service/node'], function (app) {
+    return ['$scope', '$rootScope', 'Node.GetAll', function ($scope, $rootScope, GetAll) {
         $scope.args = {}
         $scope.args.list = []
         $scope.ev = {}

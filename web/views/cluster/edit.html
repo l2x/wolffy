@@ -20,27 +20,27 @@
 
             <div>
                 <div class="project_cluster_list">
-                    <h4>{{'MACHINE' | translate}}{{'LIST' | translate}}</h4>
+                    <h4>{{'NODE' | translate}}{{'LIST' | translate}}</h4>
 
-                    <div class="cluster_machine_cell" layout="row" layout-align="space-between center"
-                         ng-repeat="machine in args.cluster.machines"
-                         ng-class="machine.hover == true ? 'md-whiteframe-z1':''" ng-mouseenter="machine.hover = true"
-                         ng-mouseleave="machine.hover = false">
-                        <span>{{machine.ip}}</span>
-                        <md-button class="md-warn" ng-click="ev.removeMachine($index)">{{'REMOVE' | translate}}
+                    <div class="cluster_node_cell" layout="row" layout-align="space-between center"
+                         ng-repeat="node in args.cluster.nodes"
+                         ng-class="node.hover == true ? 'md-whiteframe-z1':''" ng-mouseenter="node.hover = true"
+                         ng-mouseleave="node.hover = false">
+                        <span>{{node.ip}}</span>
+                        <md-button class="md-warn" ng-click="ev.removeNode($index)">{{'REMOVE' | translate}}
                         </md-button>
                     </div>
                 </div>
 
-                <div layout="row" layout-align="end center" class="cluster_machine_add">
-                    <md-select ng-model="_addmachine" placeholder="{{'CHOICE_MACHINE' | translate}}">
-                        <md-option ng-repeat="machine in args.machines" value="{{$index}}"
-                                   ng-show="machine.ip | ipFilter:args.cluster.machines">{{machine.ip}}
+                <div layout="row" layout-align="end center" class="cluster_node_add">
+                    <md-select ng-model="_addnode" placeholder="{{'CHOICE_NODE' | translate}}">
+                        <md-option ng-repeat="node in args.nodes" value="{{$index}}"
+                                   ng-show="node.ip | ipFilter:args.cluster.nodes">{{node.ip}}
                         </md-option>
                     </md-select>
 
-                    <md-button class="md-raised" ng-click="ev.addMachine(_addmachine)" ng-disabled="!_addmachine">
-                        {{'ADD' | translate}}{{'MACHINE' | translate}}
+                    <md-button class="md-raised" ng-click="ev.addNode(_addnode)" ng-disabled="!_addnode">
+                        {{'ADD' | translate}}{{'NODE' | translate}}
                     </md-button>
                 </div>
 

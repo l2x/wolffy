@@ -3,12 +3,12 @@
 define(['app'], function (app) {
 
     app.filter('ipFilter', function () {
-        return function (ip, machines) {
-            if (!machines || !ip) {
+        return function (ip, items) {
+            if (!items || !ip) {
                 return true
             }
-            for (var $i = 0; $i < machines.length; $i++) {
-                if (machines[$i].ip == ip) {
+            for (var $i = 0; $i < items.length; $i++) {
+                if (items[$i].ip == ip) {
                     return false
                 }
             }

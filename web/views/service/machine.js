@@ -1,8 +1,8 @@
 "use strict";
 
 define(['app'], function (app) {
-    app.factory('Machine.GetAll', function ($resource) {
-        return $resource("/machine/getall", {}, {
+    app.factory('Node.GetAll', function ($resource) {
+        return $resource("/node/getall", {}, {
             query: {isArray: false}
         });
     })

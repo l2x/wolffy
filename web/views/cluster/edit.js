@@ -1,11 +1,11 @@
 "use strict";
 
-define(['app', '../service/cluster', '../service/machine', '../filter/filter'], function (app) {
-    return ['$scope', '$rootScope', '$route', '$window', '$mdDialog', 'Cluster.Get', 'Cluster.Save', 'Cluster.Delete', 'Machine.GetAll',
-        function ($scope, $rootScope, $route, $window, $mdDialog, Get, Save, Delete, Machine_GetAll) {
+define(['app', '../service/cluster', '../service/node', '../filter/filter'], function (app) {
+    return ['$scope', '$rootScope', '$route', '$window', '$mdDialog', 'Cluster.Get', 'Cluster.Save', 'Cluster.Delete', 'Node.GetAll',
+        function ($scope, $rootScope, $route, $window, $mdDialog, Get, Save, Delete, Node_GetAll) {
             $scope.args = {}
             $scope.args.cluster = {}
-            $scope.args.machines = []
+            $scope.args.nodes = []
             $scope.ev = {}
 
             var $id = $route.current.params.id
@@ -18,29 +18,29 @@ define(['app', '../service/cluster', '../service/machine', '../filter/filter'], 
                 })
             }
 
-            Machine_GetAll.query({}, function (json) {
+            Node_GetAll.query({}, function (json) {
                 if ($rootScope.checkErr(json)) {
                     return
                 }
-                $scope.args.machines = json.data
+                $scope.args.nodes = json.data
             })
 
-            $scope.ev.addMachine = function ($idx) {
-                if (!$scope.args.cluster.machines) {
-                    $scope.args.cluster.machines = []
+            $scope.ev.addNode = function ($idx) {
+                if (!$scope.args.cluster.nodes) {
+                    $scope.args.cluster.nodes = []
                 }
 
-                for (var i = 0; i < $scope.args.cluster.machines.length; i++) {
-                    if ($scope.args.cluster.machines[i].ip == $scope.args.machines[$idx].ip) {
+                for (var i = 0; i < $scope.args.cluster.nodes.length; i++) {
+                    if ($scope.args.cluster.nodes[i].ip == $scope.args.nodes[$idx].ip) {
                         return
                     }
                 }
 
-                $scope.args.cluster.machines.push($scope.args.machines[$idx])
+                $scope.args.cluster.nodes.push($scope.args.nodes[$idx])
             }
 
-            $scope.ev.removeMachine = function ($idx) {
-                $scope.args.cluster.machines.splice($idx, 1)
+            $scope.ev.removeNode = function ($idx) {
+                $scope.args.cluster.nodes.splice($idx, 1)
             }
 
             $scope.ev.delCluster = function (ev) {
@@ -62,10 +62,10 @@ define(['app', '../service/cluster', '../service/machine', '../filter/filter'], 
                 var data = {}
                 angular.copy($scope.args.cluster, data)
                 var ip = []
-                angular.forEach(data.machines, function (v) {
+                angular.forEach(data.nodes, function (v) {
                     ip.push(v.id)
                 })
-                data.machines = ip.join(",")
+                data.nodes = ip.join(",")
 
                 Save.query(data, function (json) {
                     if ($rootScope.checkErr(json)) {
