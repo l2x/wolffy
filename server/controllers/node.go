@@ -8,16 +8,25 @@ import (
 
 	"github.com/martini-contrib/render"
 
+	"github.com/l2x/wolffy/server/config"
 	"github.com/l2x/wolffy/server/models"
+	"github.com/l2x/wolffy/utils"
 )
 
 type Node struct{}
 
-func (c Node) Ping(r render.Render, req *http.Request) {
+func (c Node) Report(r render.Render, req *http.Request) {
 	res := NewRes()
 
-	ip := req.URL.Query().Get("ip")
 	token := req.URL.Query().Get("token")
+	sign := req.URL.Query().Get("sign")
+
+	err := utils.CheckSign(token, sign, config.PrivateKey)
+	if err = RenderError(r, res, err); err != nil {
+		return
+	}
+
+	ip := utils.ClientIp(req)
 
 	node, err := models.NodeModel.GetOneByIp(ip)
 	if err = RenderError(r, res, err); err != nil {
