@@ -33,5 +33,3 @@ nohup ./wolffy-agent -pk=privateKey -master=masterip > wolffy-agent.log&
 ## Usage
 
 [demo]()
-
-
