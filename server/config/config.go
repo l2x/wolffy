@@ -21,11 +21,13 @@ var (
 	RepoPath   = ""
 	DBPath     = ""
 
+	Port = ":9020"
+
 	PrivateKey = ""
 
 	SessionInterval = 1
 	SessionExpire   = 3600
-	CookieName      = "wolffy_sessionid"
+	CookieName      = "wolffy_sid"
 )
 
 func InitConfig() error {
@@ -40,12 +42,7 @@ func InitConfig() error {
 		return err
 	}
 
-	err = loadPath()
-	if err != nil {
-		return err
-	}
-
-	err = loadPrivateKey()
+	err = getParams()
 	if err != nil {
 		return err
 	}
@@ -72,22 +69,23 @@ func loadConfig(cf string) error {
 	return nil
 }
 
-func loadPath() error {
+func getParams() error {
+	// path
 	dir, err := filepath.Abs(filepath.Dir(os.Args[0]))
 	if err != nil {
 		return err
 	}
 
-	if BasePath, err = config.GetValue("", "basePath"); err != nil {
+	if BasePath, err = config.GetValue("", "basePath"); err != nil || BasePath == "" {
 		BasePath = dir
 		config.SetValue("", "basePath", BasePath)
 	}
-	if RepoPath, err = config.GetValue("", "repoPath"); err != nil {
+	if RepoPath, err = config.GetValue("", "repoPath"); err != nil || RepoPath == "" {
 		RepoPath = fmt.Sprintf("%s/%s", BasePath, "repo")
 		config.SetValue("", "repoPath", RepoPath)
 	}
 
-	if DBPath, err = config.GetValue("", "dbPath"); err != nil {
+	if DBPath, err = config.GetValue("", "dbPath"); err != nil || DBPath == "" {
 		DBPath = fmt.Sprintf("%s/%s", BasePath, "database")
 		config.SetValue("", "dbPath", DBPath)
 	}
@@ -96,12 +94,9 @@ func loadPath() error {
 	if err != nil {
 		return err
 	}
-	return nil
-}
 
-func loadPrivateKey() error {
-	var err error
-	if PrivateKey, err = config.GetValue("", "privateKey"); err != nil {
+	// privatekey
+	if PrivateKey, err = config.GetValue("", "privateKey"); err != nil || PrivateKey == "" {
 		uuid, err := utils.UUID()
 		if err != nil {
 			return err
@@ -110,5 +105,12 @@ func loadPrivateKey() error {
 		config.SetValue("", "privateKey", PrivateKey)
 		NeedCreateAdministrator = true
 	}
+
+	// port
+	if port, err := config.GetValue("", "port"); err == nil || port == "" {
+		Port = port
+	}
+	config.SetValue("", "port", Port)
+
 	return nil
 }
