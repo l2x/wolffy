@@ -6,11 +6,14 @@ wolffy
 
 ### master
 
-发布工具部署的机器, master机器执行项目克隆, 将指定的版本打包通过HTTP发送到各节点.
+发布工具部署的机器, master机器执行项目克隆, 将指定的版本打包通过HTTP发送到各节点并解压到指定目录.
 
 > 需要有克隆代码库的权限
 
 > 需要与node节点能够互相通过HTTP访问
+
+> 如需执行额外的脚本, 确保有执行权限
+
 
 ```
 wget https://github.com/l2x/wolffy/releases/download/v0.0.1/wolffy-v0.0.1.tar.gz 
