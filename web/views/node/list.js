@@ -13,12 +13,5 @@ define(['app', '../service/node'], function (app) {
             $scope.args.list = json.data
         })
 
-
-        $scope.ev.search = function () {
-            Search.query({keywords: $scope.args.keywords}, function (json) {
-                console.log(json)
-            })
-        }
-
     }];
 });

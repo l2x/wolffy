@@ -2,6 +2,10 @@ wolffy
 ============
 一个简单的代码发布工具, 将git版本库代码提交到各节点, 适合运维能力弱的小团队.
 
+## Usage
+
+[demo]()
+
 ## Install
 
 ### master
@@ -32,9 +36,4 @@ tar xvf wolffy-v0.0.1.tar.gz
 cd wolffy-v0.0.1/agent
 nohup ./wolffy-agent -pk=privateKey -master=masterip > wolffy-agent.log&
 ```
-
-## Usage
-
-[demo]()
-
 
