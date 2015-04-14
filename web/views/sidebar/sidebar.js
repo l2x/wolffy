@@ -15,8 +15,8 @@ define(['angularAMD'], function (angularAMD, app) {
                     name: "ADMIN", type: 0, children: [
                     {name: "CLUSTER", url: "/cluster/list"},
                     {name: "Node", url: "/node/list"},
-					{name: "USER", url: "/user/list"}
-					]
+                    {name: "USER", url: "/user/list"}
+                ]
                 }
             ]
             $scope.menus = menus
