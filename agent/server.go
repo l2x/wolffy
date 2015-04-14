@@ -29,7 +29,6 @@ func (s Server) Pull(r render.Render, req *http.Request) {
 		return
 	}
 
-	fmt.Println(path, bshell, eshell)
 	pdir := filepath.Dir(path)
 	dir := filepath.Base(path)
 
@@ -39,7 +38,7 @@ func (s Server) Pull(r render.Render, req *http.Request) {
 	}
 
 	if bshell != "" {
-		err = utils.RunCmd(path, bshell)
+		err = execCmd(path, bshell)
 		if err = controllers.RenderError(r, res, err); err != nil {
 			return
 		}
@@ -56,24 +55,32 @@ func (s Server) Pull(r render.Render, req *http.Request) {
 	}
 
 	if eshell != "" {
-		err = utils.RunCmd(path, eshell)
+		err = execCmd(path, eshell)
 		if err = controllers.RenderError(r, res, err); err != nil {
 			return
 		}
 	}
 
-	//TODO remove old dir
-
 	res.Errno = 0
 	controllers.RenderRes(r, res, map[string]string{})
 }
 
-func checkSign(sign string) error {
+func execCmd(path, c string) error {
+	arr := strings.Split(c, "\n")
+	for _, v := range arr {
+		if strings.Trim(v, " ") == "" {
+			continue
+		}
+		err := utils.RunCmd(path, v)
+		if err != nil {
+			return err
+		}
+	}
+
 	return nil
 }
 
 func decompress(file, pdir, dir string) error {
-	fmt.Println("decompress", file, pdir, dir)
 	ufile := strings.TrimRight(file, ".tar.gz")
 	err := utils.Mkdir(ufile)
 	if err != nil {
@@ -145,7 +152,6 @@ func saveFile(req *http.Request, path string) (string, error) {
 
 	filename := strings.Split(handler.Filename, "/")
 	save := fmt.Sprintf("%s/%s", strings.TrimRight(path, "/"), filename[len(filename)-1])
-	fmt.Println("saveFile", save)
 
 	f, err := os.OpenFile(save, os.O_WRONLY|os.O_CREATE, 0755)
 	if err != nil {
