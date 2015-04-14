@@ -1,7 +1,7 @@
 "use strict";
 
 define(['app', '../service/cluster'], function (app) {
-    return ['$scope', '$rootScope', 'Cluster.Search', 'Cluster.GetAll', function ($scope, $rootScope, Search, GetAll) {
+    return ['$scope', '$rootScope', 'Cluster.GetAll', function ($scope, $rootScope, GetAll) {
         $scope.args = {}
         $scope.ev = {}
         $scope.args.list = []
@@ -13,12 +13,5 @@ define(['app', '../service/cluster'], function (app) {
 
             $scope.args.list = json.data
         })
-
-        $scope.ev.search = function () {
-            Search.query({keywords: $scope.args.keywords}, function (json) {
-                console.log(json)
-            })
-        }
-
     }];
 });

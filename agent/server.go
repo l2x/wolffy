@@ -90,23 +90,27 @@ func decompress(file, pdir, dir string) error {
 		return err
 	}
 
+	logfile := fmt.Sprintf("%s/%s.log", pdir, dir)
 	//删除上个版本目录
-	buf, err := readLog(pdir)
+	buf, err := readLog(logfile)
 	if err != nil {
+		fmt.Println(err, logfile)
 	}
-	err = os.Remove(string(buf))
+	olddir := string(buf)
+	err = os.RemoveAll(olddir)
 	if err != nil {
+		fmt.Println(err, olddir)
 	}
 	//记录这个个版本目录
-	err = addLog(ufile, pdir)
+	err = addLog(ufile, logfile)
 	if err != nil {
 	}
 
 	return nil
 }
 
-func readLog(pdir string) ([]byte, error) {
-	f, err := os.OpenFile(fmt.Sprintf("%s.log", pdir), os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0755)
+func readLog(logfile string) ([]byte, error) {
+	f, err := os.OpenFile(logfile, os.O_RDONLY|os.O_CREATE, 0755)
 	if err != nil {
 		return nil, err
 	}
@@ -121,8 +125,8 @@ func readLog(pdir string) ([]byte, error) {
 	return buf, nil
 }
 
-func addLog(ufile, pdir string) error {
-	f, err := os.OpenFile(fmt.Sprintf("%s.log", pdir), os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0755)
+func addLog(ufile, logfile string) error {
+	f, err := os.OpenFile(logfile, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0755)
 	if err != nil {
 		return err
 	}
@@ -148,6 +152,7 @@ func saveFile(req *http.Request, path string) (string, error) {
 
 	f, err := os.OpenFile(save, os.O_WRONLY|os.O_CREATE, 0755)
 	if err != nil {
+		fmt.Println("openfile====>", save)
 		return "", err
 	}
 	defer f.Close()

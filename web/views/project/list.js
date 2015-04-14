@@ -1,7 +1,7 @@
 "use strict";
 
 define(['app', '../service/project'], function (app) {
-    return ['$scope', '$rootScope', 'Project.Search', 'Project.GetAll', function ($scope, $rootScope, Search, GetAll) {
+    return ['$scope', '$rootScope', 'Project.GetAll', function ($scope, $rootScope, GetAll) {
         $scope.args = {}
         $scope.ev = {}
 
@@ -14,12 +14,5 @@ define(['app', '../service/project'], function (app) {
 
             $scope.args.list = json.data
         })
-
-        $scope.ev.search = function () {
-            Search.query({keywords: $scope.args.keywords}, function (json) {
-                console.log(json)
-            })
-        }
-
     }];
 });

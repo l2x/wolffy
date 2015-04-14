@@ -16,7 +16,7 @@ var (
 	usege              = "for help: ./agent -help"
 	ERR_PK             = errors.New("illegal privateKey \n" + usege)
 	ERR_MASTER_EMPTY   = errors.New("illegal master \n" + usege)
-	ERR_MASTER_CONNECT = errors.New(fmt.Sprintf("can not connect master[%s] \nplease make sure the master is correct", Master))
+	ERR_MASTER_CONNECT = errors.New("can not connect master. please make sure the master is correct")
 )
 
 func init() {
@@ -39,7 +39,7 @@ func main() {
 
 	err := report()
 	if err != nil {
-		fmt.Println(ERR_MASTER_CONNECT.Error())
+		fmt.Println(ERR_MASTER_CONNECT.Error() + "\n" + Master + "\n" + err.Error())
 		return
 	}
 

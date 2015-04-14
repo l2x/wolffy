@@ -4,13 +4,22 @@ import (
 	"net/http"
 
 	"github.com/go-martini/martini"
+	"github.com/l2x/wolffy/server/config"
 	"github.com/l2x/wolffy/server/controllers"
 	"github.com/martini-contrib/render"
 
 	"github.com/martini-contrib/gzip"
 )
 
+var (
+	NOT_CHECKSESSION = []string{
+		"/user/login",
+		"/node/report",
+	}
+)
+
 func router() {
+	martini.Env = "production"
 
 	m := martini.Classic()
 	m.Use(gzip.All())
@@ -18,8 +27,10 @@ func router() {
 	m.Use(render.Renderer())
 
 	m.Use(func(r render.Render, w http.ResponseWriter, req *http.Request) {
-		if req.URL.Path == "/user/login" {
-			return
+		for _, v := range NOT_CHECKSESSION {
+			if req.URL.Path == v {
+				return
+			}
 		}
 
 		err := controllers.CheckSession(w, req)
@@ -69,9 +80,9 @@ func router() {
 	m.Get("/user/getuserinfo", user.GetUserInfo)
 
 	Node := controllers.Node{}
-	m.Get("/node/reprot", Node.Report)
+	m.Get("/node/report", Node.Report)
 	m.Get("/node/getall", Node.GetAll)
 	m.Get("/node/delete", Node.Delete)
 
-	m.RunOnAddr(":8000")
+	m.RunOnAddr(config.Port)
 }

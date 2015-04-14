@@ -11,6 +11,8 @@ import (
 )
 
 func router() {
+	martini.Env = "production"
+
 	m := martini.Classic()
 	m.Use(gzip.All())
 	m.Use(render.Renderer())
@@ -27,7 +29,7 @@ func router() {
 	})
 
 	server := Server{}
-	m.Post("/pull/", server.Pull)
+	m.Post("/pull", server.Pull)
 
 	m.RunOnAddr(Port)
 }

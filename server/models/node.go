@@ -105,6 +105,10 @@ func (m Node) Update(id int, ip, port, note string, status int, lastReport time.
 	if err != nil {
 		return nil, err
 	}
+	node, err = m.GetOne(id)
+	if err != nil {
+		return nil, err
+	}
 
 	return node, nil
 }

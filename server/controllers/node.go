@@ -1,11 +1,11 @@
 package controllers
 
 import (
-	"database/sql"
 	"net/http"
 	"strconv"
 	"time"
 
+	"github.com/astaxie/beego/orm"
 	"github.com/martini-contrib/render"
 
 	"github.com/l2x/wolffy/server/config"
@@ -29,14 +29,18 @@ func (c Node) Report(r render.Render, req *http.Request) {
 
 	ip := utils.ClientIp(req)
 	node, err := models.NodeModel.GetOneByIp(ip)
-	if err != nil && err != sql.ErrNoRows {
+	if err != nil && err != orm.ErrNoRows {
 		RenderError(r, res, err)
+		return
 	}
-	if err == sql.ErrNoRows {
+
+	if err == orm.ErrNoRows {
 		node, err = models.NodeModel.Add(ip, port, "")
-		if err = RenderError(r, res, err); err != nil {
-			return
-		}
+	} else {
+		node, err = models.NodeModel.Update(node.Id, ip, port, "", 1, time.Now())
+	}
+	if err = RenderError(r, res, err); err != nil {
+		return
 	}
 
 	RenderRes(r, res, node)

@@ -107,7 +107,7 @@ func getParams() error {
 	}
 
 	// port
-	if port, err := config.GetValue("", "port"); err == nil || port == "" {
+	if port, err := config.GetValue("", "port"); err != nil && port != "" {
 		Port = port
 	}
 	config.SetValue("", "port", Port)

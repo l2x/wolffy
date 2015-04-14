@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"net/url"
+	"strings"
 
 	"encoding/json"
 
@@ -16,7 +17,7 @@ var (
 )
 
 func report() error {
-	master := fmt.Sprintf("%s/%s", Master, "report")
+	master := fmt.Sprintf("http://%s/%s", strings.TrimLeft(Master, "http://"), "node/report")
 
 	u, err := url.Parse(master)
 	if err != nil {
@@ -27,6 +28,7 @@ func report() error {
 	q := u.Query()
 	q.Set("token", token)
 	q.Set("sign", sign)
+	q.Set("port", Port)
 	u.RawQuery = q.Encode()
 
 	resp, err := utils.HttpGet(u.String(), timeout)
@@ -35,7 +37,7 @@ func report() error {
 	}
 
 	res := controllers.NewRes()
-	err = json.Unmarshal(resp, res)
+	err = json.Unmarshal(resp, &res)
 	if err != nil {
 		return errors.New(err.Error() + "\n" + string(resp))
 	}

@@ -84,9 +84,8 @@ func (c Deploy) pushCluster(project *models.Project, did int, archiveFile string
 			}
 
 			wg.Add(1)
-			//TODO
-			//ip := fmt.Sprintf("http://%s:%s/pull/", v2.Ip, v2.Port)
-			ip := fmt.Sprintf("http://%s:%s/pull/", v2.Ip, "8001")
+			ip := fmt.Sprintf("http://%s%s/pull", v2.Ip, v2.Port)
+			//ip := fmt.Sprintf("http://%s:%s/pull", v2.Ip, "8001")
 			go func(id int, ip, archiveFile, pushPath, bshell, eshell string) {
 				defer wg.Done()
 
@@ -160,7 +159,7 @@ func (c Deploy) pushFile(ip, archiveFile, pushPath, bshell, eshell string) error
 	}
 
 	res := NewRes()
-	err = json.Unmarshal(resp_body, res)
+	err = json.Unmarshal(resp_body, &res)
 	if err != nil {
 		return errors.New(err.Error() + "\n" + string(resp_body))
 	}
