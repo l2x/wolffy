@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"bytes"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"io"
@@ -83,6 +84,7 @@ func (c Deploy) pushCluster(project *models.Project, did int, archiveFile string
 			}
 
 			wg.Add(1)
+			//TODO
 			//ip := fmt.Sprintf("http://%s:%s/pull/", v2.Ip, v2.Port)
 			ip := fmt.Sprintf("http://%s:%s/pull/", v2.Ip, "8001")
 			go func(id int, ip, archiveFile, pushPath, bshell, eshell string) {
@@ -157,7 +159,15 @@ func (c Deploy) pushFile(ip, archiveFile, pushPath, bshell, eshell string) error
 		return err
 	}
 
-	fmt.Println(string(resp_body))
+	res := NewRes()
+	err = json.Unmarshal(resp_body, res)
+	if err != nil {
+		return errors.New(err.Error() + "\n" + string(resp_body))
+	}
+	if res.Errno != 0 {
+		return errors.New(res.Errmsg)
+	}
+
 	return nil
 }
 

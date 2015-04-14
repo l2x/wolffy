@@ -1,9 +1,13 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"net/url"
 
+	"encoding/json"
+
+	"github.com/l2x/wolffy/server/controllers"
 	"github.com/l2x/wolffy/utils"
 )
 
@@ -25,12 +29,19 @@ func report() error {
 	q.Set("sign", sign)
 	u.RawQuery = q.Encode()
 
-	_, err = utils.HttpGet(u.String(), timeout)
+	resp, err := utils.HttpGet(u.String(), timeout)
 	if err != nil {
 		return err
 	}
 
-	//TODO check resp error
+	res := controllers.NewRes()
+	err = json.Unmarshal(resp, res)
+	if err != nil {
+		return errors.New(err.Error() + "\n" + string(resp))
+	}
+	if res.Errno != 0 {
+		return errors.New(res.Errmsg)
+	}
 
 	return nil
 }

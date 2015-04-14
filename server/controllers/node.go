@@ -1,7 +1,7 @@
 package controllers
 
 import (
-	"errors"
+	"database/sql"
 	"net/http"
 	"strconv"
 	"time"
@@ -20,6 +20,7 @@ func (c Node) Report(r render.Render, req *http.Request) {
 
 	token := req.URL.Query().Get("token")
 	sign := req.URL.Query().Get("sign")
+	port := req.URL.Query().Get("port")
 
 	err := utils.CheckSign(token, sign, config.PrivateKey)
 	if err = RenderError(r, res, err); err != nil {
@@ -27,20 +28,15 @@ func (c Node) Report(r render.Render, req *http.Request) {
 	}
 
 	ip := utils.ClientIp(req)
-
 	node, err := models.NodeModel.GetOneByIp(ip)
-	if err = RenderError(r, res, err); err != nil {
-		return
+	if err != nil && err != sql.ErrNoRows {
+		RenderError(r, res, err)
 	}
-
-	if node.Status == -1 {
-		RenderError(r, res, errors.New("server disable."))
-		return
-	}
-
-	node, err = models.NodeModel.Update(node.Id, node.Ip, node.Port, node.Note, token, 1, time.Now())
-	if err = RenderError(r, res, err); err != nil {
-		return
+	if err == sql.ErrNoRows {
+		node, err = models.NodeModel.Add(ip, port, "")
+		if err = RenderError(r, res, err); err != nil {
+			return
+		}
 	}
 
 	RenderRes(r, res, node)
@@ -85,7 +81,7 @@ func (c Node) Update(r render.Render, req *http.Request) {
 		return
 	}
 
-	node, err = models.NodeModel.Update(node.Id, node.Ip, node.Port, note, node.Token, statusInt, time.Now())
+	node, err = models.NodeModel.Update(node.Id, node.Ip, node.Port, note, statusInt, time.Now())
 	if err = RenderError(r, res, err); err != nil {
 		return
 	}
