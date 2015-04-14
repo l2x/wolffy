@@ -70,8 +70,8 @@ func router() {
 
 	Node := controllers.Node{}
 	m.Get("/node/reprot", Node.Report)
-	m.Get("/node/add", Node.Add)
 	m.Get("/node/getall", Node.GetAll)
+	m.Get("/node/delete", Node.Delete)
 
 	m.RunOnAddr(":8000")
 }

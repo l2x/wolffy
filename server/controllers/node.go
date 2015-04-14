@@ -42,21 +42,6 @@ func (c Node) Report(r render.Render, req *http.Request) {
 	RenderRes(r, res, node)
 }
 
-func (c Node) Add(r render.Render, req *http.Request) {
-	res := NewRes()
-
-	ip := req.URL.Query().Get("ip")
-	port := req.URL.Query().Get("port")
-	note := req.URL.Query().Get("note")
-
-	node, err := models.NodeModel.Add(ip, port, note)
-	if err = RenderError(r, res, err); err != nil {
-		return
-	}
-
-	RenderRes(r, res, node)
-}
-
 func (c Node) GetAll(r render.Render, req *http.Request) {
 	res := NewRes()
 
@@ -89,7 +74,7 @@ func (c Node) Update(r render.Render, req *http.Request) {
 	RenderRes(r, res, node)
 }
 
-func (c Node) Del(r render.Render, req *http.Request) {
+func (c Node) Delete(r render.Render, req *http.Request) {
 	res := NewRes()
 
 	id := req.URL.Query().Get("id")
