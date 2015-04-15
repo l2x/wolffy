@@ -140,7 +140,7 @@ define([
             '</div> ' +
             '</md-content>' +
             '</md-dialog>',
-            show: function () {
+            show: function (content) {
                 var self = this;
                 var dialog = {
                     controller: self.showCtrl,

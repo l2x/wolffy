@@ -50,11 +50,15 @@ define(['app', '../service/project', '../service/cluster', '../filter/filter'], 
                 tags: $scope.args.project.tags ? $scope.args.project.tags : "",
                 projectClusters: JSON.stringify(getClusters())
             }
+
+			$rootScope.loadingDialog.show('Cloning')
             Save.query($data, function (json) {
+				$rootScope.loadingDialog.hide()
+
                 if ($rootScope.checkErr(json)) {
                     return
                 }
-                $window.history.back()
+                $location.path("/project/list")
             })
         }
 
@@ -64,7 +68,7 @@ define(['app', '../service/project', '../service/cluster', '../filter/filter'], 
                     if ($rootScope.checkErr(json)) {
                         return
                     }
-                    $window.history.back()
+					$location.path("/project/list")
                 })
             })
         }
