@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"io"
+	"io/ioutil"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -92,37 +93,30 @@ func decompress(file, pdir, dir string) error {
 
 	logfile := fmt.Sprintf("%s/%s.log", pdir, dir)
 	//删除上个版本目录
-	buf, err := readLog(logfile)
+	s, err := readLog(logfile)
 	if err != nil {
 		fmt.Println(err, logfile)
 	}
-	olddir := string(buf)
-	err = os.RemoveAll(olddir)
+	err = os.RemoveAll(s)
 	if err != nil {
-		fmt.Println(err, olddir)
+		fmt.Println(err, s)
 	}
 	//记录这个个版本目录
 	err = addLog(ufile, logfile)
 	if err != nil {
+		fmt.Println(err)
 	}
 
 	return nil
 }
 
-func readLog(logfile string) ([]byte, error) {
-	f, err := os.OpenFile(logfile, os.O_RDONLY|os.O_CREATE, 0755)
+func readLog(logfile string) (string, error) {
+	s, err := ioutil.ReadFile(logfile)
 	if err != nil {
-		return nil, err
-	}
-	defer f.Close()
-
-	buf := make([]byte, 1024)
-	_, err = f.Read(buf)
-	if err != nil {
-		return nil, err
+		return "", err
 	}
 
-	return buf, nil
+	return string(s), nil
 }
 
 func addLog(ufile, logfile string) error {
