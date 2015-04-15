@@ -2,6 +2,7 @@ package main
 
 import (
 	"net/http"
+	"net/http/pprof"
 
 	"github.com/go-martini/martini"
 	"github.com/l2x/wolffy/server/config"
@@ -39,6 +40,18 @@ func router() {
 			result.Errno = 401
 			controllers.RenderError(r, result, err)
 		}
+	})
+
+	//
+	m.Group("/debug/pprof", func(r martini.Router) {
+		r.Any("/", pprof.Index)
+		r.Any("/cmdline", pprof.Cmdline)
+		r.Any("/profile", pprof.Profile)
+		r.Any("/symbol", pprof.Symbol)
+		r.Any("/block", pprof.Handler("block").ServeHTTP)
+		r.Any("/heap", pprof.Handler("heap").ServeHTTP)
+		r.Any("/goroutine", pprof.Handler("goroutine").ServeHTTP)
+		r.Any("/threadcreate", pprof.Handler("threadcreate").ServeHTTP)
 	})
 
 	site := controllers.Site{}
