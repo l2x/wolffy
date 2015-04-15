@@ -19,7 +19,6 @@ var (
 	ConfigFile = "config/config.ini"
 	BasePath   = "/tmp/"
 	RepoPath   = ""
-	DBPath     = ""
 
 	Port = ":9020"
 
@@ -85,12 +84,7 @@ func getParams() error {
 		config.SetValue("", "repoPath", RepoPath)
 	}
 
-	if DBPath, err = config.GetValue("", "dbPath"); err != nil || DBPath == "" {
-		DBPath = fmt.Sprintf("%s/%s", BasePath, "database")
-		config.SetValue("", "dbPath", DBPath)
-	}
-
-	err = utils.Mkdir(BasePath, RepoPath, DBPath)
+	err = utils.Mkdir(BasePath, RepoPath)
 	if err != nil {
 		return err
 	}

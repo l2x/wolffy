@@ -37,7 +37,7 @@ func (c Node) Report(r render.Render, req *http.Request) {
 	if err == orm.ErrNoRows {
 		node, err = models.NodeModel.Add(ip, port, "")
 	} else {
-		node, err = models.NodeModel.Update(node.Id, ip, port, "", 1, time.Now())
+		node, err = models.NodeModel.Update(node.Id, ip, port, "", 0, time.Now())
 	}
 	if err = RenderError(r, res, err); err != nil {
 		return

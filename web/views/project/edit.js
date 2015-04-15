@@ -1,7 +1,8 @@
 "use strict";
 
 define(['app', '../service/project', '../service/cluster', '../filter/filter'], function (app) {
-    return ['$scope', '$rootScope', '$route', '$window', '$mdDialog', 'Project.Save', 'Project.Get', 'Project.Delete', 'Cluster.GetAll', function ($scope, $rootScope, $route, $window, $mdDialog, Save, Get, Delete, Cluster_GetAll) {
+    return ['$scope', '$rootScope', '$route', '$window', '$location', '$mdDialog', 'Project.Save', 'Project.Get', 'Project.Delete', 'Cluster.GetAll',
+	function ($scope, $rootScope, $route, $window, $location, $mdDialog, Save, Get, Delete, Cluster_GetAll) {
         $scope.args = {}
         $scope.args.project = []
         $scope.args.clusters = []
