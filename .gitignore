@@ -5,6 +5,7 @@ server/config/config.ini
 server/database/
 server/repo/
 server/server
+web/js/libs
 agent/agent
 .idea/
 .idea
