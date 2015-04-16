@@ -8,7 +8,7 @@ wolffy
 
 username: `admin`
 
-password: `admin`
+password: `123456`
 
 ## Install
 
