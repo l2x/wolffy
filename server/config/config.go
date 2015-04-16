@@ -15,10 +15,9 @@ var (
 
 	NeedCreateAdministrator = false
 
-	config     *goconfig.ConfigFile
-	ConfigFile = "config/config.ini"
-	BasePath   = "/tmp/"
-	RepoPath   = ""
+	config   *goconfig.ConfigFile
+	BasePath = "/tmp/"
+	RepoPath = ""
 
 	Port = ":9020"
 
@@ -29,12 +28,12 @@ var (
 	CookieName      = "wolffy_sid"
 )
 
-func InitConfig() error {
+func InitConfig(configFile string) error {
 	dir, err := filepath.Abs(filepath.Dir(os.Args[0]))
 	if err != nil {
 		return err
 	}
-	cf := fmt.Sprintf("%s/%s", dir, ConfigFile)
+	cf := fmt.Sprintf("%s/%s", dir, configFile)
 
 	err = loadConfig(cf)
 	if err != nil {
