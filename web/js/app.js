@@ -136,7 +136,7 @@ define([
             '<md-content class="">' +
             '<div layout="row" layout="row" layout-align="center center">' +
             '<md-progress-circular md-mode="indeterminate"></md-progress-circular>' +
-            '<p>{{ctrl.content}}</p>' +
+            '<p ng-bind="ctrl.content" class="ml20"></p>' +
             '</div> ' +
             '</md-content>' +
             '</md-dialog>',

@@ -26,12 +26,12 @@
     <md-content class="sidebar" ng-controller="sidebarCtrl">
         <md-button ng-click="close()" class="md-primary" hide-gt-sm>{{'CLOSE' | translate}}</md-button>
 
-		<div ng-repeat="menu in menus" class="docs-menu">
+        <div ng-repeat="menu in menus" class="docs-menu">
             <md-button class="md-button-toggle" ng-click="goto(menu)" ng-class="menu.active ? 'active':''">{{menu.name |
                 translate}}
             </md-button>
             <ul class="menu-toggle-list" ng-if="menu.type==0 && menu.children.length>0">
-				<li ng-repeat="child in menu.children">
+                <li ng-repeat="child in menu.children">
                     <a class="md-button md-default-theme" ng-click="goto(child)" ng-class="child.active ? 'active':''">
                         <span class="">{{child.name | translate}}</span>
                     </a>

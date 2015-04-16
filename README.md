@@ -6,6 +6,10 @@ wolffy
 
 [demo]()
 
+username: `admin`
+
+password: `admin`
+
 ## Install
 
 ### master
@@ -18,11 +22,18 @@ wolffy
 
 > 如需执行额外的脚本, 确保有执行权限
 
+> 依赖mysql数据库, mysql中先创建好配置的数据库.
+
 
 ```
 wget https://github.com/l2x/wolffy/releases/download/v0.0.1/wolffy-v0.0.1.tar.gz 
 tar xvf wolffy-v0.0.1.tar.gz
 cd wolffy-v0.0.1/master
+```
+
+编辑 `config/config.ini` 中的数据库连接信息.
+
+```
 nohup ./wolffy-master > wolffy-master.log&
 ```
 

@@ -120,40 +120,40 @@ define(['app', '../service/project', '../service/deploy'], function (app) {
                 }
             }
 
-			var timer = null
-			var block = false
-			timer = setInterval(function() {
-				if(!block) {
-					getDeployStatus()
-				}
-			}, 5000)
+            var timer = null
+            var block = false
+            timer = setInterval(function () {
+                if (!block) {
+                    getDeployStatus()
+                }
+            }, 5000)
 
-			//locationChangeStart
-			$scope.$on('$routeChangeStart', function(next, current) {
-				clearInterval(timer)
-			});
+            //locationChangeStart
+            $scope.$on('$routeChangeStart', function (next, current) {
+                clearInterval(timer)
+            });
 
 
-			function getDeployStatus() {
-				angular.forEach($scope.args.list, function(v, k) {
-					if (v.status == 1) {
-						block = true
-						var retry = $scope.args.list[k].retry
-						retry = retry ? retry:0;
-						retry++
-						if (retry > 10) {
-							return
-						}
-						Get.query({id: v.id}, function(json) {
-							block = false
-							if ($rootScope.checkErr(json)) {
-								return
-							}
-							$scope.args.list[k] = json.data
-							$scope.args.list[k].retry = retry
-						})
-					}
-				})
-			}
+            function getDeployStatus() {
+                angular.forEach($scope.args.list, function (v, k) {
+                    if (v.status == 1) {
+                        block = true
+                        var retry = $scope.args.list[k].retry
+                        retry = retry ? retry : 0;
+                        retry++
+                        if (retry > 10) {
+                            return
+                        }
+                        Get.query({id: v.id}, function (json) {
+                            block = false
+                            if ($rootScope.checkErr(json)) {
+                                return
+                            }
+                            $scope.args.list[k] = json.data
+                            $scope.args.list[k].retry = retry
+                        })
+                    }
+                })
+            }
         }];
 });
