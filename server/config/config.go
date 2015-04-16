@@ -26,6 +26,11 @@ var (
 	SessionInterval = 1
 	SessionExpire   = 3600
 	CookieName      = "wolffy_sid"
+
+	DBHost = ""
+	DBUser = ""
+	DBPwd  = ""
+	DBName = ""
 )
 
 func InitConfig(configFile string) error {
@@ -68,12 +73,27 @@ func loadConfig(cf string) error {
 }
 
 func getParams() error {
+	var err error
+
+	// db
+	if DBHost, err = config.GetValue("database", "dbHost"); err != nil {
+		return err
+	}
+	if DBName, err = config.GetValue("database", "dbName"); err != nil {
+		return err
+	}
+	if DBUser, err = config.GetValue("database", "dbUser"); err != nil {
+		return err
+	}
+	if DBPwd, err = config.GetValue("database", "dbPwd"); err != nil {
+		return err
+	}
+
 	// path
 	dir, err := filepath.Abs(filepath.Dir(os.Args[0]))
 	if err != nil {
 		return err
 	}
-
 	if BasePath, err = config.GetValue("", "basePath"); err != nil || BasePath == "" {
 		BasePath = dir
 		config.SetValue("", "basePath", BasePath)

@@ -1,6 +1,8 @@
 package models
 
 import (
+	"fmt"
+
 	"github.com/astaxie/beego/orm"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/l2x/wolffy/server/config"
@@ -13,7 +15,7 @@ var (
 func InitModels() error {
 	//orm.Debug = true
 	orm.RegisterDriver("mysql", orm.DR_MySQL)
-	orm.RegisterDataBase("default", "mysql", "root:123456@/wolffy?charset=utf8")
+	orm.RegisterDataBase("default", "mysql", fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8", config.DBUser, config.DBPwd, config.DBHost, config.DBName))
 
 	orm.RegisterModel(ClusterModel)
 	orm.RegisterModel(ClusterNodeModel)
