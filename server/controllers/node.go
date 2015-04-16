@@ -91,3 +91,9 @@ func (c Node) Delete(r render.Render, req *http.Request) {
 
 	RenderRes(r, res, map[string]string{})
 }
+
+func (c Node) GetPrivateKey(r render.Render, req *http.Request) {
+	res := NewRes()
+
+	RenderRes(r, res, config.PrivateKey)
+}

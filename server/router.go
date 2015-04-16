@@ -96,6 +96,7 @@ func router() {
 	m.Get("/node/report", Node.Report)
 	m.Get("/node/getall", Node.GetAll)
 	m.Get("/node/delete", Node.Delete)
+	m.Get("/node/getprivatekey", Node.GetPrivateKey)
 
 	m.RunOnAddr(config.Port)
 }

@@ -6,7 +6,7 @@
 wget https://github.com/l2x/wolffy/releases/download/v0.0.1/wolffy-v0.0.1.tar.gz 
 tar xvf wolffy-v0.0.1.tar.gz
 cd wolffy-v0.0.1/agent
-nohup ./wolffy-agent -pk=privateKey -master=masterip > wolffy-agent.log&
+nohup ./wolffy-agent -pk={{args.privateKey}} -master=masterip > wolffy-agent.log&
 		</pre>
 
     <h3>Step 2</h3>

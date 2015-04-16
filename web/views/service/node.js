@@ -11,4 +11,9 @@ define(['app'], function (app) {
             query: {isArray: false}
         });
     })
+    app.factory('Node.GetPrivateKey', function ($resource) {
+        return $resource("/node/getprivatekey", {}, {
+            query: {isArray: false}
+        });
+    })
 })

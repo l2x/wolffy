@@ -61,9 +61,7 @@ define([
                 }))
                 .when("/node/add", angularAMD.route({
                     templateUrl: './views/node/add.html',
-                }))
-                .when("/node/add/:id", angularAMD.route({
-                    templateUrl: './views/node/add.html',
+                    controllerUrl: '../views/user/add'
                 }))
                 .when("/user/list", angularAMD.route({
                     templateUrl: './views/user/list.html',
