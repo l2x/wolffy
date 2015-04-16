@@ -6,9 +6,8 @@ wolffy
 
 [demo]()
 
-username: `admin`
+帐号密码 `admin:123456`
 
-password: `123456`
 
 ## Install
 
@@ -36,6 +35,8 @@ cd wolffy-v0.0.1/master
 ```
 nohup ./wolffy-master > wolffy-master.log&
 ```
+
+访问 `yourip:9020`, 初始帐号密码`admin:123456`
 
 ### node
 
