@@ -2,6 +2,7 @@ log/*
 tests/*
 */data.db
 server/database/
+server/config/config.ini
 server/repo/
 server/server
 web/js/libs
