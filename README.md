@@ -27,7 +27,7 @@ wolffy
 ```
 wget https://github.com/l2x/wolffy/releases/download/v0.0.1/wolffy-v0.0.1.tar.gz 
 tar xvf wolffy-v0.0.1.tar.gz
-cd wolffy-v0.0.1/master
+cd wolffy/master
 ```
 
 编辑 `config/config.ini` 中的数据库连接信息.
@@ -45,7 +45,7 @@ nohup ./wolffy-master > wolffy-master.log&
 ```
 wget https://github.com/l2x/wolffy/releases/download/v0.0.1/wolffy-v0.0.1.tar.gz 
 tar xvf wolffy-v0.0.1.tar.gz
-cd wolffy-v0.0.1/agent
+cd wolffy/agent
 nohup ./wolffy-agent -pk=privateKey -master=masterip > wolffy-agent.log&
 ```
 
