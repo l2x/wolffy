@@ -32,6 +32,7 @@
         "angular-material": "latest",
         "bootstrap": "~3.3.1",
         "angular-translate": "latest",
-        "angular-translate-loader-static-files": "latest"
+        "angular-translate-loader-static-files": "latest",
+		"html5-boilerplate": "latest"
     }
 }

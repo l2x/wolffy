@@ -5,7 +5,7 @@ define(['app', '../service/node'], function (app) {
 		function ($scope, $rootScope, $mdDialog, GetPrivateKey) {
             $scope.args = {}
 
-            GetAll.query({}, function (json) {
+            GetPrivateKey.query({}, function (json) {
                 if ($rootScope.checkErr(json)) {
                     return
                 }

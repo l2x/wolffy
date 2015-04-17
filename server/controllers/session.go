@@ -79,8 +79,8 @@ func (s *Session) Add(w http.ResponseWriter, id int, username, ip string) {
 	cache.Value = s.genSidValue(sid, cache.Ip)
 	s.cache[sid] = cache
 
-	expire := time.Now().Add(time.Duration(config.SessionExpire) * time.Second)
-	cookie := &http.Cookie{Name: config.CookieName, Value: sid, Path: "/", Expires: expire, HttpOnly: true}
+	//expire := time.Now().Add(time.Duration(config.SessionExpire) * time.Second)
+	cookie := &http.Cookie{Name: config.CookieName, Value: sid, Path: "/", HttpOnly: true}
 
 	http.SetCookie(w, cookie)
 }
