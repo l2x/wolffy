@@ -16,20 +16,20 @@ require.config({
         ngAria: 'libs/angular-aria/angular-aria.min',
         ngAnimate: 'libs/angular-animate/angular-animate.min',
         angularLoadingBar: 'libs/angular-loading-bar/build/loading-bar.min',
-		ngMaterial: 'libs/angular-material/angular-material',
-        ngTranslate:'libs/angular-translate/angular-translate.min',
+        ngMaterial: 'libs/angular-material/angular-material',
+        ngTranslate: 'libs/angular-translate/angular-translate.min',
         ngTranslateLoader: 'libs/angular-translate-loader-static-files/angular-translate-loader-static-files.min',
-        ngSanitize:'libs/angular-sanitize/angular-sanitize.min'
+        ngSanitize: 'libs/angular-sanitize/angular-sanitize.min'
     },
     shim: {
         angular: {
             exports: 'angular',
-            deps:['hammer']
+            deps: ['hammer']
         },
         ngRoute: ['angular'],
         ngResource: ['angular'],
         angularAMD: ['angular'],
-        ngMocks:['angular'],
+        ngMocks: ['angular'],
         ngAnimate: ['angular'],
         ngAria: ['angular'],
         angularLoadingBar: ['angular', 'ngAnimate'],
@@ -40,9 +40,9 @@ require.config({
         ngTranslateLoader: ['angular', 'ngTranslate'],
         ngSanitize: ['angular']
     },
-    deps:['app'],
+    deps: ['app'],
     baseUrl: 'js/',
 	waitSeconds: 20
-})
-;;
+});
+
 window.name = "NG_DEFER_BOOTSTRAP!";

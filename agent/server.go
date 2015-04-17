@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"io"
+	"io/ioutil"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -18,28 +19,20 @@ type Server struct{}
 func (s Server) Pull(r render.Render, req *http.Request) {
 	res := controllers.NewRes()
 
-	token := req.URL.Query().Get("token")
-	sign := req.URL.Query().Get("sign")
 	path := req.URL.Query().Get("path")
 	bshell := req.URL.Query().Get("bshell")
 	eshell := req.URL.Query().Get("eshell")
 
-	err := utils.CheckSign(token, sign, PrivateKey)
-	if err = controllers.RenderError(r, res, err); err != nil {
-		return
-	}
-
-	fmt.Println(path, bshell, eshell)
 	pdir := filepath.Dir(path)
 	dir := filepath.Base(path)
 
-	err = utils.Mkdir(pdir)
+	err := utils.Mkdir(pdir)
 	if err = controllers.RenderError(r, res, err); err != nil {
 		return
 	}
 
 	if bshell != "" {
-		err = utils.RunCmd(path, bshell)
+		err = execCmd(path, bshell)
 		if err = controllers.RenderError(r, res, err); err != nil {
 			return
 		}
@@ -56,24 +49,32 @@ func (s Server) Pull(r render.Render, req *http.Request) {
 	}
 
 	if eshell != "" {
-		err = utils.RunCmd(path, eshell)
+		err = execCmd(path, eshell)
 		if err = controllers.RenderError(r, res, err); err != nil {
 			return
 		}
 	}
 
-	//TODO remove old dir
-
 	res.Errno = 0
 	controllers.RenderRes(r, res, map[string]string{})
 }
 
-func checkSign(sign string) error {
+func execCmd(path, c string) error {
+	arr := strings.Split(c, "\n")
+	for _, v := range arr {
+		if strings.Trim(v, " ") == "" {
+			continue
+		}
+		err := utils.RunCmd(path, v)
+		if err != nil {
+			return err
+		}
+	}
+
 	return nil
 }
 
 func decompress(file, pdir, dir string) error {
-	fmt.Println("decompress", file, pdir, dir)
 	ufile := strings.TrimRight(file, ".tar.gz")
 	err := utils.Mkdir(ufile)
 	if err != nil {
@@ -90,39 +91,36 @@ func decompress(file, pdir, dir string) error {
 		return err
 	}
 
+	logfile := fmt.Sprintf("%s/%s.log", pdir, dir)
 	//删除上个版本目录
-	buf, err := readLog(pdir)
+	s, err := readLog(logfile)
 	if err != nil {
+		fmt.Println(err, logfile)
 	}
-	err = os.Remove(string(buf))
+	err = os.RemoveAll(s)
 	if err != nil {
+		fmt.Println(err, s)
 	}
 	//记录这个个版本目录
-	err = addLog(ufile, pdir)
+	err = addLog(ufile, logfile)
 	if err != nil {
+		fmt.Println(err)
 	}
 
 	return nil
 }
 
-func readLog(pdir string) ([]byte, error) {
-	f, err := os.OpenFile(fmt.Sprintf("%s.log", pdir), os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0755)
+func readLog(logfile string) (string, error) {
+	s, err := ioutil.ReadFile(logfile)
 	if err != nil {
-		return nil, err
-	}
-	defer f.Close()
-
-	buf := make([]byte, 1024)
-	_, err = f.Read(buf)
-	if err != nil {
-		return nil, err
+		return "", err
 	}
 
-	return buf, nil
+	return string(s), nil
 }
 
-func addLog(ufile, pdir string) error {
-	f, err := os.OpenFile(fmt.Sprintf("%s.log", pdir), os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0755)
+func addLog(ufile, logfile string) error {
+	f, err := os.OpenFile(logfile, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0755)
 	if err != nil {
 		return err
 	}
@@ -145,10 +143,10 @@ func saveFile(req *http.Request, path string) (string, error) {
 
 	filename := strings.Split(handler.Filename, "/")
 	save := fmt.Sprintf("%s/%s", strings.TrimRight(path, "/"), filename[len(filename)-1])
-	fmt.Println("saveFile", save)
 
 	f, err := os.OpenFile(save, os.O_WRONLY|os.O_CREATE, 0755)
 	if err != nil {
+		fmt.Println("openfile====>", save)
 		return "", err
 	}
 	defer f.Close()

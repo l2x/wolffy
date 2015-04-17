@@ -33,6 +33,7 @@
         "bootstrap": "~3.3.1",
 		"todc-bootstrap": "latest",
         "angular-translate": "latest",
-        "angular-translate-loader-static-files": "latest"
+        "angular-translate-loader-static-files": "latest",
+		"html5-boilerplate": "latest"
     }
 }

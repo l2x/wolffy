@@ -2,11 +2,10 @@ package models
 
 import (
 	"fmt"
-	"strings"
 
 	"github.com/astaxie/beego/orm"
+	_ "github.com/go-sql-driver/mysql"
 	"github.com/l2x/wolffy/server/config"
-	_ "github.com/mattn/go-sqlite3"
 )
 
 var (
@@ -14,12 +13,9 @@ var (
 )
 
 func InitModels() error {
-	dbPath := fmt.Sprintf("%s/%s", strings.TrimRight(config.DBPath, "/"), "data.db")
-
 	//orm.Debug = true
-	orm.RegisterDriver("sqlite3", orm.DR_Sqlite)
-	orm.RegisterDataBase("default", "sqlite3", dbPath)
-	orm.SetMaxOpenConns("default", 10)
+	orm.RegisterDriver("mysql", orm.DR_MySQL)
+	orm.RegisterDataBase("default", "mysql", fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8", config.DBUser, config.DBPwd, config.DBHost, config.DBName))
 
 	orm.RegisterModel(ClusterModel)
 	orm.RegisterModel(ClusterNodeModel)
@@ -37,11 +33,9 @@ func InitModels() error {
 
 	DB = orm.NewOrm()
 
-	if config.NeedCreateAdministrator {
-		err = UserModel.CheckCreateAdministor()
-		if err != nil {
-			return err
-		}
+	err = UserModel.CheckCreateAdministor()
+	if err != nil {
+		return err
 	}
 
 	return nil

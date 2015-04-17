@@ -1,8 +1,6 @@
 package main
 
 import (
-	"errors"
-	"fmt"
 	"net/http"
 
 	"github.com/go-martini/martini"
@@ -13,6 +11,8 @@ import (
 )
 
 func router() {
+	martini.Env = "production"
+
 	m := martini.Classic()
 	m.Use(gzip.All())
 	m.Use(render.Renderer())
@@ -20,20 +20,16 @@ func router() {
 	m.Use(func(r render.Render, w http.ResponseWriter, req *http.Request) {
 		token := req.URL.Query().Get("token")
 		sign := req.URL.Query().Get("sign")
-		ok := CheckSign(token, sign)
-		if !ok {
+		err := utils.CheckSign(token, sign, PrivateKey)
+		if err != nil {
 			result := controllers.NewRes()
-			controllers.RenderError(r, result, errors.New("signature invalid"))
+			controllers.RenderError(r, result, err)
 			return
 		}
 	})
 
 	server := Server{}
-	m.Post("/pull/", server.Pull)
+	m.Post("/pull", server.Pull)
 
-	m.RunOnAddr(":8001")
-}
-
-func CheckSign(token, sign string) bool {
-	return sign == utils.Md5(fmt.Sprintf("%s%s", token, PrivateKey))
+	m.RunOnAddr(Port)
 }

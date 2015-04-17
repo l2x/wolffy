@@ -33,7 +33,7 @@
             <span ng-if="item.status == 1" class="warn">{{'ABNORMAL' | translate}}</span>
         </td>
         <td class="txt-ac">
-            <md-button class="md-warn" href="" ng-click="">{{'REMOVE' | translate}}</md-button>
+            <md-button class="md-warn" href="" ng-click="ev.delete($event, $index)">{{'DELETE' | translate}}</md-button>
         </td>
     </tr>
     </tbody>

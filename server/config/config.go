@@ -13,39 +13,37 @@ var (
 	DatetimeFormat = "2006-01-02 15:04:05"
 	DateFormat     = "2006-01-02"
 
-	NeedCreateAdministrator = false
+	config   *goconfig.ConfigFile
+	BasePath = "/tmp/"
+	RepoPath = ""
 
-	config     *goconfig.ConfigFile
-	ConfigFile = "config/config.ini"
-	BasePath   = "/tmp/"
-	RepoPath   = ""
-	DBPath     = ""
+	Port = ":9020"
 
 	PrivateKey = ""
 
 	SessionInterval = 1
 	SessionExpire   = 3600
-	CookieName      = "wolffy_sessionid"
+	CookieName      = "wolffy_sid"
+
+	DBHost = ""
+	DBUser = ""
+	DBPwd  = ""
+	DBName = ""
 )
 
-func InitConfig() error {
+func InitConfig(configFile string) error {
 	dir, err := filepath.Abs(filepath.Dir(os.Args[0]))
 	if err != nil {
 		return err
 	}
-	cf := fmt.Sprintf("%s/%s", dir, ConfigFile)
+	cf := fmt.Sprintf("%s/%s", dir, configFile)
 
 	err = loadConfig(cf)
 	if err != nil {
 		return err
 	}
 
-	err = loadPath()
-	if err != nil {
-		return err
-	}
-
-	err = loadPrivateKey()
+	err = getParams()
 	if err != nil {
 		return err
 	}
@@ -72,43 +70,57 @@ func loadConfig(cf string) error {
 	return nil
 }
 
-func loadPath() error {
+func getParams() error {
+	var err error
+
+	// db
+	if DBHost, err = config.GetValue("database", "dbHost"); err != nil {
+		return err
+	}
+	if DBName, err = config.GetValue("database", "dbName"); err != nil {
+		return err
+	}
+	if DBUser, err = config.GetValue("database", "dbUser"); err != nil {
+		return err
+	}
+	if DBPwd, err = config.GetValue("database", "dbPwd"); err != nil {
+		return err
+	}
+
+	// path
 	dir, err := filepath.Abs(filepath.Dir(os.Args[0]))
 	if err != nil {
 		return err
 	}
-
-	if BasePath, err = config.GetValue("", "basePath"); err != nil {
+	if BasePath, err = config.GetValue("", "basePath"); err != nil || BasePath == "" {
 		BasePath = dir
 		config.SetValue("", "basePath", BasePath)
 	}
-	if RepoPath, err = config.GetValue("", "repoPath"); err != nil {
+	if RepoPath, err = config.GetValue("", "repoPath"); err != nil || RepoPath == "" {
 		RepoPath = fmt.Sprintf("%s/%s", BasePath, "repo")
 		config.SetValue("", "repoPath", RepoPath)
 	}
 
-	if DBPath, err = config.GetValue("", "dbPath"); err != nil {
-		DBPath = fmt.Sprintf("%s/%s", BasePath, "database")
-		config.SetValue("", "dbPath", DBPath)
-	}
-
-	err = utils.Mkdir(BasePath, RepoPath, DBPath)
+	err = utils.Mkdir(BasePath, RepoPath)
 	if err != nil {
 		return err
 	}
-	return nil
-}
 
-func loadPrivateKey() error {
-	var err error
-	if PrivateKey, err = config.GetValue("", "privateKey"); err != nil {
+	// privatekey
+	if PrivateKey, err = config.GetValue("", "privateKey"); err != nil || PrivateKey == "" {
 		uuid, err := utils.UUID()
 		if err != nil {
 			return err
 		}
 		PrivateKey = uuid
 		config.SetValue("", "privateKey", PrivateKey)
-		NeedCreateAdministrator = true
 	}
+
+	// port
+	if port, err := config.GetValue("", "port"); err != nil && port != "" {
+		Port = port
+	}
+	config.SetValue("", "port", Port)
+
 	return nil
 }

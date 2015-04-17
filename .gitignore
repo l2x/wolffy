@@ -1,11 +1,11 @@
 log/*
 tests/*
 */data.db
-server/config/config.ini
 server/database/
+server/config/config.ini
 server/repo/
 server/server
-agent/agent
 web/js/libs
+agent/agent
 .idea/
 .idea

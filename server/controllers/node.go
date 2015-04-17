@@ -1,11 +1,11 @@
 package controllers
 
 import (
-	"errors"
 	"net/http"
 	"strconv"
 	"time"
 
+	"github.com/astaxie/beego/orm"
 	"github.com/martini-contrib/render"
 
 	"github.com/l2x/wolffy/server/config"
@@ -20,6 +20,7 @@ func (c Node) Report(r render.Render, req *http.Request) {
 
 	token := req.URL.Query().Get("token")
 	sign := req.URL.Query().Get("sign")
+	port := req.URL.Query().Get("port")
 
 	err := utils.CheckSign(token, sign, config.PrivateKey)
 	if err = RenderError(r, res, err); err != nil {
@@ -27,33 +28,17 @@ func (c Node) Report(r render.Render, req *http.Request) {
 	}
 
 	ip := utils.ClientIp(req)
-
 	node, err := models.NodeModel.GetOneByIp(ip)
-	if err = RenderError(r, res, err); err != nil {
+	if err != nil && err != orm.ErrNoRows {
+		RenderError(r, res, err)
 		return
 	}
 
-	if node.Status == -1 {
-		RenderError(r, res, errors.New("server disable."))
-		return
+	if err == orm.ErrNoRows {
+		node, err = models.NodeModel.Add(ip, port, "")
+	} else {
+		node, err = models.NodeModel.Update(node.Id, ip, port, "", 0, time.Now())
 	}
-
-	node, err = models.NodeModel.Update(node.Id, node.Ip, node.Port, node.Note, token, 1, time.Now())
-	if err = RenderError(r, res, err); err != nil {
-		return
-	}
-
-	RenderRes(r, res, node)
-}
-
-func (c Node) Add(r render.Render, req *http.Request) {
-	res := NewRes()
-
-	ip := req.URL.Query().Get("ip")
-	port := req.URL.Query().Get("port")
-	note := req.URL.Query().Get("note")
-
-	node, err := models.NodeModel.Add(ip, port, note)
 	if err = RenderError(r, res, err); err != nil {
 		return
 	}
@@ -85,7 +70,7 @@ func (c Node) Update(r render.Render, req *http.Request) {
 		return
 	}
 
-	node, err = models.NodeModel.Update(node.Id, node.Ip, node.Port, note, node.Token, statusInt, time.Now())
+	node, err = models.NodeModel.Update(node.Id, node.Ip, node.Port, note, statusInt, time.Now())
 	if err = RenderError(r, res, err); err != nil {
 		return
 	}
@@ -93,7 +78,7 @@ func (c Node) Update(r render.Render, req *http.Request) {
 	RenderRes(r, res, node)
 }
 
-func (c Node) Del(r render.Render, req *http.Request) {
+func (c Node) Delete(r render.Render, req *http.Request) {
 	res := NewRes()
 
 	id := req.URL.Query().Get("id")
@@ -105,4 +90,10 @@ func (c Node) Del(r render.Render, req *http.Request) {
 	}
 
 	RenderRes(r, res, map[string]string{})
+}
+
+func (c Node) GetPrivateKey(r render.Render, req *http.Request) {
+	res := NewRes()
+
+	RenderRes(r, res, config.PrivateKey)
 }

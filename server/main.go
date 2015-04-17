@@ -1,13 +1,22 @@
 package main
 
 import (
+	"flag"
+
 	"github.com/l2x/wolffy/server/config"
 	"github.com/l2x/wolffy/server/controllers"
 	"github.com/l2x/wolffy/server/models"
 )
 
+var (
+	configFile = ""
+)
+
 func init() {
-	err := config.InitConfig()
+	flag.StringVar(&configFile, "c", "config/config.ini", "config file")
+	flag.Parse()
+
+	err := config.InitConfig(configFile)
 	if err != nil {
 		panic(err)
 	}

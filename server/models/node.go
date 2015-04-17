@@ -18,7 +18,6 @@ type Node struct {
 	Ip         string    `json:"ip"`
 	Port       string    `json:"port"`
 	Note       string    `json:"note"`
-	Token      string    `json:"-"`
 	Status     int       `json:"status"`
 	Created    time.Time `json:"created"`
 	Modified   time.Time `json:"modified"`
@@ -73,6 +72,7 @@ func (m Node) GetOneByIp(ip string) (*Node, error) {
 func (m Node) Add(ip, port, note string) (*Node, error) {
 	node := &Node{
 		Ip:         ip,
+		Port:       port,
 		Note:       note,
 		Created:    time.Now(),
 		Modified:   time.Now(),
@@ -92,18 +92,21 @@ func (m Node) Add(ip, port, note string) (*Node, error) {
 	return node, nil
 }
 
-func (m Node) Update(id int, ip, port, note, token string, status int, lastReport time.Time) (*Node, error) {
+func (m Node) Update(id int, ip, port, note string, status int, lastReport time.Time) (*Node, error) {
 	node := &Node{
 		Id:         id,
 		Ip:         ip,
 		Port:       port,
 		Note:       note,
-		Token:      token,
 		Status:     status,
 		Modified:   time.Now(),
 		LastReport: lastReport,
 	}
-	_, err := DB.Update(node, "Ip", "Port", "Note", "Token", "Status", "Modified", "LastReport")
+	_, err := DB.Update(node, "Ip", "Port", "Note", "Status", "Modified", "LastReport")
+	if err != nil {
+		return nil, err
+	}
+	node, err = m.GetOne(id)
 	if err != nil {
 		return nil, err
 	}

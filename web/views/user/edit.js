@@ -15,6 +15,7 @@ define(['app', '../service/user'], function (app) {
                         return
                     }
                     $scope.args.user = json.data
+                    $scope.args.user.administrator = $scope.args.user.administrator ? true : false
                 })
             }
 

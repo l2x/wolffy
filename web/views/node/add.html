@@ -1,14 +1,20 @@
 <md-content class="project_form">
     <h1>{{'ADD' | translate}}{{'NODE' | translate}}</h1>
 
-	<div>
-		<h3>Install</h3>
+    <h3>Step 1</h3>
 		<pre>
-		wget https://github.com/l2x/wolffy/releases/download/v0.0.1/wolffy
-		...
-
-		./agent -pk={{key}} -master={{}}
+wget https://github.com/l2x/wolffy/releases/download/v0.0.1/wolffy-v0.0.1.tar.gz 
+tar xvf wolffy-v0.0.1.tar.gz
+cd wolffy-v0.0.1/agent
+nohup ./wolffy-agent -pk={{args.privateKey}} -master=masterip > wolffy-agent.log&
 		</pre>
-	</div>
+
+    <h3>Step 2</h3>
+
+    <p>进入<a href="#/cluster/list">集群页面</a></p>
+
+    <p>选择一个集群, 点击编辑</p>
+
+    <p>将添加的节点加入集群中</p>
 
 </md-content>
