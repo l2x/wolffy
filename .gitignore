@@ -1,7 +1,6 @@
 log/*
 tests/*
 */data.db
-server/config/config.ini
 server/database/
 server/repo/
 server/server

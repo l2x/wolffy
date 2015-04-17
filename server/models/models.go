@@ -33,11 +33,9 @@ func InitModels() error {
 
 	DB = orm.NewOrm()
 
-	if config.NeedCreateAdministrator {
-		err = UserModel.CheckCreateAdministor()
-		if err != nil {
-			return err
-		}
+	err = UserModel.CheckCreateAdministor()
+	if err != nil {
+		return err
 	}
 
 	return nil
