@@ -1,11 +1,12 @@
 log/*
 tests/*
 */data.db
-server/database/
-web/js/node_modules
-server/config/config.ini
-server/repo/
-server/server
+master/database/
+public/js/node_modules
+public/js/libs
+master/config/config.ini
+master/repo/
+master/master
 web/js/libs
 agent/agent
 .idea/

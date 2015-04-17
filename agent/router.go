@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/go-martini/martini"
-	"github.com/l2x/wolffy/server/controllers"
+	"github.com/l2x/wolffy/master/controllers"
 	"github.com/l2x/wolffy/utils"
 	"github.com/martini-contrib/gzip"
 	"github.com/martini-contrib/render"
