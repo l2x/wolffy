@@ -2,7 +2,8 @@ log/*
 tests/*
 */data.db
 master/database/
-web/js/node_modules
+public/js/node_modules
+public/js/libs
 master/config/config.ini
 master/repo/
 master/master
