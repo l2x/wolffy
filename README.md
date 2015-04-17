@@ -4,10 +4,7 @@ wolffy
 
 ## Usage
 
-[demo]()
-
-帐号密码 `admin:123456`
-
+[demo](http://123.57.75.209:9020/), 帐号密码 `admin:123456`
 
 ## Install
 
@@ -27,7 +24,7 @@ wolffy
 ```
 wget https://github.com/l2x/wolffy/releases/download/v0.0.1/wolffy-v0.0.1.tar.gz 
 tar xvf wolffy-v0.0.1.tar.gz
-cd wolffy/master
+cd wolffy-v0.0.1/master
 ```
 
 编辑 `config/config.ini` 中的数据库连接信息.
@@ -45,7 +42,7 @@ nohup ./wolffy-master > wolffy-master.log&
 ```
 wget https://github.com/l2x/wolffy/releases/download/v0.0.1/wolffy-v0.0.1.tar.gz 
 tar xvf wolffy-v0.0.1.tar.gz
-cd wolffy/agent
+cd wolffy-v0.0.1/agent
 nohup ./wolffy-agent -pk=privateKey -master=masterip > wolffy-agent.log&
 ```
 
