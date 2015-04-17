@@ -5,7 +5,7 @@ import (
 
 	"github.com/astaxie/beego/orm"
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/l2x/wolffy/server/config"
+	"github.com/l2x/wolffy/master/config"
 )
 
 var (

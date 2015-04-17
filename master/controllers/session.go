@@ -6,8 +6,8 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/l2x/wolffy/server/config"
-	"github.com/l2x/wolffy/server/models"
+	"github.com/l2x/wolffy/master/config"
+	"github.com/l2x/wolffy/master/models"
 	"github.com/l2x/wolffy/utils"
 )
 

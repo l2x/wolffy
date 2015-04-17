@@ -9,7 +9,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/l2x/wolffy/server/controllers"
+	"github.com/l2x/wolffy/master/controllers"
 	"github.com/l2x/wolffy/utils"
 	"github.com/martini-contrib/render"
 )

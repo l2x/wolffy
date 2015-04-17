@@ -8,7 +8,7 @@ import (
 
 	"github.com/martini-contrib/render"
 
-	"github.com/l2x/wolffy/server/models"
+	"github.com/l2x/wolffy/master/models"
 )
 
 type Cluster struct{}

@@ -5,8 +5,8 @@ import (
 	"net/http/pprof"
 
 	"github.com/go-martini/martini"
-	"github.com/l2x/wolffy/server/config"
-	"github.com/l2x/wolffy/server/controllers"
+	"github.com/l2x/wolffy/master/config"
+	"github.com/l2x/wolffy/master/controllers"
 	"github.com/martini-contrib/render"
 
 	"github.com/martini-contrib/gzip"

@@ -10,8 +10,8 @@ import (
 	"github.com/l2x/wolffy/utils/git"
 	"github.com/martini-contrib/render"
 
-	"github.com/l2x/wolffy/server/config"
-	"github.com/l2x/wolffy/server/models"
+	"github.com/l2x/wolffy/master/config"
+	"github.com/l2x/wolffy/master/models"
 )
 
 type Project struct{}

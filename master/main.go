@@ -3,9 +3,9 @@ package main
 import (
 	"flag"
 
-	"github.com/l2x/wolffy/server/config"
-	"github.com/l2x/wolffy/server/controllers"
-	"github.com/l2x/wolffy/server/models"
+	"github.com/l2x/wolffy/master/config"
+	"github.com/l2x/wolffy/master/controllers"
+	"github.com/l2x/wolffy/master/models"
 )
 
 var (
