@@ -31,6 +31,7 @@
         "angular-bootstrap": "~0.12.0",
         "angular-material": "latest",
         "bootstrap": "~3.3.1",
+		"todc-bootstrap": "latest",
         "angular-translate": "latest",
         "angular-translate-loader-static-files": "latest",
 		"html5-boilerplate": "latest"
