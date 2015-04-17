@@ -24,7 +24,7 @@ func router() {
 
 	m := martini.Classic()
 	m.Use(gzip.All())
-	m.Use(martini.Static("web"))
+	m.Use(martini.Static("public"))
 	m.Use(render.Renderer())
 
 	m.Use(func(r render.Render, w http.ResponseWriter, req *http.Request) {
