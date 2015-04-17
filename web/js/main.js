@@ -42,7 +42,7 @@ require.config({
     },
     deps:['app'],
     baseUrl: 'js/',
-    urlArgs: "bust=" + (new Date()).getTime()
+	waitSeconds: 20
 })
 ;;
 window.name = "NG_DEFER_BOOTSTRAP!";
