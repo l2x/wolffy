@@ -26,7 +26,7 @@ func (s Server) Pull(r render.Render, req *http.Request) {
 	pdir := filepath.Dir(path)
 	dir := filepath.Base(path)
 
-	err := utils.Mkdir(path)
+	err := utils.Mkdir(pdir)
 	if err = controllers.RenderError(r, res, err); err != nil {
 		return
 	}
