@@ -72,6 +72,7 @@ func (m Node) GetOneByIp(ip string) (*Node, error) {
 func (m Node) Add(ip, port, note string) (*Node, error) {
 	node := &Node{
 		Ip:         ip,
+		Port:       port,
 		Note:       note,
 		Created:    time.Now(),
 		Modified:   time.Now(),
