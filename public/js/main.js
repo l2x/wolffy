@@ -16,7 +16,7 @@ require.config({
         ngAria: 'libs/angular-aria/angular-aria.min',
         ngAnimate: 'libs/angular-animate/angular-animate.min',
         angularLoadingBar: 'libs/angular-loading-bar/build/loading-bar.min',
-        ngMaterial: 'libs/angular-material/angular-material',
+        ngMaterial: 'libs/angular-material/angular-material.min',
         ngTranslate: 'libs/angular-translate/angular-translate.min',
         ngTranslateLoader: 'libs/angular-translate-loader-static-files/angular-translate-loader-static-files.min',
         ngSanitize: 'libs/angular-sanitize/angular-sanitize.min'
