@@ -114,7 +114,7 @@ define([
             if (json && json.errno == 401) {
                 $location.path("/login")
             }
-            if (json && json.errno == 1) {
+            if (json && json.errno != 0) {
                 console.log(json);
                 $mdToast.show(
                     $mdToast.simple().content(json.errmsg).action("close").hideDelay(0)
